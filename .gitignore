@@ -27,3 +27,6 @@ yarn-error.log
 .idea
 .php-cs-fixer.cache
 public/uploads
+
+.env
+/.env
