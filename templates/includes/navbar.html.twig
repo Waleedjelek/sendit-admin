@@ -1,0 +1,61 @@
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        {% set menuList = getTopMenu() %}
+        {% for menu in menuList %}
+            <li class="nav-item">
+                <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
+                    <i class="{{ menu.iconClass }}"></i>
+                    {{ menu.caption }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown user-menu show">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                {% if app.user.profileImage is empty %}
+                    <img src="{{ asset('build/images/avatar.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
+                {% else %}
+                    <img src="/uploads/{{ app.user.profileImage }}" class="user-image img-circle elevation-2" alt="User Image">
+                {% endif %}
+                <span class="d-none d-md-inline">{{ app.user.firstName }} {{ app.user.lastName }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                <li class="user-header bg-primary" style="height: auto;">
+                    {% if app.user.profileImage is empty %}
+                        <img src="{{ asset('build/images/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                    {% else %}
+                        <img src="/uploads/{{ app.user.profileImage }}" class="img-circle elevation-2" alt="User Image">
+                    {% endif %}
+                    <p>
+                        {{ app.user.firstName }} {{ app.user.lastName }}
+                    </p>
+                </li>
+                <li class="user-footer">
+                    <a href="{{ path('app_user_profile') }}" data-toggle="tooltip" class="btn btn-default btn-flat" title="Profile">
+                        <i class="fas fa-user-alt"></i>
+                    </a>
+                    <a href="{{ path('app_user_password') }}" data-toggle="tooltip" class="btn btn-default btn-flat" title="Change Password">
+                        <i class="fas fa-key"></i>
+                    </a>
+                    <a href="{{ path('app_logout') }}" data-toggle="tooltip" class="btn btn-default btn-flat float-right" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+{#        <li class="nav-item">#}
+{#            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
+{#                <i class="fas fa-users-cog"></i>#}
+{#            </a>#}
+{#        </li>#}
+    </ul>
+</nav>

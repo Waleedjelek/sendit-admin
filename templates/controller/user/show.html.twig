@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user mr-1"></i>
+                        User
+                    </h3>
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th style="width: 30%;">Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td>{{ user.firstName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td>{{ user.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Role</th>
+                            <td>{{ roleCaption }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email Verified</th>
+                            <td>
+                                {% if user.emailVerified %}
+                                    <i class="fas fa-check-square"></i>
+                                {% else %}
+                                    <i class="far fa-square"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>User Active</th>
+                            <td>
+                                {% if user.active %}
+                                    <i class="fas fa-check-square"></i>
+                                {% else %}
+                                    <i class="far fa-square"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Created Date</th>
+                            <td>{{ (user.createdDate) ? user.createdDate|toTZ : " - " }}</td>
+                        </tr>
+                        <tr>
+                            <th>Updated Date</th>
+                            <td>{{ (user.modifiedDate) ? user.modifiedDate|toTZ : " - " }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Login Date</th>
+                            <td>{{ (user.lastLoginDate) ? user.lastLoginDate|toTZ : " - " }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <a href="{{ path('app_user_index') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+                    {% if is_granted('ROLE_ADMIN')  %}
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit</a>
+                    {% endif %}
+
+                    <form method="post" style="display: inline;" action="{{ path('app_user_pass_reset', {'id': user.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to reset this user password?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('reset-password' ~ user.id) }}">
+                        <button class="btn btn-warning"><i class="fas fa-key"></i> Reset Password</button>
+                    </form>
+
+                    {% if is_granted('ROLE_SUPER_ADMIN')  %}
+                        <form method="post" style="display: inline;" action="{{ path('app_user_delete', {'id': user.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                        </form>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if orders is not empty %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            Recent Orders
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover" id="ordersTableList">
+                            <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Company</th>
+                                <th>Weight (kg)</th>
+                                <th>Total (AED)</th>
+                                <th>Status</th>
+                                <th>Payment Status</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>
+                                        {{ order.orderId }}
+                                    </td>
+                                    <td>{{ order.selectedCompany.name }} ( {{ order.sourceCountry.code }} <i class="fas fa-arrow-right"></i> {{ order.destinationCountry.code }} )</td>
+                                    <td>{{ order.finalWeight }}</td>
+                                    <td>{{ order.totalPrice }}</td>
+                                    <td>{{ order.status }}</td>
+                                    <td>{{ order.paymentStatus }}</td>
+                                    <td>{{ order.createdDate|toTZ }}</td>
+                                    <td><a href="{{ path('app_order_show',{'id':order.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if transactions is not empty %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-credit-card"></i>
+                            Recent Transactions
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover" id="ordersTableList">
+                            <thead>
+                            <tr>
+                                <th>Trans ID</th>
+                                <th>Order ID</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.transId }}</td>
+                                    <td>{{ transaction.order.orderId }}</td>
+                                    <td>{{ transaction.paidAmount }}</td>
+                                    <td>{{ transaction.paidCurrency }}</td>
+                                    <td>{{ transaction.paymentStatus }}</td>
+                                    <td>{{ transaction.createdDate|toTZ }}</td>
+                                    <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

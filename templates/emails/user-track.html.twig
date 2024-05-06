@@ -1,0 +1,14 @@
+{% extends 'emails/base.html.twig' %}
+
+
+{% block body %}
+    <p>Dear {{ contactName }}</p>
+    <p>Your shipment #{{ orderId }} progress can be tracked now.</p>
+    <p><a href="{{ trackingLink }}">Track Shipment.</a></p>
+    <p>Shipment Tracking Code: {{ orderId }}</p>
+    <p>If you have any trouble tracking the shipment please email <a href="mailto:support@sendit.world">support@sendit.world</a>.</p>
+    <p>
+        Regards<br>
+        Send it Team
+    </p>
+{% endblock %}

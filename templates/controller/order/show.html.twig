@@ -1,0 +1,591 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order - {{ order.orderId }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Order - {{ order.orderId }}
+                        <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-text="{{ order.orderId }}">
+                            <i class="fas fa-clipboard"></i>
+                        </button>
+
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th style="width: 30%;">Company</th>
+                            <td>{{ order.selectedCompany.name }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Type</th>
+                            <td>
+                                {% if order.selectedCompany.type == 'dom' %}
+                                    Domestic
+                                {% else %}
+                                    International
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Customer</th>
+                            <td>
+                                Name: {{ order.user.firstName }} {{ order.user.lastName }} <br>
+                                Email: {{ order.user.email }} <br>
+                                Mobile: {{ order.user.mobileNumber }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">From</th>
+                            <td>
+                                {{ order.sourceCountry.name }} ({{ order.sourceCountry.code }})
+                                {% if order.sourceCountry.code == 'AE'and order.collectionAddress.state is not empty %}
+                                    - {{ order.collectionAddress.state }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">To</th>
+                            <td>
+                                {{ order.destinationCountry.name }} ({{ order.destinationCountry.code }})
+                                {% if order.destinationCountry.code == 'AE' and order.destinationAddress.state is not empty %}
+                                    - {{ order.destinationAddress.state }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Collection</th>
+                            <td>
+                                {{ order.collectionDate |toTZ('d-M-Y')}} ({{ order.collectionTime }})
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Contact for Insurance</th>
+                            <td>
+                                {% if order.contactForInsurance %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if order.trackingCode is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Tracking Code</th>
+                                <td>
+                                    {{ order.trackingCode }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Weight (kg) -  User / Volume / Final</th>
+                            <td>
+                                {{ order.totalWeight |number_format(3) }}
+                                /
+                                {{ order.totalVolumeWeight |number_format(3) }}
+                                /
+                                <strong style="color: darkred;"> {{ order.finalWeight |number_format(3) }} </strong>
+                            </td>
+                        </tr>
+                        {% if order.totalValue > 0 %}
+                            <tr>
+                                <th style="width: 30%;">Total Value</th>
+                                <td>{{ order.totalValue |number_format(2) }} AED</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.boeAmount > 0 %}
+                            <tr>
+                                <th style="width: 30%;">Package Price</th>
+                                <td>{{ order.totalPrice - order.boeAmount |number_format(2) }} AED</td>
+                            </tr>
+                            <tr>
+                                <th style="width: 30%;">Bill of Entry</th>
+                                <td>{{ order.boeAmount |number_format(2) }} AED</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th style="width: 30%;">Total</th>
+                            <td>{{ order.totalPrice |number_format(2) }} AED</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Status</th>
+                            <td>{{ order.status }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Payment Status</th>
+                            <td>{{ order.paymentStatus }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created Date</th>
+                            <td>{{ order.createdDate |toTZ  }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    <div class="card-footer">
+
+                        <a href="{{ path('app_order_index') }}" class="btn btn-info">
+                            <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+                        {% if order.selectedCompany.carrierCode is not empty %}
+                            <a href="{{ path('app_order_add_tracking', {'id': order.id}) }}" class="btn btn-warning">
+                                <i class="fas fa-truck"></i> Update Tracking</a>
+                        {% endif %}
+
+                        {% if order.trackingCode is not empty %}
+                            <a href="{{ path('app_order_show_tracking', {'id': order.id}) }}" class="btn btn-warning" target="_blank">
+                                <i class="fas fa-truck"></i> View Tracking</a>
+                        {% endif %}
+
+                        <a href="{{ path('app_order_show_print', {'id': order.id}) }}" class="btn btn-warning" target="_blank">
+                            <i class="fas fa-print"></i> Print</a>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN')  %}
+                            <form method="post" style="display: inline;" action="{{ path('app_order_delete', {'id': order.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+                                <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    {% if order.status != 'Draft' %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title" >
+                            <i class="fas fa-comment"></i>
+                            Notes ( {{ order.notes | length }} )
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-12"  style="padding: 5px;">
+                                {{ form_row(form.noteDescription) }}
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center ">
+                            <div class="col-3" style="padding: 5px;">
+                                {{ form_row(form.changeStatus) }}
+                            </div>
+                            <div class="col-6"  style="padding: 5px;">
+                                <button type="submit" class="btn btn-info" style="margin-top: 15px;">Add note</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+
+                        {% if order.notes | length > 0 %}
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Note</th>
+                                    <th>Old Status</th>
+                                    <th>New Status</th>
+                                    <th>Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for note in order.notes %}
+                                    <tr>
+                                        <td>{{ note.user.firstName }}</td>
+                                        <td style="max-width: 400px;">{{ note.description |nl2br }}</td>
+                                        <td>{{ note.oldStatus }}</td>
+                                        <td>{{ note.newStatus }}</td>
+                                        <td>{{ note.createdDate |toTZ  }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card  collapsed-card">
+                <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">
+                        <i class="fas fa-address-card"></i>
+                        Source Address
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        {% if order.collectionAddress.contactName is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Name</th>
+                                <td>{{ order.collectionAddress.contactName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.collectionAddress.contactEmail is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Email</th>
+                                <td>{{ order.collectionAddress.contactEmail }}</td>
+                            </tr>
+                        {% endif %}
+
+                        {% if order.collectionAddress.contactMobile is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Mobile</th>
+                                <td>{{ order.collectionAddress.contactMobile }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.collectionAddress.primary is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Address 1</th>
+                                <td>{{ order.collectionAddress.primary }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.collectionAddress.secondary is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Address 2</th>
+                                <td>{{ order.collectionAddress.secondary }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.collectionAddress.cityName is not empty %}
+                            <tr>
+                                <th style="width: 30%;">City Name</th>
+                                <td>{{ order.collectionAddress.cityName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.sourceCountry.code == 'AE'  %}
+                            {% if order.collectionAddress.state is not empty %}
+                                <tr>
+                                    <th style="width: 30%;">State</th>
+                                    <td>{{ order.collectionAddress.state }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                        {% if order.collectionAddress.zipCode is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Zip Code</th>
+                                <td>{{ order.collectionAddress.zipCode }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th style="width: 30%;">Country</th>
+                            <td>{{ order.sourceCountry.name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card collapsed-card">
+                <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">
+                        <i class="fas fa-address-card"></i>
+                        Destination Address
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+                        <tbody>
+                        {% if order.destinationAddress.contactName is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Name</th>
+                                <td>{{ order.destinationAddress.contactName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.destinationAddress.contactEmail is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Email</th>
+                                <td>{{ order.destinationAddress.contactEmail }}</td>
+                            </tr>
+                        {% endif %}
+
+                        {% if order.destinationAddress.contactMobile is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Contact Mobile</th>
+                                <td>{{ order.destinationAddress.contactMobile }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.destinationAddress.primary is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Address 1</th>
+                                <td>{{ order.destinationAddress.primary }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.destinationAddress.secondary is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Address 2</th>
+                                <td>{{ order.destinationAddress.secondary }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.destinationAddress.cityName is not empty %}
+                            <tr>
+                                <th style="width: 30%;">City Name</th>
+                                <td>{{ order.destinationAddress.cityName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.destinationCountry.code == 'AE'  %}
+                            {% if order.destinationAddress.state is not empty %}
+                                <tr>
+                                    <th style="width: 30%;">State</th>
+                                    <td>{{ order.destinationAddress.state }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                        {% if order.destinationAddress.zipCode is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Zip Code</th>
+                                <td>{{ order.destinationAddress.zipCode }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th style="width: 30%;">Country</th>
+                            <td>{{ order.destinationCountry.name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card collapsed-card">
+                <div class="card-header" data-card-widget="collapse">
+                    <h3 class="card-title" >
+                        <i class="fas fa-box-open"></i>
+                        Packages ( {{ order.packageInfo | length }} )
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value (AED)</th>
+                            <th>Height (cm)</th>
+                            <th>Length (cm)</th>
+                            <th>Width (cm)</th>
+                            <th>Weight (kg)</th>
+                            <th>Volume Weight (kg)</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for package in order.packageInfo %}
+                            <tr>
+                                <td>{{ package.type }}</td>
+                                <td>{{ package.value |number_format(2) }}</td>
+                                <td>{{ package.height }}</td>
+                                <td>{{ package.length }}</td>
+                                <td>{{ package.width }}</td>
+                                <td>
+                                    {% if package.volumeWeight is defined %}
+                                        {% if package.volumeWeight > package.weight %}
+                                            {{ package.weight |number_format(2) }}
+                                        {% else %}
+                                            <strong style="color: darkred;">{{ package.weight |number_format(2) }}</strong>
+                                        {% endif %}
+                                    {% else %}
+                                        {{ package.weight |number_format(2) }}
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if package.volumeWeight is defined %}
+                                        {% if package.volumeWeight > package.weight %}
+                                            <strong style="color: darkred;">{{ package.volumeWeight |number_format(2) }}</strong>
+                                        {% else %}
+                                            {{ package.volumeWeight |number_format(2) }}
+                                        {% endif %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if package.description is defined %}
+                                        {{ package.description }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card collapsed-card">
+                <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">
+                        <i class="fas fa-money-check-alt"></i>
+                        Quoted Price ( {{ order.priceInfo | length }} )
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>For</th>
+                            <th>Type</th>
+                            <th>Zone</th>
+                            <th>Weight (kg)</th>
+                            <th>Price (AED)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for price in order.priceInfo %}
+                            <tr>
+                                <td>{{ price.for |capitalize }}</td>
+                                <td>{{ price.type |capitalize }}</td>
+                                <td>{{ price.zone.name }} ({{ price.zone.code }})</td>
+                                <td>{{ price.weight |number_format(2) }}</td>
+                                <td>{{ price.price |number_format(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card collapsed-card">
+                <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">
+                        <i class="fas fa-money-check-alt"></i>
+                        Transactions ( {{ order.transactions | length }} )
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" id="sampleID">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>TransRef</th>
+                            <th>Status</th>
+                            <th>Currency</th>
+                            <th>Refund</th>
+                            <th>Amount</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for transaction in order.transactions %}
+                            <tr>
+                                <td>
+                                    {{ transaction.transId }}
+                                    <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-text="{{ transaction.transId}}">
+                                        <i class="fas fa-clipboard"></i>
+                                    </button>
+                                </td>
+                                <td>{{ transaction.createdDate |toTZ }}</td>
+                                <td>
+                                    {% if transaction.responseValues.order.transaction.ref is defined %}
+                                        {{ transaction.responseValues.order.transaction.ref }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>{{ transaction.paymentStatus }}</td>
+                                <td>{{ transaction.paidCurrency }}</td>
+                                <td>{{ transaction.refundAmount |number_format(2) }}</td>
+                                <td>{{ transaction.paidAmount |number_format(2) }}</td>
+                                <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script src="{{ asset('build/js/clipboard/clipboard.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var clipboard = new ClipboardJS('.btn-clipboard');
+        });
+    </script>
+{% endblock %}

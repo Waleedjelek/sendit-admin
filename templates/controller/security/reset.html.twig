@@ -1,0 +1,60 @@
+{% extends 'empty-base.html.twig' %}
+
+{% block title %}Password Reset!{% endblock %}
+{% block bodyClass %} login-page{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
+                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image" style="opacity: .8">
+                <b>Send</b>it
+            </a>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Password Reset</p>
+
+                {% if errorMessage %}
+                    <div class="alert alert-danger">{{ errorMessage }}</div>
+                {% endif %}
+
+                {% if app.session.flashBag.has('message') %}
+                    {% for flashMessage in app.session.flashbag.get('message') %}
+                        <div class="alert alert-success">{{ flashMessage }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <div class="row">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4">
+                            <button data-sitekey="{{ google_recaptcha_site_key }}"
+                                    data-callback='onSubmit'
+                                    data-action='submit'
+                                    class="btn btn-primary btn-block g-recaptcha" >Request</button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+
+
+                <p class="mb-1">
+                    <a href="{{ url('app_login') }}">Login</a>
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("user_password_reset_grc_token").value = token;
+            document.getElementById("form_user_password_reset").submit();
+            return false;
+        }
+    </script>
+{% endblock %}

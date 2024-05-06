@@ -1,0 +1,14 @@
+{% extends 'emails/base.html.twig' %}
+
+
+{% block body %}
+    <p>Dear {{ user.firstName }}</p>
+    <p>We have received your request to reset your password.</p>
+    <p>Please click on the link below to confirm your request. Once you confirm the request, you will receive your new password by email.</p>
+    <p>Confirm URL: <a href="{{ resetURL }}" target="_blank" rel="noopener">{{ resetURL }}</a></p>
+    <p>If you did not initiate this request, please contact us at <a href="mailto:support@sendit.world">support@sendit.world</a>.</p>
+    <p>
+        Regards<br>
+        Send it Team
+    </p>
+{% endblock %}

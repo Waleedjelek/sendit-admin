@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tracking Order - {{ order.orderId }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Tracking Order - {{ order.orderId }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th style="width: 30%;">Company</th>
+                            <td>{{ order.selectedCompany.name }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Type</th>
+                            <td>
+                                {% if order.selectedCompany.type == 'dom' %}
+                                    Domestic
+                                {% else %}
+                                    International
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Customer</th>
+                            <td>
+                                Name: {{ order.user.firstName }} {{ order.user.lastName }} <br>
+                                Email: {{ order.user.email }} <br>
+                                Mobile: {{ order.user.mobileNumber }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">From</th>
+                            <td>
+                                {{ order.sourceCountry.name }} ({{ order.sourceCountry.code }})
+                                {% if order.collectionAddress.state is not empty %}
+                                    - {{ order.collectionAddress.state }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">To</th>
+                            <td>
+                                {{ order.destinationCountry.name }} ({{ order.destinationCountry.code }})
+                                {% if order.destinationAddress.state is not empty %}
+                                    - {{ order.destinationAddress.state }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if order.trackingCode is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Tracking Code</th>
+                                <td>
+                                    {{ order.trackingCode }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if order.trackingInfo is not empty and order.trackingInfo.z1 is defined  %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title" >
+                            <i class="fas fa-truck"></i>
+                            Events
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for event in order.trackingInfo.z1  %}
+                                <tr>
+                                    <td>{{ event.a }}</td>
+                                    <td>{{ event.c }}</td>
+                                    <td>{{ event.z }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script src="{{ asset('build/js/clipboard/clipboard.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var clipboard = new ClipboardJS('.btn-clipboard');
+        });
+    </script>
+{% endblock %}

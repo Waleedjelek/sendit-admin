@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>Order - {{ order.orderId }}</title>
+
+	<!-- Invoice styling -->
+	<style>
+		body {
+			font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			text-align: center;
+			color: #777;
+		}
+
+		body h1 {
+			font-weight: 300;
+			margin-bottom: 0px;
+			padding-bottom: 0px;
+			color: #000;
+		}
+
+		body h3 {
+			font-weight: 300;
+			margin-top: 10px;
+			margin-bottom: 20px;
+			font-style: italic;
+			color: #555;
+		}
+
+		body a {
+			color: #06f;
+		}
+
+		.invoice-box {
+			max-width: 800px;
+			margin: auto;
+			padding: 30px;
+			border: 1px solid #eee;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			font-size: 16px;
+			line-height: 24px;
+			font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			color: #555;
+		}
+
+		.invoice-box table {
+			width: 100%;
+			line-height: inherit;
+			text-align: left;
+			border-collapse: collapse;
+		}
+
+		.invoice-box table td {
+			padding: 5px;
+			vertical-align: top;
+		}
+
+		.invoice-box table tr td:nth-child(2) {
+			text-align: right;
+		}
+
+		.invoice-box table tr.top table td {
+			padding-bottom: 20px;
+		}
+
+		.invoice-box table tr.top table td.title {
+			font-size: 45px;
+			line-height: 45px;
+			color: #333;
+		}
+
+		.invoice-box table tr.information table td {
+			padding-bottom: 40px;
+		}
+
+		.invoice-box table tr.heading td {
+			background: #eee;
+			border-bottom: 1px solid #ddd;
+			font-weight: bold;
+		}
+
+		.invoice-box table tr.details td {
+			padding-bottom: 20px;
+		}
+
+		.invoice-box table tr.item td {
+			border-bottom: 1px solid #eee;
+		}
+
+		.invoice-box table tr.item.last td {
+			border-bottom: none;
+		}
+
+		.invoice-box table tr.total td:nth-child(2) {
+			border-top: 2px solid #eee;
+			font-weight: bold;
+		}
+
+		.invoice-box table tr.bottom{
+			font-size: 10px;
+			line-height: 12px;
+			color: #555;
+		}
+
+
+		@media only screen and (max-width: 600px) {
+			.invoice-box table tr.top table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+
+			.invoice-box table tr.information table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
+	</style>
+
+</head>
+
+<body>
+<div class="invoice-box">
+	<table>
+		<tr class="top">
+			<td colspan="2">
+				<table>
+					<tr>
+						<td class="title">
+							<a href="{{ marketing_website_url }}" target="_blank" rel="noopener">
+								<img src="{{ admin_website_url }}{{ asset('build/images/logo.jpg') }}" alt="Send it" style="width: 100px;" />
+							</a>
+						</td>
+
+						<td>
+							Order #: {{ order.orderId }}<br />
+							Dated: {{ order.createdDate |toTZ  }}
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr class="details">
+			<td style="padding-left: 10px;" colspan="2">
+				<p>Dear {{ user.firstName }}</p>
+				<p>Your order details.  If you need any clarification please email <a href="mailto:support@sendit.world">support@sendit.world</a>.</p>
+			</td>
+		</tr>
+
+		<tr class="heading">
+			<td>Shipped From</td>
+			<td>Shipped To</td>
+		</tr>
+
+		<tr class="details">
+			<td>
+				{% if order.collectionAddress.contactName is not empty %}
+					{{ order.collectionAddress.contactName }}<br />
+				{% endif %}
+				{% if order.collectionAddress.contactEmail is not empty %}
+					{{ order.collectionAddress.contactEmail }}<br />
+				{% endif %}
+				{% if order.collectionAddress.contactMobile is not empty %}
+					{{ order.collectionAddress.contactMobile }}<br />
+				{% endif %}
+				{% if order.collectionAddress.primary is not empty %}
+					{{ order.collectionAddress.primary }}<br />
+				{% endif %}
+				{% if order.collectionAddress.secondary is not empty %}
+					{{ order.collectionAddress.secondary }}<br />
+				{% endif %}
+				{% if order.collectionAddress.cityName is not empty %}
+					{{ order.collectionAddress.cityName }}<br />
+				{% endif %}
+				{% if order.sourceCountry.code == 'AE'  %}
+					{% if order.collectionAddress.state is not empty %}
+						{{ order.collectionAddress.state }}<br />
+					{% endif %}
+				{% endif %}
+				{{ order.sourceCountry.name }}
+			</td>
+			<td>
+				{% if order.destinationAddress.contactName is not empty %}
+					{{ order.destinationAddress.contactName }}<br />
+				{% endif %}
+				{% if order.destinationAddress.contactEmail is not empty %}
+					{{ order.destinationAddress.contactEmail }}<br />
+				{% endif %}
+				{% if order.destinationAddress.contactMobile is not empty %}
+					{{ order.destinationAddress.contactMobile }}<br />
+				{% endif %}
+				{% if order.destinationAddress.primary is not empty %}
+					{{ order.destinationAddress.primary }}<br />
+				{% endif %}
+				{% if order.destinationAddress.secondary is not empty %}
+					{{ order.destinationAddress.secondary }}<br />
+				{% endif %}
+				{% if order.destinationAddress.cityName is not empty %}
+					{{ order.destinationAddress.cityName }}<br />
+				{% endif %}
+				{% if order.destinationCountry.code == 'AE'  %}
+					{% if order.destinationAddress.state is not empty %}
+						{{ order.destinationAddress.state }}<br />
+					{% endif %}
+				{% endif %}
+				{{ order.destinationCountry.name }}
+			</td>
+		</tr>
+
+		<tr class="heading">
+			<td>Packages</td>
+			<td>Weight (kg)</td>
+		</tr>
+
+		{% for package in order.packageInfo %}
+			<tr class="item">
+				<td>{{ package.type |capitalize }} ( W{{ package.width }}cm X L{{ package.length }}cm X  H{{ package.height }}cm )</td>
+				<td>
+					{% if package.volumeWeight > package.weight %}
+						{{ package.volumeWeight |number_format(2) }}
+					{% else %}
+						{{ package.weight |number_format(2) }}
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr class="heading">
+			<td>Shipper - {{ order.selectedCompany.name }}</td>
+			<td>Price (AED)</td>
+		</tr>
+
+		{% for price in order.priceInfo %}
+			<tr class="item">
+				<td>{{ price.type |capitalize }} - {{ price.weight |number_format(2) }} (kg)</td>
+				<td>{{ price.price |number_format(2) }}</td>
+			</tr>
+		{% endfor %}
+		{% if order.boeAmount > 0 %}
+			<tr>
+				<td></td>
+				<td>Package Price (AED): {{ order.totalPrice - order.boeAmount |number_format(2) }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>BOE<sup>*</sup> (AED): {{ order.boeAmount |number_format(2) }}</td>
+			</tr>
+		{% endif %}
+		<tr class="total">
+			<td></td>
+			<td>Total (AED): {{ order.totalPrice |number_format(2) }}</td>
+		</tr>
+		{% if order.boeAmount > 0 %}
+			<tr style="border-top: 1px solid #E5E4E2;">
+				<td colspan="2" style="font-size: 10px;padding-top: 5px;">BOE<sup>*</sup> (Bill of Entry) fee applicable if commercial
+					value is above or equal to {{ order.selectedCompany.boeThreshold }} AED.</td>
+			</tr>
+		{% endif %}
+		{% if transInfo is not empty %}
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr class="heading" >
+				<td>Payment Status</td>
+				<td>{{ order.paymentStatus }}</td>
+			</tr>
+			<tr class="item">
+				<td>Transaction Id</td>
+				<td>{{ transInfo.transId }}</td>
+			</tr>
+			{% if transInfo.transactionRef is not empty %}
+				<tr class="item">
+					<td>Ref</td>
+					<td>{{ transInfo.transactionRef }}</td>
+				</tr>
+			{% endif %}
+			{% if transInfo.cardInfo is not empty %}
+				<tr class="item">
+					<td>Card</td>
+					<td>{{ transInfo.cardInfo.type }} - {{ transInfo.cardInfo.last4 }} </td>
+				</tr>
+			{% endif %}
+		{% endif %}
+		<tr class="bottom" style="border-top: 1px solid #E5E4E2;">
+			<td colspan="2" style="padding-top: 5px;">
+				<p>This e-mail has been sent to {{ email_sent_to }}. To ensure our emails get to your inbox, please add support@sendit.world to your Address Book or Safe Sender List.</p>
+				<p><strong>Copyright &copy; {{ 'now' | date('Y') }} <a href="{{ marketing_website_url }}" target="_blank" rel="noopener">Send it</a>.</strong> All rights reserved.</p>
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

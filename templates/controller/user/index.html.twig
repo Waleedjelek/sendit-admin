@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user mr-1"></i>
+                        Users
+                    </h3>
+                    {% if is_granted('ROLE_ADMIN')  %}
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a href="{{ path('app_user_new') }}" class="btn btn-primary btn-block btn-sm">
+                                        <i class="fa fa-plus"></i> Add User</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover" id="userTableList">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Registered</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script>
+        $(document).ready(function () {
+            $('#userTableList').DataTable({
+                "paging": true,
+                "ordering": false,
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ path('app_user_index') | raw }}",
+                    "type": 'POST',
+                    global: true
+                },
+                "columns": [
+                    {"data": "name"},
+                    {"data": "email"},
+                    {"data": "role"},
+                    {"data": "created"},
+                    {"data": "lastLogin"},
+                    {
+                        "data": "action",
+                        "render": function (data) {
+                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a>';
+                        }
+                    }
+                ]
+            });
+
+        });
+    </script>
+{% endblock %}
+

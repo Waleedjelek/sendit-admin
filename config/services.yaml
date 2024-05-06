@@ -1,0 +1,43 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app_email_enabled: '%env(APP_EMAIL_ENABLED)%'
+    app_email_sender_name: '%env(APP_EMAIL_SENDER_NAME)%'
+    app_email_sender_email: '%env(APP_EMAIL_SENDER_EMAIL)%'
+    app_email_return_email: '%env(APP_EMAIL_RETURN_EMAIL)%'
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    app_payment_telr_store_id: '%env(TELR_STORE_ID)%'
+    app_payment_telr_auth_key: '%env(TELR_AUTH_KEY)%'
+    app_payment_telr_test_mode: '%env(TELR_TEST_MODE)%'
+    app_sendit_order_prefix: '%env(SENDIT_ORDER_PREFIX)%'
+    app_sendit_quote_prefix: '%env(SENDIT_QUOTE_PREFIX)%'
+    app_sendit_transaction_prefix: '%env(SENDIT_TRANSACTION_PREFIX)%'
+    app_sendit_admin_website_url: '%env(SENDIT_ADMIN_WEBSITE_URL)%'
+    app_sendit_user_website_url: '%env(SENDIT_USER_WEBSITE_URL)%'
+    app_sendit_marketing_website_url: '%env(SENDIT_MARKETING_WEBSITE_URL)%'
+    app_sendit_admin_cdn_url: '%env(SENDIT_ADMIN_CDN_URL)%'
+    app_sendit_order_notification_emails: '%env(SENDIT_ORDER_NOTIFICATION_EMAILS)%'
+    app_sendit_quote_notification_emails: '%env(SENDIT_QUOTE_NOTIFICATION_EMAILS)%'
+    app_17_track_api_key: '%env(TRACK17_API_KEY)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

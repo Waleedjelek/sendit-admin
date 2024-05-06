@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Package Type - {{ package_type.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-ruler-combined mr-1"></i>
+                        Package Type - {{ package_type.name }}
+                    </h3>
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ package_type.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ package_type.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td>{{ package_type.type |title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Code</th>
+                            <td>{{ package_type.code }}</td>
+                        </tr>
+                        <tr>
+                            <th>PackageImage</th>
+                            <td>
+                                {% if package_type.packageImage %}
+                                    <img src="/uploads/{{ package_type.packageImage }}" style="width: 100px;" >
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>IconImage</th>
+                            <td>
+                                {% if package_type.iconImage %}
+                                    <img src="/uploads/{{ package_type.iconImage }}" style="width: 100px;" >
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Weight (kg)</th>
+                            <td>{{ package_type.weight }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Max Weight (kg)</th>
+                            <td>{{ package_type.maxWeight }}</td>
+                        </tr>
+                        <tr>
+                            <th>Length (cm)</th>
+                            <td>{{ package_type.length }}</td>
+                        </tr>
+                        <tr>
+                            <th>Width (cm)</th>
+                            <td>{{ package_type.width }}</td>
+                        </tr>
+                        <tr>
+                            <th>Height (cm)</th>
+                            <td>{{ package_type.height }}</td>
+                        </tr>
+                        <tr>
+                            <th>Value Required</th>
+                            <td>
+                                {% if package_type.valueRequired %}
+                                    <i class="fas fa-check-square"></i>
+                                {% else %}
+                                    <i class="far fa-square"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Sort Order</th>
+                            <td>{{ package_type.sortOrder }}</td>
+                        </tr>
+                        <tr>
+                            <th>CreatedDate</th>
+                            <td>{{ package_type.createdDate ? package_type.createdDate|toTZ : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>ModifiedDate</th>
+                            <td>{{ package_type.modifiedDate ? package_type.modifiedDate|toTZ : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Active</th>
+                            <td>
+                                {% if package_type.active %}
+                                    <i class="fas fa-check-square"></i>
+                                {% else %}
+                                    <i class="far fa-square"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <a href="{{ path('app_package_type_index') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+                    <a href="{{ path('app_package_type_edit', {'id': package_type.id}) }}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit</a>
+
+                    {% if is_granted('ROLE_SUPER_ADMIN')  %}
+                        <form method="post" style="display: inline;" action="{{ path('app_package_type_delete', {'id': package_type.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this package type?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ package_type.id) }}">
+                            <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                        </form>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+

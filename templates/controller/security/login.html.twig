@@ -1,0 +1,80 @@
+{% extends 'empty-base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+{% block bodyClass %} login-page{% endblock %}
+
+{% block body %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
+                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image" style="opacity: .8;width: 150px;">
+            </a>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.message }}
+                    </div>
+                {% endif %}
+
+                {% if app.session.flashBag.has('error') %}
+                    {% for flashMessage in app.session.flashbag.get('error') %}
+                        <div class="alert alert-danger">{{ flashMessage }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if app.session.flashBag.has('message') %}
+                    {% for flashMessage in app.session.flashbag.get('message') %}
+                        <div class="alert alert-success">{{ flashMessage }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form action="{{ url('app_login') }}" method="post">
+                    <div class="input-group mb-3">
+                        <input type="email" value="{{ last_username }}" placeholder="Email" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <input type="checkbox" id="remember_me" name="_remember_me" checked/>
+                            <label for="remember_me">Keep me logged in</label>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                </form>
+
+                <p class="mb-1">
+                    <a href="{{ url('app_reset_password') }}">I forgot my password</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

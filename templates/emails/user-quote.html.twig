@@ -1,0 +1,13 @@
+{% extends 'emails/base.html.twig' %}
+
+
+{% block body %}
+    <p>Dear {{ contactName }}</p>
+    <p>We have received your quote request.</p>
+    <p>Quote Id: {{ quoteId }}</p>
+    <p>Our team will get back to your query as soon as possible.</p>
+    <p>
+        Regards<br>
+        Send it Team
+    </p>
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quote - {{ quote.quoteId }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-question-circle"></i>
+                        Quote - {{ quote.quoteId }}
+                        <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-text="{{ quote.quoteId }}">
+                            <i class="fas fa-clipboard"></i>
+                        </button>
+
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th style="width: 30%;">Type</th>
+                            <td>
+                                {% if quote.type == 'dom' %}
+                                    Domestic
+                                {% else %}
+                                    International
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">From</th>
+                            <td>{{ quote.sourceCountry.name }} ({{ quote.sourceCountry.code }})
+                                {% if quote.sourceState is not empty %}
+                                    - {{ quote.sourceState }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">To</th>
+                            <td>{{ quote.destinationCountry.name }} ({{ quote.destinationCountry.code }})
+                                {% if quote.destinationState is not empty %}
+                                    - {{ quote.destinationState }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Contact Name</th>
+                            <td>{{ quote.contactName }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Contact Email</th>
+                            <td>{{ quote.contactEmail }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Contact Mobile</th>
+                            <td>{{ quote.contactMobile }}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Status</th>
+                            <td>{{ quote.status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created Date</th>
+                            <td>{{ quote.createdDate |toTZ  }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if is_granted('ROLE_SUPER_ADMIN')  %}
+                    <div class="card-footer">
+
+                        <form method="post" style="display: inline;" action="{{ path('app_quote_delete', {'id': quote.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this quote?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quote.id) }}">
+                            <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                        </form>
+
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" data-card-widget="collapse">
+                    <h3 class="card-title" >
+                        <i class="fas fa-comment"></i>
+                        Notes ( {{ quote.notes | length }} )
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-12"  style="padding: 5px;">
+                            {{ form_row(form.noteDescription) }}
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center ">
+                        <div class="col-3" style="padding: 5px;">
+                            {{ form_row(form.changeStatus) }}
+                        </div>
+                        <div class="col-6"  style="padding: 5px;">
+                            <button type="submit" class="btn btn-info" style="margin-top: 15px;">Add note</button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+
+                    {% if quote.notes | length > 0 %}
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Note</th>
+                                <th>Old Status</th>
+                                <th>New Status</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for note in quote.notes %}
+                                <tr>
+                                    <td>{{ note.user.firstName }}</td>
+                                    <td style="max-width: 400px;">{{ note.description |nl2br }}</td>
+                                    <td>{{ note.oldStatus }}</td>
+                                    <td>{{ note.newStatus }}</td>
+                                    <td>{{ note.createdDate |toTZ  }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" data-card-widget="collapse">
+                    <h3 class="card-title" >
+                        <i class="fas fa-box-open"></i>
+                        Packages ( {{ quote.packageInfo | length }} )
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value (AED)</th>
+                            <th>Height (cm)</th>
+                            <th>Length (cm)</th>
+                            <th>Width (cm)</th>
+                            <th>Weight (kg)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for package in quote.packageInfo %}
+                        <tr>
+                            <td>{{ package.type }}</td>
+                            <td>{{ package.value |number_format(2) }}</td>
+                            <td>{{ package.height }}</td>
+                            <td>{{ package.length }}</td>
+                            <td>{{ package.width }}</td>
+                            <td>{{ package.weight |number_format(2) }}</td>
+                        </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script src="{{ asset('build/js/clipboard/clipboard.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var clipboard = new ClipboardJS('.btn-clipboard');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="{{ url('app_home') }}" class="brand-link">
+        <img src="{{ asset('build/images/logo.svg') }}" alt="Logo"
+             class="brand-image" style="opacity: .8;float: none;">
+    </a>
+    <div class="sidebar">
+        <nav class="mt-2">
+            {% set menuList = getLeftMenu() %}
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                 {% for menu in menuList %}
+                     <li class="nav-item">
+                         <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
+                             <i class="{{ menu.iconClass }}"></i>
+                             <p>{{ menu.caption }}</p>
+                         </a>
+                     </li>
+                 {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</aside>

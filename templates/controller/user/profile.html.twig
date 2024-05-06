@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">My Profile</h3>
+        </div>
+        {{ form_start(form) }}
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block inlineJs %}
+
+{% endblock %}
+

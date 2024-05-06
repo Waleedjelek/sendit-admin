@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Send it</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            text-align: center;
+            color: #777;
+            background-color: #FFFFFF;
+        }
+
+        body h1 {
+            font-weight: 300;
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+            color: #000;
+        }
+
+        body h3 {
+            font-weight: 300;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #555;
+        }
+
+        body a {
+            color: #06f;
+        }
+
+        .email-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            background-color: #FFFFFF;
+        }
+
+        .email-container table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .email-container table td {
+            vertical-align: top;
+        }
+
+        .email-container table tr.details{
+            font-size: 14px;
+            line-height: 16px;
+            color: #333;
+        }
+
+        .email-container table tr.bottom{
+            font-size: 10px;
+            line-height: 12px;
+            color: #555;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-container table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .email-container table table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="email-container">
+    <table>
+        <tr class="top" style="border-bottom: 1px solid #E5E4E2;">
+            <td>
+                <table>
+                    <tr>
+                        <td style="padding-bottom: 10px;">
+                            <a href="{{ marketing_website_url }}" target="_blank" rel="noopener">
+                                <img src="{{ admin_website_url }}{{ asset('build/images/logo.jpg') }}" alt="Send it" style="width: 100px;" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="details">
+            <td style="padding-left: 10px;">
+                {% block body %}{% endblock %}
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="bottom" style="border-top: 1px solid #E5E4E2;">
+            <td style="padding-top: 5px;">
+                <p>This e-mail has been sent to {{ email_sent_to }}. To ensure our emails get to your inbox, please add support@sendit.world to your Address Book or Safe Sender List.</p>
+                <p><strong>Copyright &copy; {{ 'now' | date('Y') }} <a href="{{ marketing_website_url }}" target="_blank" rel="noopener">Send it</a>.</strong> All rights reserved.</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

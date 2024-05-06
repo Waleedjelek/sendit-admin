@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update tracking code - {{ order.orderId }} {% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Update tracking code - {{ order.orderId }}</h3>
+        </div>
+        {{ form_start(form) }}
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary">{{ button_label|default('Update') }}</button>
+
+            <a class="btn btn-danger" href="{{ path('app_order_show',{ id:order.id }) }}">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

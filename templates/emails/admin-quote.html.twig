@@ -1,0 +1,12 @@
+{% extends 'emails/base.html.twig' %}
+
+
+{% block body %}
+    <p>Dear Support</p>
+    <p>We have received a new quote request.</p>
+    <p><a href="{{ quoteURL }}">{{ quoteId }}</a></p>
+    <p>
+        Regards<br>
+        Admin
+    </p>
+{% endblock %}

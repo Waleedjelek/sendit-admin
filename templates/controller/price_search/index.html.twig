@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Price Search{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-money-check-alt mr-1"></i>
+                        Price Search
+                    </h3>
+                </div>
+                {{ form_start(form) }}
+                <div class="card-body">
+                    {{ form_widget(form) }}
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn btn-primary" id="btnSearch">Search</button>
+                </div>
+                {{ form_end(form) }}
+
+                <div class="card-body">
+                    <table class="table table-bordered table-hover" id="priceTableList">
+                        <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Zone</th>
+                            <th>Method</th>
+                            <th>Type</th>
+                            <th>Weight (kg)</th>
+                            <th>Price (AED)</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script>
+        let priceTable;
+
+        $(document).ready(function () {
+            priceTable = $('#priceTableList').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ path('app_price_search_data') | raw }}",
+                    "type": 'POST',
+                    'data': function (params) {
+                        params.from = $('#price_search_countryFrom').val();
+                        params.to = $('#price_search_countryTo').val();
+                        params.type = $('#price_search_type').val();
+                        params.weight = $('#price_search_weight').val();
+                        params.length = $('#price_search_length').val();
+                        params.width = $('#price_search_width').val();
+                        params.height = $('#price_search_height').val();
+                        return params;
+                    },
+                    global: true
+                },
+                "columns": [
+                    {"data": "name"},
+                    {"data": "zone"},
+                    {"data": "method"},
+                    {"data": "type"},
+                    {"data": "weight"},
+                    {"data": "price"},
+                ]
+            });
+
+            $('#btnSearch').click(function () {
+                priceTable.ajax.reload();
+                return false;
+            });
+
+        });
+    </script>
+{% endblock %}
+
+

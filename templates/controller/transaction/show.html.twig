@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transaction - {{ trans.transId }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-credit-card"></i>
+                        TransId - {{ trans.transId }}
+                        <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-text="{{ trans.transId }}">
+                            <i class="fas fa-clipboard"></i>
+                        </button>
+
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th style="width: 30%;">Order</th>
+                            <td><a href="{{ path('app_order_show',{'id':trans.order.id}) }}" target="_blank">{{ trans.order.orderId }}</a></td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Amount</th>
+                            <td>{{ trans.paidAmount|number_format(2) }} ({{ trans.paidCurrency }})</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Refunded Amount</th>
+                            <td>{{ trans.refundAmount |number_format(2) }} ({{ trans.paidCurrency }})</td>
+                        </tr>
+                        {% if transInfo.transactionRef is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Ref</th>
+                                <td>{{ transInfo.transactionRef }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if transInfo.paymentMethod is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Payment Method</th>
+                                <td>{{ transInfo.paymentMethod }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if transInfo.cardInfo is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Card</th>
+                                <td>
+                                    Type: {{ transInfo.cardInfo.type }} <br>
+                                    No: {{ transInfo.cardInfo.first6 }} .. {{ transInfo.cardInfo.last4 }} <br>
+                                    Exp: {{ transInfo.cardInfo.expiry.month }}/{{ transInfo.cardInfo.expiry.year }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if trans.statusCode is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Status Code</th>
+                                <td>{{ trans.statusCode }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if trans.statusText is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Status Text</th>
+                                <td>{{ trans.statusText }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if trans.transactionStatus is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Transaction Status</th>
+                                <td>{{ trans.transactionStatus }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if trans.transactionMessage is not empty %}
+                            <tr>
+                                <th style="width: 30%;">Transaction Message</th>
+                                <td>{{ trans.transactionMessage }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th style="width: 30%;">Status</th>
+                            <td>{{ trans.paymentStatus }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created Date</th>
+                            <td>{{ trans.createdDate |toTZ  }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if is_granted('ROLE_SUPER_ADMIN')  %}
+                <div class="card-footer">
+
+                        <form method="post" style="display: inline;" action="{{ path('app_transaction_delete', {'id': trans.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this transaction?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trans.id) }}">
+                            <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                        </form>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_SUPER_ADMIN') and trans.responseValues is not empty %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-file-alt"></i>
+                            Response Values
+                            <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-target="#transResponseValue">
+                                <i class="fas fa-clipboard"></i>
+                            </button>
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <textarea rows="6" style="width: 100%;" id="transResponseValue">{{ trans.responseValues|json_encode }}</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if is_granted('ROLE_SUPER_ADMIN') and trans.postBackValues is not empty %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-file-alt"></i>
+                            Post Back Values
+                            <button class="btn btn-clipboard btn-default btn-sm" title="Copy transaction id to clipboard" data-clipboard-target="#transPostBackValue">
+                                <i class="fas fa-clipboard"></i>
+                            </button>
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <textarea rows="6" style="width: 100%;"  id="transPostBackValue">{{ trans.postBackValues|json_encode }}</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script src="{{ asset('build/js/clipboard/clipboard.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var clipboard = new ClipboardJS('.btn-clipboard');
+        });
+    </script>
+{% endblock %}

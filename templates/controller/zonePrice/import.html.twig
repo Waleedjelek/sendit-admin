@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import Price - {{ company.name }} ({{ company.type }}) - {{ zone.name }} ({{ zone.code }}){% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Import Price - {{ company.name }} ({{ company.type }}) - {{ zone.name }} ({{ zone.code }}) </h3>
+        </div>
+        {{ form_start(form) }}
+        <div class="card-body">
+            {{ form_widget(form) }}
+
+            <h6>CSV File Requirements</h6>
+            <ul>
+                <li>Needed Header - Weight</li>
+                <li>Needed Header - {{ zone.code }}</li>
+            </ul>
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary">{{ button_label|default('Import') }}</button>
+
+            <a class="btn btn-danger" href="{{ path('app_zone_show',{ id:zone.id,companyId:company.id }) }}">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
