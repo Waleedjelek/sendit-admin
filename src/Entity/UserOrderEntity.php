@@ -80,12 +80,12 @@ class UserOrderEntity
     /**
      * @ORM\Column(type="string", length=255,name="discounted")
      */
-    private string $discounted = '';
+    private ?string $discounted = null;
     
     /**
      * @ORM\Column(type="string", length=255,name="coupon")
      */
-    private string $coupon = '';
+    private ?string $coupon = null;
 
 
 
