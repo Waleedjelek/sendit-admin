@@ -86,6 +86,7 @@ class UserOrdersController extends AuthenticatedAPIController
         $failureRedirectURL = $this->getRequiredVar('failureRedirectURL');
         $contactForInsurance = $this->getVar('contactForInsurance', 'no');
         $packages = $this->getRequiredVar('packages', []);
+        $couponCode = $this->getVar('coupon');
 
         $collectionDateTime = \DateTime::createFromFormat('Y-m-d', $collectionDate);
 
@@ -226,8 +227,16 @@ class UserOrdersController extends AuthenticatedAPIController
         $runIndex = $orderService->getRunIndex();
         $orderId = $orderService->generateOrderId($runIndex);
         $orderStatus = 'Draft';
-
+        $oldPrice =0;
+        if(!empty($couponCode)){
+            $oldPrice=$totalPrice;
+            $discountPrice = $totalPrice / 100;
+            $totalPrice =  $totalPrice - $discountPrice * 10;
+            $totalPrice =  sprintf("%.2f", $totalPrice);
+        }
         $userOrderEntity = new UserOrderEntity();
+       $userOrderEntity->setCouponCode($couponCode);
+       $userOrderEntity->setDiscounted('Coupon code applied');
         $userOrderEntity->setUser($userEntity);
         $userOrderEntity->setSourceCountry($countryFrom);
         $userOrderEntity->setDestinationCountry($countryTo);
@@ -275,6 +284,7 @@ class UserOrdersController extends AuthenticatedAPIController
 
         return $this->dataJson([
             'orderId' => $orderId,
+            'oldPrice'=>$oldPrice,
             'total' => $totalPrice,
             'status' => $orderStatus,
             'paymentURL' => $paymentURL,

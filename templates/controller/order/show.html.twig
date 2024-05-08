@@ -127,6 +127,14 @@
                             <th style="width: 30%;">Payment Status</th>
                             <td>{{ order.paymentStatus }}</td>
                         </tr>
+                             <tr>
+                            <th style="width: 30%;">Order type</th>
+                            <td>{{ order.discounted }}</td>
+                        </tr>
+                             <tr>
+                            <th style="width: 30%;">Coupon Code</th>
+                            <td>{{ order.coupon }}</td>
+                        </tr>
                         <tr>
                             <th>Created Date</th>
                             <td>{{ order.createdDate |toTZ  }}</td>

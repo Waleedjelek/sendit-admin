@@ -76,6 +76,20 @@ class UserOrderEntity
      */
     private string $method = 'export';
 
+
+    /**
+     * @ORM\Column(type="string", length=255,name="discounted")
+     */
+    private string $discounted = '';
+    
+    /**
+     * @ORM\Column(type="string", length=255,name="coupon")
+     */
+    private string $coupon = '';
+
+
+
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -482,6 +496,29 @@ class UserOrderEntity
         return $this;
     }
 
+    public function getCouponCode(): ?string
+    {
+        return $this->coupon;
+    }
+
+    public function setCouponCode(string $coupon): self
+    {
+        $this->coupon = $coupon;
+
+        return $this;
+    }
+    public function getDiscounted(): ?string
+    {
+        return $this->discounted;
+    }
+
+    public function setDiscounted(string $discounted): self
+    {
+        $this->discounted = $discounted;
+
+        return $this;
+    }
+    
     public function getTotalPrice(): float
     {
         return $this->totalPrice;
