@@ -78,12 +78,12 @@ class UserOrderEntity
 
 
     /**
-     * @ORM\Column(type="string", length=255,name="discounted")
+     * @ORM\Column(type="string", length=255,name="discounted",options={"default":" "})
      */
     private string $discounted = '';
     
     /**
-     * @ORM\Column(type="string", length=255,name="coupon")
+     * @ORM\Column(type="string", length=255,name="coupon",options={"default":" "})
      */
     private string $coupon = '';
 

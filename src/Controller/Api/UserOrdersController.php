@@ -228,7 +228,7 @@ class UserOrdersController extends AuthenticatedAPIController
         $orderId = $orderService->generateOrderId($runIndex);
         $orderStatus = 'Draft';
         $oldPrice =0;
-        $discounted= '';
+        $discounted = '';
         if(!empty($couponCode)){
             $oldPrice=$totalPrice;
             $discountPrice = $totalPrice / 100;
