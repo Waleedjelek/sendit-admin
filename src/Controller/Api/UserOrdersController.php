@@ -228,16 +228,22 @@ class UserOrdersController extends AuthenticatedAPIController
         $orderId = $orderService->generateOrderId($runIndex);
         $orderStatus = 'Draft';
         $oldPrice =0;
+        $discounted= '';
         if(!empty($couponCode)){
             $oldPrice=$totalPrice;
             $discountPrice = $totalPrice / 100;
             $totalPrice =  $totalPrice - $discountPrice * 10;
             $totalPrice =  sprintf("%.2f", $totalPrice);
+            $discounted='Coupon code applied';
+        }else{
+            $couponCode = '';
+            $discounted = '';
+
         }
         $userOrderEntity = new UserOrderEntity();
-       $userOrderEntity->setCouponCode($couponCode);
-       $userOrderEntity->setDiscounted('Coupon code applied');
-        $userOrderEntity->setUser($userEntity);
+        $userOrderEntity->setCouponCode($couponCode);
+        $userOrderEntity->setDiscounted($discounted);
+            $userOrderEntity->setUser($userEntity);
         $userOrderEntity->setSourceCountry($countryFrom);
         $userOrderEntity->setDestinationCountry($countryTo);
         $userOrderEntity->setSelectedCompany($selectedCompany);
