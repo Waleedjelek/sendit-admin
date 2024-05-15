@@ -194,7 +194,11 @@ class OrderService extends BaseService
                 $prices[$priceIndex]['price'] = number_format($price['price'], 2);
             }
         }
-
+        $paymentURL = $this->generateUrl(
+            'app_payment_redirect',
+            ['id' => $userOrderEntity->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
         $data = [
             'id' => $userOrderEntity->getId(),
             'orderId' => $userOrderEntity->getOrderId(),
@@ -205,11 +209,13 @@ class OrderService extends BaseService
             'destinationAddress' => $userOrderEntity->getDestinationAddress(),
             'packages' => $packages,
             'prices' => $prices,
+            'coupon'=>$userOrderEntity->getCouponCode(),
             'boeAmount' => number_format($userOrderEntity->getBoeAmount(), 2),
             'totalPrice' => number_format($userOrderEntity->getTotalPrice(), 2),
             'status' => $userOrderEntity->getStatus(),
             'paymentStatus' => $userOrderEntity->getPaymentStatus(),
             'createdDate' => $this->formatToTimezone($userOrderEntity->getCreatedDate()),
+            'paymentURL'=>$paymentURL,
         ];
         $data['collectionAddress']['countryName'] = $userOrderEntity->getSourceCountry()->getName();
         $data['destinationAddress']['countryName'] = $userOrderEntity->getDestinationCountry()->getName();
