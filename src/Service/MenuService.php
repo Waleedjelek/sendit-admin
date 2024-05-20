@@ -6,6 +6,7 @@ use App\Classes\MenuItem;
 use App\Classes\Service\BaseService;
 use App\Controller\Admin\AuditController;
 use App\Controller\Admin\CompanyController;
+use App\Controller\Admin\CouponController;
 use App\Controller\Admin\CountryController;
 use App\Controller\Admin\DashboardController;
 use App\Controller\Admin\LocaleController;
@@ -102,6 +103,15 @@ class MenuService extends BaseService
             'Companies',
             $this->router->generate('app_company_index'),
             CompanyController::class,
+            'fas fa-building',
+            'ROLE_EDITOR'
+        ));
+
+        $this->addLeftMenu(new MenuItem(
+            'coupon',
+            'Coupons',
+            $this->router->generate('app_coupon_index'),
+            CouponController::class,
             'fas fa-building',
             'ROLE_EDITOR'
         ));
