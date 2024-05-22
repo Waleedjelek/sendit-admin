@@ -4,8 +4,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 /**
  * @ORM\Entity()
  * @ORM\Table(name="sendit_coupon")
@@ -20,11 +18,18 @@ class CouponEntity
      */
     private string $id;
 
+    
+    /**
+     * @ORM\Column(type="integer", name="discount")
+     */
+    private int $discount = 0;
+
     /**
      * @ORM\Column(type="string", length=255, name="coupon")
      * @Expose
      */
-    private string $coupon;
+  
+     private string $coupon;
     /**
      * @ORM\Column(type="boolean", nullable=false, options={"default":true})
      * @Expose
@@ -57,6 +62,18 @@ class CouponEntity
     public function setCoupon(string $coupon): self
     {
         $this->coupon = $coupon;
+
+        return $this;
+    }
+
+    
+        public function getDiscount():?int
+        {
+            return $this->discount;
+        }
+    public function setDiscount(int $discount): self
+    {
+        $this->discount = $discount;
 
         return $this;
     }

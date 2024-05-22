@@ -28,6 +28,7 @@ class CouponService extends BaseService
         $data = [
             'id' => $couponEntity->getId(),
             'coupon' => $couponEntity->getCoupon(),
+            'discount' => $couponEntity->getDiscount(),
             'isActive' => $couponEntity->isActive(),
          ];
         return $data;

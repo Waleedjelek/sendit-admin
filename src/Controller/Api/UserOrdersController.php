@@ -87,6 +87,7 @@ class UserOrdersController extends AuthenticatedAPIController
         $contactForInsurance = $this->getVar('contactForInsurance', 'no');
         $packages = $this->getRequiredVar('packages', []);
         $couponCode = $this->getVar('coupon');
+        $percent = $this->getVar('discount');
 
         $collectionDateTime = \DateTime::createFromFormat('Y-m-d', $collectionDate);
 
@@ -229,10 +230,10 @@ class UserOrdersController extends AuthenticatedAPIController
         $orderStatus = 'Draft';
         $oldPrice =0;
         $discounted = '';
-        if(!empty($couponCode)){
+        if(!empty($couponCode) && (int)$percent > 0){
             $oldPrice=$totalPrice;
             $discountPrice = $totalPrice / 100;
-            $totalPrice =  $totalPrice - $discountPrice * 10;
+            $totalPrice =  $totalPrice - $discountPrice * (int)$percent;
             $totalPrice =  sprintf("%.2f", $totalPrice);
             $discounted='Coupon code applied';
         }else{

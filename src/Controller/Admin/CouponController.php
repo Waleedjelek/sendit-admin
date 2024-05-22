@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Classes\Controller\AdminController;
 use App\Entity\CouponEntity;
 use App\Form\CouponEntityType;
-use App\Service\CouponService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,6 +75,7 @@ class CouponController extends AdminController
                 $ca = [];
                 $ca['DT_RowId'] = $couponEntity->getId();
                 $ca['coupon'] = $couponEntity->getCoupon();
+                $ca['discount'] = $couponEntity->getDiscount();
                 $ca['active'] = $couponEntity->isActive();
                 $ca['action'] = [
                     'details' => $this->generateUrl('app_coupon_show', ['id' => $couponEntity->getId()]),
@@ -99,26 +99,25 @@ class CouponController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $couponEntity->setCreatedDate(new \DateTime());
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($couponEntity);
             $entityManager->flush();
-
+         
             $this->addLog(
                 'Coupon',
                 'Add',
                 'Added Coupon - '.$form->get('coupon')->getData(),
+                $form->get('discount')->getData(),
                 $couponEntity->getId()
             );
             $this->addFlash('message', 'Added coupon!');
 
             return $this->redirectToRoute('app_coupon_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('controller/coupon/new.html.twig', [
-            'coupon_entity' => $couponEntity,
+            'coupon' => $couponEntity,
+            'discount' => $couponEntity,
             'form' => $form,
         ]);
     }
@@ -130,6 +129,7 @@ class CouponController extends AdminController
     {
         return $this->render('controller/coupon/show.html.twig', [
             'coupon' => $couponEntity,
+            'discount' => $couponEntity,
         ]);
     }
 
@@ -154,6 +154,7 @@ class CouponController extends AdminController
                 'Coupon',
                 'Edit',
                 'Edited Coupn - '.$form->get('coupon')->getData(),
+                $form->get('discount')->getData(),
                 $couponEntity->getId()
             );
 
@@ -165,6 +166,7 @@ class CouponController extends AdminController
 
         return $this->renderForm('controller/coupon/edit.html.twig', [
             'coupon' => $couponEntity,
+            'discount' => $couponEntity,
             'form' => $form,
         ]);
     }
