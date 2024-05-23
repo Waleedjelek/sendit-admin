@@ -103,15 +103,7 @@ class CouponController extends AdminController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($couponEntity);
             $entityManager->flush();
-         
-            $this->addLog(
-                'Coupon',
-                'Add',
-                'Added Coupon - '.$form->get('coupon')->getData(),
-                $couponEntity->getId()
-            );
             $this->addFlash('message', 'Added coupon!');
-
             return $this->redirectToRoute('app_coupon_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('controller/coupon/new.html.twig', [
@@ -149,18 +141,13 @@ class CouponController extends AdminController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
 
-            $this->addLog(
-                'Coupon',
-                'Edit',
-                'Edited Coupn - '.$form->get('coupon')->getData(),
-                $couponEntity->getId()
-            );
-
+            return $this->redirectToRoute('app_coupon_index', [], Response::HTTP_SEE_OTHER);
+     
             $this->addFlash('message', 'Coupon updated!');
 
-            return $this->redirectToRoute('app_coupon_show', ['id' => $couponEntity->getId()],
-                Response::HTTP_SEE_OTHER);
-        }
+        //     return $this->redirectToRoute('app_coupon_show', ['id' => $couponEntity->getId()],
+        //         Response::HTTP_SEE_OTHER);
+         }
 
         return $this->renderForm('controller/coupon/edit.html.twig', [
             'coupon' => $couponEntity,
