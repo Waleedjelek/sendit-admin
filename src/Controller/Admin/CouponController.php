@@ -139,7 +139,7 @@ class CouponController extends AdminController
      */
     public function edit(
         Request $request,
-        CouponEntity $couponEntity,
+        CouponEntity $couponEntity
     ): Response {
         $form = $this->createForm(CouponEntityType::class, $couponEntity);
         $form->handleRequest($request);
@@ -177,7 +177,7 @@ class CouponController extends AdminController
      */
     public function delete(
         Request $request,
-        CouponEntity $couponEntity,
+        CouponEntity $couponEntity
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$couponEntity->getId(), $request->request->get('_token'))) {
             try {
