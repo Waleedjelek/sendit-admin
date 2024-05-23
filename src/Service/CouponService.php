@@ -20,7 +20,7 @@ class CouponService extends BaseService
     {
         $repo = $this->entityManager->getRepository(CouponEntity::class);
 
-        return $repo->findOneBy(['coupon' => $coupon]);
+        return $repo->findOneBy(['coupon' => $coupon,'active'=>1]);
     }
 
     public function getCouponArray(CouponEntity $couponEntity): array

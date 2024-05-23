@@ -108,7 +108,6 @@ class CouponController extends AdminController
                 'Coupon',
                 'Add',
                 'Added Coupon - '.$form->get('coupon')->getData(),
-                $form->get('discount')->getData(),
                 $couponEntity->getId()
             );
             $this->addFlash('message', 'Added coupon!');
@@ -154,7 +153,6 @@ class CouponController extends AdminController
                 'Coupon',
                 'Edit',
                 'Edited Coupn - '.$form->get('coupon')->getData(),
-                $form->get('discount')->getData(),
                 $couponEntity->getId()
             );
 
