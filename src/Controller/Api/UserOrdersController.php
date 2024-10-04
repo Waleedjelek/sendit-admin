@@ -84,6 +84,7 @@ class UserOrdersController extends AuthenticatedAPIController
         $destinationAddressId = $this->getRequiredVar('destinationAddressId');
         $successRedirectURL = $this->getRequiredVar('successRedirectURL');
         $failureRedirectURL = $this->getRequiredVar('failureRedirectURL');
+        $insurancePrice = $this->getRequiredVar('insurancePrice');
         $contactForInsurance = $this->getVar('contactForInsurance', 'no');
         $packages = $this->getRequiredVar('packages', []);
         $couponCode = $this->getVar('coupon');
@@ -241,6 +242,11 @@ class UserOrdersController extends AuthenticatedAPIController
             $discounted = '';
 
         }
+
+        if(!empty($insurancePrice) && $insurancePrice != "NONE"){
+            $totalPrice =  $totalPrice + $insurancePrice;
+        }
+        
         $userOrderEntity = new UserOrderEntity();
         $userOrderEntity->setCouponCode($couponCode);
         $userOrderEntity->setDiscounted($discounted);
