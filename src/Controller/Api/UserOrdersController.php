@@ -244,7 +244,7 @@ class UserOrdersController extends AuthenticatedAPIController
         }
 
         if(!empty($insurancePrice) && (float)$insurancePrice > 0){
-            $totalPrice =  $totalPrice - $insurancePrice;
+            $totalPrice =  $totalPrice + $insurancePrice;
         }
         
         $userOrderEntity = new UserOrderEntity();
