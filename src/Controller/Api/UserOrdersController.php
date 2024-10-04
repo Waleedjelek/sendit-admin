@@ -243,7 +243,7 @@ class UserOrdersController extends AuthenticatedAPIController
 
         }
 
-        if(!empty($insurancePrice) && (float)$insurancePrice > 0){
+        if(!empty($insurancePrice) && $insurancePrice != "NONE"){
             $totalPrice =  $totalPrice + $insurancePrice;
         }
         
