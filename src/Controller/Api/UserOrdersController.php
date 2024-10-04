@@ -76,7 +76,9 @@ class UserOrdersController extends AuthenticatedAPIController
         OrderService $orderService
     ): Response {
 
-        echo 'here';die;
+        return $this->dataJson([
+            'orderId' => "jere",
+        ]);
         $userEntity = $this->getUser();
 
         $collectionDate = $this->getRequiredVar('collectionDate');
