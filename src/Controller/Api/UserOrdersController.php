@@ -75,6 +75,8 @@ class UserOrdersController extends AuthenticatedAPIController
         ZoneService $zoneService,
         OrderService $orderService
     ): Response {
+
+        echo 'here';die;
         $userEntity = $this->getUser();
 
         $collectionDate = $this->getRequiredVar('collectionDate');
