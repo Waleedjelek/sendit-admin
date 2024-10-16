@@ -1,27 +1,83 @@
-@import '~@fortawesome/fontawesome-free/css/all.css';
 
+@import '~@fortawesome/fontawesome-free/css/all.css';
 @import "fonts.css";
 @import "~select2";
-@import '~bootstrap/scss/functions';
-@import '~admin-lte/build/scss/bootstrap-variables';
+@import '~bootstrap/scss/_functions';
+@import '~admin-lte/build/scss/_bootstrap-variables';
 @import "~bootstrap/scss/bootstrap";
 
 @import "~admin-lte/build/scss/variables";
 @import "~admin-lte/build/scss/variables-alt";
 @import "~admin-lte/build/scss/mixins";
-
-@import "~admin-lte/build/scss/parts/core";
-@import "~admin-lte/build/scss/parts/components";
-@import "~admin-lte/build/scss/parts/miscellaneous";
-
+@import "~admin-lte/build/scss/parts/_core";
+@import "~admin-lte/build/scss/parts/_components";
+@import "~admin-lte/build/scss/parts/_miscellaneous";
 @import "~admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css";
 
 @import "~admin-lte/build/scss/pages/login_and_register";
-
 .content-wrapper > .content {
   padding: 0.5rem 0.5rem;
 }
-
 div.flash-messages {
   padding: 10px;
+}
+body{
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: "Carmen Sans "!important;
+
+}
+.sidebar-dark-primary .nav-sidebar>.nav-item >.nav-link.active {
+  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background-color: #1985A1;
+  border-radius:  7px;
+
+
+}
+.sidebar {
+  background-color: rgb(255, 255, 255);
+  color: #46494C;
+}
+.nav-sidebar{
+  background-color: rgb(255, 255, 255);
+
+}
+.brand-link{
+  background-color: #ffffff;
+  border-bottom:none !important;
+}
+
+.main-header a {
+  border-bottom:none !important;
+
+}
+// .nav-item{
+//   color: blue !important;
+// }
+.nav-item:hover{
+  background-color: #1985A1;
+  color: white  !important;
+  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition:all 0.5s;
+  border-radius:  7px;
+  
+}
+[class*=sidebar-dark-] .sidebar a {
+  color: #000000;
+}
+[class*=sidebar-dark-] {
+  background-color: #ffffff !important;
+}
+
+.fa, .fas, .far, .fal, .fad, .fab {
+ 
+  color:#1985A1 ;
+}
+ .nav-item:hover i{
+ 
+  color:#ffffff;
+}
+.nav-item a.active i{
+  color: #ffffff;
+
 }
