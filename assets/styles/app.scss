@@ -44,6 +44,11 @@ body{
 }
 .brand-link{
   background-color: #ffffff;
+margin-top: -2px;
+  // border-bottom: 1px solid red !important;
+  box-shadow: 11 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+
+
   border-bottom:none !important;
 }
 
@@ -57,7 +62,7 @@ body{
 .nav-item:hover{
   background-color: #1985A1;
   color: white  !important;
-  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  
   transition:all 0.5s;
   border-radius:  7px;
   
@@ -67,6 +72,8 @@ body{
 }
 [class*=sidebar-dark-] {
   background-color: #ffffff !important;
+  
+
 }
 
 .fa, .fas, .far, .fal, .fad, .fab {
@@ -80,4 +87,14 @@ body{
 .nav-item a.active i{
   color: #ffffff;
 
+}
+.elevation-4 {
+  box-shadow: none !important;
+}
+.main-header.navbar.navbar-expand ul:nth-child(1){
+  display: none;
+}
+nav.main-header.navbar.navbar-expand.navbar-white.navbar-light {
+  background-color: #ffffff;
+  box-shadow: 11 1px 3px rgba(0, 0, 0, 0.12), 0 11px 2px rgba(0, 0, 0, 0.24) ;
 }
