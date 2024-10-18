@@ -1,4 +1,4 @@
-services:
+git logservices:
 
     # Inject this service in your controllers/services to verify a submitted captcha.
     ReCaptcha\ReCaptcha:
