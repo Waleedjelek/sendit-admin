@@ -52,3 +52,4 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_EDITOR }
         - { path: ^/, roles: ROLE_USER }
+        - { path: ^/admin/user/test/update-role, roles: [ROLE_MEMBER, ROLE_EDITOR, ROLE_ADMIN] }
