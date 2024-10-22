@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coupons{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-building mr-1"></i>
+                        Coupons
+                    </h3>
+                    {% if is_granted('ROLE_ADMIN')  %}
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a href="{{ path('app_coupon_new') }}" class="btn btn-primary btn-block btn-sm">
+                                        <i class="fa fa-plus"></i> Add Coupon</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover" id="couponTableList">
+                        <thead>
+                        <tr>
+                            <th>Coupon Code</th>
+                            <th>Discount</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block inlineJs %}
+    <script>
+        $(document).ready(function () {
+            $('#couponTableList').DataTable({
+                "paging": true,
+                "ordering": false,
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ path('app_coupon_index') | raw }}",
+                    "type": 'POST',
+                    global: true
+                },
+                "columns": [
+                    {"data": "coupon"},
+                    {"data": "discount"},
+                    
+                    {
+                        "data": "active",
+                        "render": function (data) {
+                            if (data) {
+                                return '<i class="fas fa-check-square"></i>';
+                            }
+                            return '<i class="far fa-square"></i>';
+                        }
+                    },
+                    {
+                        "data": "action",
+                        "render": function (data) {
+                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a>';
+                        }
+                    }
+                ]
+            });
+
+        });
+    </script>
+{% endblock %}
+
+

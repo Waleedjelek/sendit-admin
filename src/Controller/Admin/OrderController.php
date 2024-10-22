@@ -125,6 +125,8 @@ class OrderController extends AdminController
                     'mobile' => $userOrderEntity->getUser()->getMobileNumber(),
                 ];
                 $ca['status'] = $userOrderEntity->getStatus();
+                $ca['discounted'] = $userOrderEntity->getDiscounted();
+                $ca['coupon'] = $userOrderEntity->getCouponCode();
                 $ca['paymentStatus'] = $userOrderEntity->getPaymentStatus();
                 $ca['createdDate'] = $this->formatToTimezone($userOrderEntity->getCreatedDate());
                 $ca['action'] = [

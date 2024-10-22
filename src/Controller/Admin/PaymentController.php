@@ -121,6 +121,9 @@ class PaymentController extends AdminController
         }
 
         if ('Failed' == $paymentStatus || 'Cancelled' == $paymentStatus) {
+            if ('Draft' == $userOrderEntity->getStatus()) {
+                $userOrderEntity->setStatus('Unconfirmed');
+            }
             if ('Draft' != $userOrderEntity->getStatus()) {
                 $userOrderEntity->setStatus('Cancelled');
             }
