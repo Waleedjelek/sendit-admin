@@ -23,45 +23,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\User;
-use Doctrine\ORM\EntityManagerInterface;
 
-
+/**
+ * @Route("/admin/user")
+ * @IsGranted("ROLE_EDITOR")
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
+ */
 class UserController extends AdminController
 {
-     /**
-     * @Route("/test/update-role", name="test_update_role", methods={"GET"})
-      * @IsGranted("ROLE_MEMBER")
-     */
-    public function updateRole(EntityManagerInterface $entityManager): Response
-{
-    // Define the static email to update the user's role
-    $email = 'waleed.twh@gmail.com'; // Replace this with the static email you want
-
-    // Find the user by email
-    $user = $entityManager->getRepository(UserEntity::class)->findOneBy(['email' => $email]);
-
-    if (!$user) {
-        return new Response('User not found', Response::HTTP_NOT_FOUND);
-    }
-
-    // Check if the current user has permission to update roles
-    $currentUser = $this->getUser();
-    $currentRoles = $currentUser->getRoles();
-
-    // Allow users with ROLE_MEMBER, ROLE_EDITOR, or ROLE_ADMIN to update the role
-    if (!array_intersect($currentRoles, ['ROLE_MEMBER', 'ROLE_EDITOR', 'ROLE_ADMIN'])) {
-        return new Response('Access denied', Response::HTTP_FORBIDDEN);
-    }
-
-    // Update the user's roles (e.g., assign the "ROLE_ADMIN" role)
-    $user->setRole('ROLE_ADMIN');
-
-    // Persist and flush changes to the database
-    $entityManager->persist($user);
-    $entityManager->flush();
-
-    return new Response('User role updated successfully for ' . $email, Response::HTTP_OK);
-}
     /**
      * @Route("/", name="app_user_index", methods={"GET","POST"})
      */
