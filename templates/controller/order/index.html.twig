@@ -4,22 +4,47 @@
 
 {% block body %}
 
+  <div class="row">
+        <div class="col-12">
+<div class="main-order-pg-btn-flex">
+
+<div class="accept-order-img">
+<img class="img-set" src="\build\images\Order Completed.png" >
+<h2 class="title-heading">All  Orders</h2>
+</div>
+
+<div class="order-pg-btn-flex">
+<div class="order-pg-btn1">
+<img  src="\build\images\Receipt.png" class="img-order-pix">
+<div>
+
+ <p class="img-side-text-order" > New Orders(7)</p>
+ </div>
+</div>
+
+<div class="order-pg-btn2">
+<img  src="\build\images\Receipt.png" class="img-order-pix">
+<div>
+
+ <p class="img-side-text-order" > New Ouote(0)</p>
+ </div>
+</div>
+</div>
+</div>
+
+
+</div>
+</div>
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        Orders
-                    </h3>
-                </div>
-
+              
                 <div class="card-body">
 
                     <div class="row align-items-center ">
                         <div class="col-md-3" style="padding: 5px;">
                             <select id="filter_status" name="filter_status" class="form-control">
-                                <option value="">Filter Status</option>
+                                <option value="">Coupon Applies </option>
                                 {% for status in orderStatus %}
                                     <option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
                                 {% endfor %}
@@ -32,7 +57,9 @@
                             </div>
                             <input type="hidden" id="filter_start_date" name="filter_start_date" />
                             <input type="hidden" id="filter_end_date" name="filter_end_date" />
+                            
                         </div>
+                        <div class="cheakline"></div>
                     </div>
 
 
@@ -41,8 +68,8 @@
                         <tr>
                             <th></th>
                             <th>Order ID</th>
-                            <th>Company</th>
-                            <th>Weight (kg)</th>
+                            <th>Courier Company</th>
+                            <th>Country</th>
                             <th>Total (AED)</th>
                             <th>Status</th>
                             <th>Payment Status</th>
