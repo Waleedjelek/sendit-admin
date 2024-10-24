@@ -274,3 +274,181 @@ div.dataTables_wrapper div.dataTables_filter {
 .btn-primary:hover{
   border-color:#1985A1 !important;
 }
+.company-searcher{
+  display: flex;
+  justify-content: space-between;
+padding: 20px;
+}
+.input-container {
+  position: relative;
+  width: 300px;
+}
+
+.input-container input {
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  padding-right: 35px; /* Add padding to the right to make space for the icon */
+  font-size: 16px;
+  border-radius: 20px;
+    box-sizing: border-box;
+    border: 1px solid #D8D8D8;
+    color: black; /* Text color (when the user types) */
+}
+
+.input-container .fa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #D8D8D8;
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+}
+
+.input-container .fa:hover {
+  color: #000; /* Optional: Change icon color when hovered */
+}
+input::placeholder {
+
+
+  color: #D8D8D8;
+}
+input::placeholder::after{
+
+
+  color: #000000;
+}
+.input-container input:focus {
+border: color(#D8D8D8) !important;
+border-color: #D8D8D8 !important;
+border: none !important;
+}
+
+.header-login{
+display: flex;
+text-align: center;justify-content: center;
+font-size: 30px;color: #fff;
+
+}
+.login-box-msg, .register-box-msg {
+  margin: 0;
+  padding: 0 20px 20px;
+  text-align: center;color: #fff;
+}
+.input-group:not(.has-validation) > .form-control:not(:last-child), .input-group:not(.has-validation) > .custom-select:not(:last-child), .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label, .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label::after {
+
+    border: 5px;height: 50px;
+  border-radius: 5px;
+}
+.login-card-body .input-group .form-control, .register-card-body .input-group .form-control {
+   border-right: 0; 
+}
+.mb-1 a {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: transparent;display: flex;justify-content: right;
+}
+.col-4 .btn-primary {
+  color: #ffffff !important;
+  background: #1985A1 !important;
+  border-color: rgb(25, 133, 161);
+  box-shadow: none;
+  border-radius: 10px;
+  width: 150px;
+  height: 40px;
+  display: flex;
+  text-align: center;
+}
+.login-center{
+  display: flex;
+  text-align: center;margin-top: 30px;
+  justify-content: center;margin-left: -45px;
+}
+.login-card-body, .register-card-body {
+ border-radius: 50px;
+  color: #000000;
+  padding: 20px;
+  background: rgba(25, 133, 161,0.1) !important; /* Transparent background */
+  backdrop-filter: blur(-2px); /* Blurs the background behind the form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1; /* Keep the form in front */
+}
+.card-new-set {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  word-wrap: break-word !important;width: 410px;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-clip: border-box !important;
+  border: 0 solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 0.25rem !important;
+  backdrop-filter: blur(10px) ; /* Blurs the background behind the form */
+  z-index: 1 !important; /* Keep the form in front */
+  border-radius: 50px !important;
+}
+.login-page,.register-page {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Background image with color overlay */
+.login-page,.register-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/222 1.png'); /* Replace with your background image */
+  background-size: cover;
+  background-position: center;
+  z-index: -2; /* Behind the form */
+}
+/* Color overlay */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;    
+  height: 100%;
+  background-color:rgba(25, 133, 161, 0.6); /* Black with 50% opacity */
+  z-index: -1; /* Layer over the image but under the form */
+}
+
+.companies-btn{
+  color: #ffffff !important;
+  background: #1985A1 !important;
+  border-color: #1985A1;
+  box-shadow: none;
+  border-radius: 2px;
+  width: 120px !important;
+  height: 35px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+.icon-color-companie{
+  color: #fff;
+margin-top: 4px;margin-right: 5px;
+}
+.pakagestype-btn{
+  width: 150px;
+  height: 35px;
+  border-radius: 5px;
+
+}
+.icon-pakagestype{
+  margin-top: 4px;margin-right: 5px;
+}
+.pakagestype-btn:hover{
+color: #fff !important;
+
+}
