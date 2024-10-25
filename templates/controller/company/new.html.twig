@@ -3,9 +3,49 @@
 {% block title %}New Company{% endblock %}
 
 {% block body %}
+  <div class="row">
+        <div class="col-12">
+<div class="main-order-pg-btn-flex">
+
+<div class="accept-order-img">
+<img class="img-set" src="\build\images\Order Completed.png" >
+<h2 class="title-heading">Company</h2>
+</div>
+
+<div class="order-pg-btn-flex">
+<div class="order-pg-btn1">
+<img  src="\build\images\Receipt.png" class="img-order-pix">
+<div>
+
+ <p class="img-side-text-order" > New Orders(7)</p>
+ </div>
+</div>
+
+<div class="order-pg-btn2">
+<img  src="\build\images\Receipt.png" class="img-order-pix">
+<div>
+
+ <p class="img-side-text-order" > New Ouote(0)</p>
+ </div>
+</div>
+</div>
+</div>
+
+
+</div>
+</div>
+
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Create new Company</h3>
+               <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                 
+                                </li>
+                            </ul>
+                        </div>
+           <div class="flex-of-comany-form">  <i class="fa fa-building company-icon-head"></i> <p class=" comany-head-form">Company </p> </div>
+                                       
         </div>
         {{ form_start(form) }}
         <div class="card-body">
