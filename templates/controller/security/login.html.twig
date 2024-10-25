@@ -41,21 +41,25 @@
                 {% endif %}
 
                 <form action="{{ url('app_login') }}" method="post">
-                    <div class="input-group mb-3">
-                        <input type="email" value="{{ last_username }}" placeholder="Email" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    <div class="input-group mb-3 autofill-color">
+                        <input type="email" value="{{ last_username }}" placeholder="Email Address" name="email" id="inputEmail" class="form-control input-email-placeholder" autocomplete="email" required autofocus>
                         <div class="input-group-append">
                     
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                     {# <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div> #}
-                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                          
-                        <div class="input-group-append">
-                         
+                    <div class="input-group mb-3 password-bg-white autofill-color">
+
+                         <div class="input-group-append ">
+                            <div class="input-group-text">
+                                {# <span class="fas fa-lock icon-lock-color"></span> #}
+                                <img src="/build/images/Password (1).png" alt="Lock Icon" class="icon-lock-color"> <!-- Replace with your lock icon image URL -->
+
+                            </div>
                         </div>
+                        <input type="password" name="password" placeholder="Password"  id="inputPassword" class="form-control password-feild" autocomplete="current-password" required>
+                      
+                          
+                        
                     </div>
                      <p class="mb-1">
                     <a href="{{ url('app_reset_password') }}">Forget Password?</a>
