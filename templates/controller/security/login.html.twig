@@ -14,12 +14,12 @@
     <div class="login-box">
         <div class="login-logo">
             <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
-                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image" style="width: 150px;">
+                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image" style="width: 150px;margin-left:75px">
             </a>
         </div>
         <div class="card card-new-set">
             <div class="card-body login-card-body">
-            <h2 class="header-login">Admin Panel</h2>
+            <p class="header-login">Admin Panel</p>
                 <p class="login-box-msg">Sign in to your account</p>
 
                 {% if error %}
@@ -52,11 +52,11 @@
                          <div class="input-group-append ">
                             <div class="input-group-text">
                                 {# <span class="fas fa-lock icon-lock-color"></span> #}
-                                <img src="/build/images/Password (1).png" alt="Lock Icon" class="icon-lock-color"> <!-- Replace with your lock icon image URL -->
+                                <img src="\build\images\password_1.fe78ac0c.png" alt="Lock Icon" class="icon-lock-color"> <!-- Replace with your lock icon image URL -->
 
                             </div>
                         </div>
-                        <input type="password" name="password" placeholder="Password"  id="inputPassword" class="form-control password-feild" autocomplete="current-password" required>
+                        <input type="password" name="password" placeholder="Password"  id="inputPassword" class="form-control password-feild input-password-placeholder " autocomplete="current-password" required>
                       
                           
                         

@@ -75,7 +75,7 @@
 
                     {% if is_granted('ROLE_ADMIN')  %}
                         <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Edit</a>
+                            <i class="fas fa-edit icn"></i> Edit</a>
                     {% endif %}
 
                     <form method="post" style="display: inline;" action="{{ path('app_user_pass_reset', {'id': user.id}) }}"
@@ -138,7 +138,7 @@
                                     <td>{{ order.status }}</td>
                                     <td>{{ order.paymentStatus }}</td>
                                     <td>{{ order.createdDate|toTZ }}</td>
-                                    <td><a href="{{ path('app_order_show',{'id':order.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                                    <td><a href="{{ path('app_order_show',{'id':order.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -186,7 +186,7 @@
                                     <td>{{ transaction.paidCurrency }}</td>
                                     <td>{{ transaction.paymentStatus }}</td>
                                     <td>{{ transaction.createdDate|toTZ }}</td>
-                                    <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                                    <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank"  class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

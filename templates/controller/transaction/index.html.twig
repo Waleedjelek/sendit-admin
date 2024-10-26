@@ -11,13 +11,13 @@
 <div class="main-order-pg-btn-flex">
 
 <div class="accept-order-img">
-<img class="img-set" src="\build\images\Card Security Code.png" >
+<img class="img-set" src="\build\images\Card Security Code.978af2c1.png" >
 <h2 class="title-heading">Transactions</h2>
 </div>
 
 <div class="order-pg-btn-flex">
 <div class="order-pg-btn1">
-<img  src="\build\images\Receipt.png" class="img-order-pix">
+<img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix">
 <div>
 
  <p class="img-side-text-order" > New Orders(7)</p>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="order-pg-btn2">
-<img  src="\build\images\Receipt.png" class="img-order-pix">
+<img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix">
 <div>
 
  <p class="img-side-text-order" > New Ouote(0)</p>
@@ -48,13 +48,24 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                
-
-
+    
                 <div class="card-body">
+
+
                     <div class="row align-items-center ">
+
+
+                               <div class="col-md-3" style="padding: 5px;">
+                            <select id="filter_status" name="filter_status" class="form-control">
+                                <option value="">Filter Status</option>
+                                {# {% for status in quoteStatus %}
+                                    <option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
+                                {% endfor %} #}
+                            </select>
+                        </div>
+
                         <div class="col-md-3"  style="padding: 5px;">
-                            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:320px">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
@@ -151,7 +162,7 @@
                     {
                         "data": "action",
                         "render": function (data) {
-                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a>';
+                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
                         }
                     }
                 ]

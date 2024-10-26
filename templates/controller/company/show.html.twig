@@ -97,7 +97,7 @@
 
                     {% if is_granted('ROLE_ADMIN')  %}
                         <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Edit</a>
+                            <i class="fas fa-edit icn"></i> Edit</a>
                     {% endif %}
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}
@@ -190,7 +190,7 @@
                     {
                         "data": "action",
                         "render": function (data) {
-                            let action =  '<a href="' + data['show'] + '" class="btn btn-default"><i class="fas fa-info-circle"></i> Show</a>';
+                            let action =  '<a href="' + data['show'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Show</a>';
                             //action = action +  '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit"></i> Edit</a>';
                             return action;
                         }

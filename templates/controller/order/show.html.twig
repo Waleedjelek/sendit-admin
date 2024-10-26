@@ -567,7 +567,7 @@
                                 <td>{{ transaction.paidCurrency }}</td>
                                 <td>{{ transaction.refundAmount |number_format(2) }}</td>
                                 <td>{{ transaction.paidAmount |number_format(2) }}</td>
-                                <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a></td>
+                                <td><a href="{{ path('app_transaction_show',{'id':transaction.id}) }}" target="_blank" class="btn btn-default"><i class="fas fa-info-circle icn" ></i> Details</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

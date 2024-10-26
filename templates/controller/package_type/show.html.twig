@@ -118,7 +118,7 @@
                         <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
                     <a href="{{ path('app_package_type_edit', {'id': package_type.id}) }}" class="btn btn-primary">
-                        <i class="fas fa-edit"></i> Edit</a>
+                        <i class="fas fa-edit icn"></i> Edit</a>
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}
                         <form method="post" style="display: inline;" action="{{ path('app_package_type_delete', {'id': package_type.id}) }}"

@@ -53,7 +53,7 @@
 
                     {% if is_granted('ROLE_ADMIN')  %}
                         <a href="{{ path('app_coupon_edit', {'id': coupon.id}) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Edit</a>
+                            <i class="fas fa-edit icn"></i> Edit</a>
                     {% endif %}
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}
