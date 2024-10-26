@@ -64,7 +64,7 @@
                         <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
                     <a href="{{ path('app_zone_edit', {'companyId': company.id,'id': zone.id}) }}" class="btn btn-primary">
-                        <i class="fas fa-edit"></i> Edit</a>
+                        <i class="fas fa-edit icn"></i> Edit</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
                         <form method="post" style="display: inline;" action="{{ path('app_zone_delete', {'companyId': company.id,'id': zone.id}) }}"
@@ -142,7 +142,7 @@
                     {
                         "data": "action",
                         "render": function (data) {
-                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit"></i> Edit</a>';
+                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit icn"></i> Edit</a>';
                         }
                     }
                 ]

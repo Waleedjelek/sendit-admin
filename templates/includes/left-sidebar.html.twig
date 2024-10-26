@@ -10,8 +10,10 @@
                  {% for menu in menuList %}
                      <li class="nav-item">
                          <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
-                             <i class="{{ menu.iconClass }}"></i>
-                             <p>{{ menu.caption }}</p>
+                              <div style="display: flex;">
+                             <div style="margin-right:15px" ><i class="{{ menu.iconClass }}"></i></div>
+                            <div> <p>{{ menu.caption }}</p></div>
+                            </div>
                          </a>
                      </li>
                  {% endfor %}
