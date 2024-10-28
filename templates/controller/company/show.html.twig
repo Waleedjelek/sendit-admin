@@ -96,7 +96,7 @@
                         <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
-                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="btn btn-primary">
+                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="btn btn-primary compani-show-btn">
                             <i class="fas fa-edit icn"></i> Edit</a>
                     {% endif %}
 
@@ -124,13 +124,13 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item" style="margin-right: 10px;">
-                                <a href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm">
-                                    <i class="fa fa-file-export"></i> Export Price</a>
+                                <a href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                    <i class="fa fa-file-export btns-last-icon "></i> Export Price</a>
                             </li>
                             {% if is_granted('ROLE_ADMIN')  %}
                                 <li class="nav-item">
-                                    <a href="{{ path('app_zone_new', {'companyId': company.id}) }}" class="btn btn-primary btn-block btn-sm">
-                                        <i class="fa fa-plus"></i> Add Zone</a>
+                                    <a href="{{ path('app_zone_new', {'companyId': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                        <i class="fa fa-plus btns-last-icon"></i> Add Zone</a>
                                 </li>
                             {% endif %}
                         </ul>
