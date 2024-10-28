@@ -63,7 +63,7 @@
                     <a href="{{ path('app_company_show',{'id':company.id}) }}" class="btn btn-info">
                         <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
-                    <a href="{{ path('app_zone_edit', {'companyId': company.id,'id': zone.id}) }}" class="btn btn-primary">
+                    <a href="{{ path('app_zone_edit', {'companyId': company.id,'id': zone.id}) }}" class="btn btn-primary pakag-show-btn">
                         <i class="fas fa-edit icn"></i> Edit</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
@@ -90,12 +90,12 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item" style="margin-right: 10px;">
-                                <a href="{{ path('app_zone_price_import', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm">
-                                    <i class="fa fa-file-import"></i> Import Price</a>
+                                <a href="{{ path('app_zone_price_import', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                    <i class="fa fa-file-import btns-last-icon"></i> Import Price</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ path('app_zone_price_new', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm">
-                                    <i class="fa fa-plus"></i> Add Price</a>
+                                <a href="{{ path('app_zone_price_new', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                    <i class="fa fa-plus  btns-last-icon"></i> Add Price</a>
                             </li>
                         </ul>
                     </div>
