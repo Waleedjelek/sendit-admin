@@ -125,6 +125,9 @@ table{
  
   color:#1985A1 ;
 }
+.calender-icn{
+  color:#787878 !important ;
+}
  .nav-item:hover i{
  
   color:#ffffff;
@@ -751,7 +754,10 @@ padding-right: 8px;
 }
 .compani-btns-last{
 width: 120px;height: 30px;
-
+}
+.compani-btns-last:hover{
+  color: #ffffff !important;
+  border-radius: 15px !important;
 }
 
 .btn-danger {

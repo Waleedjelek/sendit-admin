@@ -10,13 +10,17 @@
 <div class="main-order-pg-btn-flex">
 
 <div class="accept-order-img">
-<img class="img-set" src="\build\images\Help.3a8f99be.png" >
+{# <img class="img-set" src="\build\images\Help.3a8f99be.png" > #}
+<img class="img-set"  src="{{ asset('build/images/Help.3a8f99be.png') }}" alt="Logo">
+
 <h2 class="title-heading">All  Ouotes</h2>
 </div>
 
 <div class="order-pg-btn-flex">
 <div class="order-pg-btn1">
-<img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix">
+{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.bedbb541.png') }}" alt="Logo">
+
 <div>
 
  <p class="img-side-text-order" > New Orders(7)</p>
@@ -24,7 +28,9 @@
 </div>
 
 <div class="order-pg-btn2">
-<img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix">
+{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.bedbb541.png') }}" alt="Logo">
+
 <div>
 
  <p class="img-side-text-order" > New Ouote(0)</p>
@@ -60,7 +66,7 @@
                         </div>
                         <div class="col-md-3"  style="padding: 5px;">
                             <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;width:320px ;border-radius:5px;color:#46494C ;">
-                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-calendar calender-icn"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
                             <input type="hidden" id="filter_start_date" name="filter_start_date" />
