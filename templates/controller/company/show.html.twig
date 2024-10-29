@@ -4,6 +4,41 @@
 
 {% block body %}
 
+<div class="row">
+        <div class="col-12">
+<div class="main-order-pg-btn-flex">
+
+<div class="accept-order-img">
+{# <img class="img-set" src="\build\images\Company.4ed89b3c.png" > #}
+<img class="img-set"  src="{{ asset('build/images/Company.4ed89b3c.png') }}" alt="Logo">
+
+
+<h2 class="title-heading">Companies</h2>
+</div>
+
+<div class="order-pg-btn-flex">
+<div class="order-pg-btn1">
+{# <img  src="\build\images\Receipt.bedbb541.png"  class="img-order-pix"> #}
+<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.bedbb541.png') }}" alt="Logo">
+
+<div>
+
+ <p class="img-side-text-order" > New Orders(7)</p>
+ </div>
+</div>
+
+<div class="order-pg-btn2">
+{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.bedbb541.png') }}" alt="Logo">
+
+<div>
+
+ <p class="img-side-text-order" > New Ouote(0)</p>
+ </div>
+</div>
+</div>
+</div>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -92,19 +127,19 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="{{ path('app_company_index') }}" class="btn btn-info">
-                        <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+                    <a href="{{ path('app_company_index') }}" class="btn btn-info btn-back">
+                        <i class="fas fa-arrow-alt-circle-left icn3"></i> Back</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
                         <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="btn btn-primary compani-show-btn">
-                            <i class="fas fa-edit icn"></i> Edit</a>
+                            <i class="fas fa-edit icn2 "></i> Edit</a>
                     {% endif %}
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}
                         <form method="post" style="display: inline;" action="{{ path('app_company_delete', {'id': company.id}) }}"
                               onsubmit="return confirm('Are you sure you want to delete this company?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ company.id) }}">
-                            <button class="btn btn-danger"><i class="fas fa-minus-circle"></i> Delete</button>
+                            <button class="btn btn-danger icn4"><i class="fas fa-minus-circle"></i> Delete</button>
                         </form>
                     {% endif %}
 
@@ -114,7 +149,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 bgcolor-table">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
