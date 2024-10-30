@@ -13,9 +13,9 @@
         </div>
 
         <div class="card-footer">
-            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+            <button class="btn btn-danger">{{ button_label|default('Save') }}</button>
 
-            <a class="btn btn-danger btn-cancle" href="{{ path('app_zone_show',{'id':zone.id,'companyId':company.id}) }}">Cancel</a>
+            <a class="btn btn-danger" href="{{ path('app_zone_show',{'id':zone.id,'companyId':company.id}) }}">Cancel</a>
         </div>
         {{ form_end(form) }}
     </div>
