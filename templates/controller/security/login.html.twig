@@ -14,7 +14,7 @@
     <div class="login-box">
         <div class="login-logo">
             <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
-                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image" style="width: 150px;margin-left:75px">
+                <img src="{{ asset('build/images/logo.png') }}" alt="Logo" class="brand-image logo-large-screen" style="width: 150px;margin-left:75px">
             </a>
         </div>
         <div class="card card-new-set">
@@ -70,7 +70,7 @@
                             <label for="remember_me">Keep me logged in</label>
                         </div> #}
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <button type="submit" class="btn btn-primary btn-block login-btn-center">Login</button>
                         </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

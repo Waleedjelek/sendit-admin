@@ -5,7 +5,16 @@
 {% block body %}
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Edit Company</h3>
+            {# <h3 class="card-title">Edit Company</h3> #}
+              <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                 
+                                </li>
+                            </ul>
+                        </div>
+           <div class="flex-of-comany-form">  <i class="fa fa-building company-icon-head"></i> <p class=" comany-head-form">Company </p> </div>
+              
         </div>
         {{ form_start(form) }}
         <div class="card-body">
@@ -13,7 +22,7 @@
         </div>
 
         <div class="card-footer">
-            <button class="btn btn-primary compani-show-btn">{{ button_label|default('Save') }}</button>
+            <button style="padding-left:-2px" class="btn btn-danger btn-back icn41">{{ button_label|default('Save') }}</button>
 
             <a class="btn btn-danger btn-cancle" href="{{ path('app_company_show',{id:company.id}) }}">Cancel</a>
         </div>
