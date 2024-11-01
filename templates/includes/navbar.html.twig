@@ -14,8 +14,11 @@
         {% endfor %}
     </ul>
     <ul class="navbar-nav ml-auto">
+   {# <a href="http://127.0.0.1:8000/" class="brand-">
+        <img src="/build/images/logo.c0d7454d.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
+    </a> #}
         <li class="nav-item dropdown user-menu show">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <a href="#" class="nav-link dropdown-toggle signup-btn" data-toggle="dropdown" aria-expanded="true">
                 {% if app.user.profileImage is empty %}
                     <img src="{{ asset('build/images/avatar.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
                 {% else %}
