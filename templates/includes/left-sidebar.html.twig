@@ -1,9 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{ url('app_home') }}" class="brand-link">
         <img src="{{ asset('build/images/logo.svg') }}" alt="Logo"
-             class="brand-image" style="opacity: .8;float: none;">
+             class="brand-image" style="opacity: .8;float: none;height:37px">
     </a>
-    <div class="sidebar">
+ 
+
+    <div class="sidebar offcanvas offcanvas-start" id="offcanvasSidebar" tabindex="-1">
+
         <nav class="mt-2">
             {% set menuList = getLeftMenu() %}
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -20,5 +23,6 @@
             </ul>
         </nav>
     </div>
+    
     {% include '/includes/footer.html.twig' %}
 </aside>
