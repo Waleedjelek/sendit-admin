@@ -4,7 +4,9 @@
 
 {% block body %}
     {% if orders is not empty %}
-
+       <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+        <i class="fas fa-bars"></i> <!-- Icon for the toggle button -->
+    </button>
 
     <div class=" row col-12 heading-dashboard">
     <div>
@@ -16,25 +18,25 @@
 
           <div class="input-group  password-bg-white2">
 
-                         <div class="input-group-append ">
+                         <div class="input-group-append setting ">
                             <div class="input-group-text">
                               <img src="{{ asset('build/images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
                         </div>
                        </div>
                        
-                        <div   class="form-control password-feild input-password-placeholder " ><p class="text-form">From</p></div>
-                          <div class="form-control password-feild input-password-placeholder " ><i class="fas fa-angle-down rotate-i"id="customDate"></i></div>
+                        <div   class="form-control password-feild2 input-password-placeholder setting" ><p class="text-form">From</p></div>
+                          <div class="form-control password-feild2 input-password-placeholder setting " ><i class="fas fa-angle-down rotate-i"id="customDate"></i></div>
                     
                     </div>
                     <div class="input-group  password-bg-white2">
 
-                         <div class="input-group-append ">
+                         <div class="input-group-append setting">
                             <div class="input-group-text">
                                <img src="{{ asset('build/images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
                             </div>
                         </div>
-                          <div class="form-control password-feild input-password-placeholder " ><p class="text-form">To </p></div>
-                          <div class="form-control password-feild input-password-placeholder " ><i class="fas fa-angle-down rotate-i"></i></div>
+                          <div class="form-control password-feild2 input-password-placeholder setting " ><p class="text-form">To </p></div>
+                          <div class="form-control password-feild2 input-password-placeholder setting " ><i class="fas fa-angle-down rotate-i"></i></div>
 
                           </div>
                         </div>
@@ -159,7 +161,7 @@
                         </h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i style="color:#1985a1 !important" class="fas fa-minus"></i>
+                                <i style="color:#1985a1 !important" class="fas fa-angle-down rotate-i rotate-i1 "></i>
                             </button>
                         </div>
                     </div>
@@ -218,7 +220,7 @@
                         </h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i style="color:#1985a1"  class="fas fa-minus"></i>
+                                <i style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1"></i>
                             </button>
                         </div>
                     </div>
@@ -270,8 +272,8 @@
                             Recent Quotes
                         </h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i style="color:#1985a1"  class="fas fa-minus"></i>
+                            <button type="button" class="btn btn-tool  " data-card-widget="collapse" >
+                                <i  style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1"></i>
                             </button>
                         </div>
                     </div>

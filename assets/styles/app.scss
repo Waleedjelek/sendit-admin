@@ -18,6 +18,20 @@
 
 @import "~admin-lte/build/scss/pages/login_and_register";
 
+@font-face {
+  font-family: 'Carmen Sans'; 
+  src: url('/assets/fonts/CarmenSans-Regular.ttf') format('truetype');
+      //  url('/path/to/fonts/sanser-regular.woff') format('woff'),
+      //  url('/path/to/fonts/sanser-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.dashboard-header{
+  font-family: 'Carmen Sans';
+}
+
+
 .content-wrapper > .content {
   padding: 0.5rem 0.5rem;
 }
@@ -85,8 +99,8 @@ body:not(.layout-fixed) .main-sidebar {
 [class*=sidebar-dark-] .sidebar a {
  
 
-  height: 45px;
-  padding: 8px;
+  height: 58px;//45px firstly
+  padding: 13px;//8px firstly
   font-size: 20px; 
 }
 
@@ -148,6 +162,15 @@ table{
   color: #ffffff;
 
 }
+.signup-icon:hover i{
+  color: #1985A1;
+
+
+}
+.user-footer  :hover .signup-icon-self{
+color: #fff !important;
+background-color: #1985a1;
+}
 .elevation-4 {
   box-shadow: none !important;
 }
@@ -196,6 +219,7 @@ button:hover i{
   color: #ffffff;
   background-color: #ddd;
 }
+
 
 .heading-dashboard{
   display: flex;
@@ -506,7 +530,9 @@ font-size: 30px;color: #fff;
 }
 .input-group:not(.has-validation) > .form-control:not(:last-child), .input-group:not(.has-validation) > .custom-select:not(:last-child), .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label, .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label::after {
 
-    border: 5px;height: 60px;
+    border: 5px;
+    // height: 60px;
+    margin-top: 10px;
   border-radius: 5px !important;
 }
 .login-card-body .input-group .form-control, .register-card-body .input-group .form-control {
@@ -648,14 +674,30 @@ color: #fff !important;
     }
 
 
-.password-feild{
-  height: 50px;
+.password-feild {
+  height: 50px !important;
 border: none;background-color: transparent;
 }
 .password-feild:focus{
   background-color: transparent;
 }
+.password-feild2{
+  // height: 20px;
+border: none;background-color: transparent;
+}
+.password-feild2:focus{
+  background-color: transparent;
+}
 
+.input-group:not(.has-validation) > .form-control:not(:last-child), .input-group:not(.has-validation) > .custom-select:not(:last-child), .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label, .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label::after {
+    border: 5px;
+    margin-top: 10px;
+    border-radius: 5px !important;
+    height: 60px;
+}
+.setting{
+  height: 31px !important;
+} 
 .input-container-password {
   display: flex;
   align-items: center;
@@ -948,7 +990,7 @@ div.card-footer {
 }
 .text-form{
   margin-left: -15px;
-  margin-top: -2px;
+  margin-top: -12px;
   color:  #AEAEAE;
 }
 .password-bg-white2{
@@ -959,7 +1001,7 @@ div.card-footer {
 }
 .icon-lock-color2{
   height: 20px;
-  margin-top: -27px;
+  margin-top: 0px;
   margin-left: -7px;
 }
 .fa-angle-down:before {
@@ -967,15 +1009,41 @@ div.card-footer {
   color: #858588;
   margin-left: 4px;
 }
-.rotate-i:hover{
+// .rotate-i:hover{
+//   transform: rotate(180deg); /* Rotate to point upwards */
+// margin-left: 3px;
+// }
+.password-bg-white2:hover .rotate-i  {
   transform: rotate(180deg); /* Rotate to point upwards */
 margin-left: 3px;
 }
+.rotate-i1{
+  font-size: larger;
+}
+// .rotate-i1:hover{
+//   transform: rotate(180deg); /* Rotate to point upwards */
+// padding-left: 3px !important;
+
+// }
 body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
- 
   justify-content: space-between;
 }
+// .second-logo{
+//   display: flex;
+//   align-items: start;
+// }
+ul.navbar-nav a {
+  gap: 200px; /* Adds space only after the first box */
+}
+
 //media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys
+
+@media (min-width:993px) {
+.brand-second-logo{
+  display: none;
+}
+
+}
 
 @media (min-width:1640px) {
   .inner1-div{
@@ -1164,6 +1232,7 @@ flex-direction: column;justify-content: space-between;
     .bgcolor-table{
       background-color: white;
       overflow-x: auto;
+      margin-bottom: 10px;
           }
 
 
@@ -1176,6 +1245,11 @@ flex-direction: column;justify-content: space-between;
    .calender-input{
     display: flex;
     flex-direction: column;
+    }
+
+    .card-header:first-child {
+      // border-radius: calc(0.25rem - 0) calc(0.25rem - 0) 0 0;
+      max-width: auto;
     }
 }
 @media (min-width:415px) and (max-width:520px) {
@@ -1223,6 +1297,8 @@ flex-direction: column;justify-content: space-between;
     .bgcolor-table{
       background-color: white;
       overflow-x: auto;
+      margin-bottom: 10px;
+
           }
 
  
@@ -1259,6 +1335,8 @@ gap: 10px;
 .main-order-pg-btn-flex{
   display: flex;
   flex-direction: column;
+
+
 }
 }
 @media  (max-width:415px) {
@@ -1319,6 +1397,8 @@ gap: 10px;
     .bgcolor-table{
 background-color: white;
 overflow-x: auto;
+margin-bottom: 10px;
+
     }
 
     
@@ -1349,26 +1429,6 @@ gap: 10px;
 }
 }
 @media  (max-width:825px) {
-
-//   .login-page, .register-page {
-//     align-items: center;
-//     background-color: #e9ecef;
-//     display: flex;
-//     flex-direction: column;
-//     height: 64vh;
-//     justify-content: center;
-// }
-  // .login-page,.register-page {
- 
-
-
-     
-  //       display: flex;
-  //   justify-content: center;background-size: cover;
-  //   align-items: center;
-  //   background-image: linear-gradient(to right, rgba(119, 223, 252, 0.512), rgba(137, 220, 245, 0.485)),url('../images/login-logo-small.png');
-  // }
-  
 
   .login-center{
     display: flex;

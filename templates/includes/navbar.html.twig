@@ -13,11 +13,14 @@
             </li>
         {% endfor %}
     </ul>
-    <ul class="navbar-nav ml-auto">
-   {# <a href="http://127.0.0.1:8000/" class="brand-">
+    <a href="http://127.0.0.1:8000/" class="brand-second-logo">
         <img src="/build/images/logo.c0d7454d.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
-    </a> #}
-        <li class="nav-item dropdown user-menu show">
+    </a>
+
+    <ul class="navbar-nav ml-auto">
+    
+   
+        <li class="nav-item signup-icon dropdown user-menu show">
             <a href="#" class="nav-link dropdown-toggle signup-btn" data-toggle="dropdown" aria-expanded="true">
                 {% if app.user.profileImage is empty %}
                     <img src="{{ asset('build/images/avatar.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
@@ -38,14 +41,14 @@
                     </p>
                 </li>
                 <li class="user-footer">
-                    <a href="{{ path('app_user_profile') }}" data-toggle="tooltip" class="btn btn-default btn-flat" title="Profile">
-                        <i class="fas fa-user-alt"></i>
+                    <a href="{{ path('app_user_profile') }}" data-toggle="tooltip" class="btn btn-default btn-flat signup-icon-self " title="Profile">
+                        <i class="fas fa-user-alt signup-icon-self"></i>
                     </a>
-                    <a href="{{ path('app_user_password') }}" data-toggle="tooltip" class="btn btn-default btn-flat" title="Change Password">
-                        <i class="fas fa-key"></i>
+                    <a href="{{ path('app_user_password') }}" data-toggle="tooltip" class="btn btn-default btn-flat signup-icon-self" title="Change Password">
+                        <i class="fas fa-key signup-icon-self"></i>
                     </a>
-                    <a href="{{ path('app_logout') }}" data-toggle="tooltip" class="btn btn-default btn-flat float-right" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <a href="{{ path('app_logout') }}" data-toggle="tooltip" class="btn btn-default btn-flat float-right signup-icon-self" title="Logout">
+                        <i class="fas fa-sign-out-alt signup-icon-self"></i>
                     </a>
                 </li>
             </ul>
