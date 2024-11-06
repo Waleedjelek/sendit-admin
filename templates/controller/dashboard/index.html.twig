@@ -4,9 +4,9 @@
 
 {% block body %}
     {% if orders is not empty %}
-       <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+       {# <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
         <i class="fas fa-bars"></i> <!-- Icon for the toggle button -->
-    </button>
+    </button> #}
 
     <div class=" row col-12 heading-dashboard">
     <div>
@@ -15,10 +15,10 @@
 
     </div>
           <div class="calender-input">
+ 
+        <div class="input-group  password-bg-white2 " id="datepicker">
 
-          <div class="input-group  password-bg-white2">
-
-                         <div class="input-group-append setting ">
+                         <div class="input-group-append setting">
                             <div class="input-group-text">
                               <img src="{{ asset('build/images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
                         </div>
@@ -28,9 +28,12 @@
                           <div class="form-control password-feild2 input-password-placeholder setting " ><i class="fas fa-angle-down rotate-i"id="customDate"></i></div>
                     
                     </div>
-                    <div class="input-group  password-bg-white2">
 
-                         <div class="input-group-append setting">
+      
+
+                    <div class="input-group  password-bg-white2" id="datepicker">
+
+                         <div class="input-group-append setting"  >
                             <div class="input-group-text">
                                <img src="{{ asset('build/images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
                             </div>
@@ -41,6 +44,9 @@
                           </div>
                         </div>
                       </div>
+
+
+     
    
  <div class="row">
             <div class="col-12">
@@ -161,7 +167,7 @@
                         </h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i style="color:#1985a1 !important" class="fas fa-angle-down rotate-i rotate-i1 "></i>
+                                <i style="color:#1985a1 !important" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard "></i>
                             </button>
                         </div>
                     </div>
@@ -220,7 +226,7 @@
                         </h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1"></i>
+                                <i style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1 rotate-icon-dashboard"></i>
                             </button>
                         </div>
                     </div>
@@ -273,7 +279,7 @@
                         </h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool  " data-card-widget="collapse" >
-                                <i  style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1"></i>
+                                <i  style="color:#1985a1"  class="fas fa-angle-down rotate-i  rotate-i1 rotate-icon-dashboard"></i>
                             </button>
                         </div>
                     </div>

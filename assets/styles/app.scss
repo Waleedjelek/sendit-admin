@@ -143,11 +143,15 @@ table{
 
 }
 
+
 // .fa, .fas, .far, .fal, .fad, .fab {
  
 //   color:#1985A1 ;
 // }
-.fa, .fas, .fal, .fad, .fab {
+.rotate-icon-dashboard {
+  transform: rotate(180deg); /* Rotate 180 degrees */
+}
+ .fas, .fal, .fad, .fab, .fa-solid, .fa-regular {
  
   color:#1985A1 ;
 }
@@ -256,7 +260,8 @@ padding-bottom: 40px;
   border-radius: 10px !important;
   font-size: 103%;
   // padding: 1px 0px 1px 4px;
-  padding: 0px 0px 3px 2px;
+  padding: 0px 0px 3px 4px;
+  background-position-x: 33px;
  }
  div.dataTables_wrapper div.dataTables_length label {
   font-weight: normal;
@@ -326,6 +331,7 @@ font-size: 15px;margin-top: -3px;
 }
 .btn-back{
   border-radius: 20px;margin-left: 5px;height: 37px;
+  padding-left: 5px;
 }
 .icn4{
   border-radius: 20px;height: 31px;padding-right: 7px;
@@ -426,7 +432,7 @@ div.dataTables_wrapper div.dataTables_filter {
 }
 .card-title{
   color: #46494C !important;
-  font-size: larger;
+  font-size: 15px;
 }
 
 .cheakline {
@@ -437,7 +443,15 @@ div.dataTables_wrapper div.dataTables_filter {
   margin-left: 110px;
 }
 .icon-set{
-  width: 20px;height: 20px;
+  width: 20px;height: 20px;margin-top: -5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 26px;
+  position: absolute;
+  top: 4px;
+  right: 1px;
+  width: 33px;
+  
 }
 *{
   font: 'Carmen Sans', sans-serif;
@@ -938,8 +952,8 @@ div.card-footer{
 }
 .icn41 {
   border-radius: 20px;
-  height: 31px;
-  padding-right: 7px;
+  height: 33px;
+  padding-right: 8px;
 }
 .icn412:hover{
   color: #fff;
@@ -984,13 +998,14 @@ div.card-footer {
   border-radius: 20px;
 
 }
+
 .btn-back{
   height: 37px ;
   border-radius: 20px;
 }
 .text-form{
   margin-left: -15px;
-  margin-top: -12px;
+  margin-top: -13px;
   color:  #AEAEAE;
 }
 .password-bg-white2{
@@ -1035,6 +1050,13 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 ul.navbar-nav a {
   gap: 200px; /* Adds space only after the first box */
 }
+.navbar-expand .navbar-nav {
+  flex-direction: row;
+  padding-bottom: 0px;
+  padding-top: 4px;
+}
+
+
 
 //media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys//media qureys
 
