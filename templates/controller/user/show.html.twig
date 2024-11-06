@@ -111,7 +111,7 @@
                     <form method="post" style="display: inline;" action="{{ path('app_user_pass_reset', {'id': user.id}) }}"
                           onsubmit="return confirm('Are you sure you want to reset this user password?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('reset-password' ~ user.id) }}">
-                        <button style="width:151px;border-radius:20px" class="btn btn-danger"><i class="fas fa-key icon-key"></i> Password Rest</button>
+                        <button style="width:178px;border-radius:20px" class="btn btn-danger"><i class="fas fa-key icon-key"></i> Password Rest</button>
                     </form>
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}

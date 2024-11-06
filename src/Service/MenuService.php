@@ -85,25 +85,25 @@ class MenuService extends BaseService
             'Transaction',
             $this->router->generate('app_transaction_index'),
             TransactionController::class,
-            'fas fa-credit-card',
+            'fa-regular fa-id-card',
             'ROLE_EDITOR'
         ));
-
+     
         $this->addLeftMenu(new MenuItem(
             'priceSearch',
             'Price Search',
             $this->router->generate('app_price_search'),
             PriceSearchController::class,
-            'fas fa-money-check-alt',
+            'fa-solid fa-money-check-dollar',
             'ROLE_EDITOR'
         ));
-
+       
         $this->addLeftMenu(new MenuItem(
             'companies',
             'Companies',
             $this->router->generate('app_company_index'),
             CompanyController::class,
-            'fas fa-building',
+            'fa-solid fa-city',
             'ROLE_EDITOR'
         ));
 
@@ -112,37 +112,35 @@ class MenuService extends BaseService
             'Coupons',
             $this->router->generate('app_coupon_index'),
             CouponController::class,
-            'fas fa-building',
+            'fa-solid fa-ticket-simple',
             'ROLE_EDITOR'
         ));
-
         $this->addLeftMenu(new MenuItem(
             'packageTypes',
             'Package Types',
             $this->router->generate('app_package_type_index'),
             PackageTypeController::class,
-            'fas fa-ruler-combined',
+            'fa-solid fa-whiskey-glass',
             'ROLE_EDITOR'
         ));
-
+        
         $this->addLeftMenu(new MenuItem(
             'countries',
             'Countries',
             $this->router->generate('app_country_index'),
             CountryController::class,
-            'fas fa-flag',
+            'fa-solid fa-earth-americas',
             'ROLE_EDITOR'
         ));
-
+       
         $this->addLeftMenu(new MenuItem(
             'locale',
             'Locale',
             $this->router->generate('app_locale_index'),
             LocaleController::class,
-            'fas fa-newspaper',
+            'fa-solid fa-location-dot',
             'ROLE_ADMIN'
         ));
-
         $this->addLeftMenu(new MenuItem(
             'audit',
             'Audit Log',

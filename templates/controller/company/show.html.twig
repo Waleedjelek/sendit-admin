@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="{{ path('app_company_index') }}" class="btn btn-danger btn-back">
+                    <a  style="width:87px" href="{{ path('app_company_index') }}" class="btn btn-danger btn-back">
                         <i class="fas fa-arrow-alt-circle-left icn4"></i> Back</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
@@ -159,7 +159,7 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item"id="for-border" style="margin-right: 10px;">
-                                <a   href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                <a style="width:129px"  href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
                                     <i class="fa fa-file-export btns-last-icon "></i> Export Price</a>
                             </li>
                             {% if is_granted('ROLE_ADMIN')  %}
