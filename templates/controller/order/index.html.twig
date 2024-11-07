@@ -44,11 +44,11 @@
         <div class="col-12 bgcolor-table">
             <div class="card">
               
-                <div class="card-body bgcolor-table">
+                <div class="card-body">
 
                     <div class="row align-items-center ">
                         <div class="col-md-3" style="padding: 5px;">
-                            <select id="filter_status" name="filter_status" class="form-control">
+                            <select id="filter_status" name="filter_status" class="form-control filter-border">
                                 <option value="">Coupon Applies </option>
                                 {% for status in orderStatus %}
                                     <option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
