@@ -22,9 +22,9 @@
         </div>
 
         <div class="card-footer">
-            <button style="padding-left:-2px" class="btn btn-danger btn-back icn41">{{ button_label|default('Save') }}</button>
+            <button style="padding-left:-2px" class="btn btn-danger btn-back icn4">{{ button_label|default('Save') }}</button>
 
-            <a class="btn btn-danger btn-cancle" href="{{ path('app_company_show',{id:company.id}) }}">Cancel</a>
+            <a class="btn btn-danger btn-back icn4" href="{{ path('app_company_show',{id:company.id}) }}">Cancel</a>
         </div>
         {{ form_end(form) }}
     </div>

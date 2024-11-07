@@ -26,3 +26,17 @@ bsCustomFileInput.init();
 
 $('[data-toggle="tooltip"]').tooltip();
 $('.select2').select2();
+
+    // Initialize Flatpickr on an input element
+    flatpickr("#datepicker", {
+        dateFormat: "Y-m-d",  // Example date format
+        minDate: "today"      // Prevent picking past dates
+    });
+    $(document).ready(function() {
+        $(".btn-tool").click(function() {
+            // Toggle the 'rotate-icon-dashboard' class on the <i> element inside the button
+            $(this).find("i").toggleClass("rotate-icon-dashboard");
+        });
+    });
+    
+    
