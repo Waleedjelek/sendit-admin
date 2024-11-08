@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card"style="border-radius:15px !important">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-question-circle"></i>
@@ -93,7 +93,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card"style="border-radius:15px !important">
                 <div class="card-header" data-card-widget="collapse">
                     <h3 class="card-title" >
                         <i class="fas fa-comment"></i>
@@ -119,13 +119,13 @@
                             {{ form_row(form.changeStatus) }}
                         </div>
                         <div class="col-6"  style="padding: 5px;">
-                            <button style="width:110px" type="submit" class="btn btn-danger1 icn41" style="margin-top: 15px;">Add note</button>
+                            <button style="width:110px;border-radius:5px !important ;    margin-top: 15px;margin-left: -2px;" type="submit" class="btn btn-danger1 icn41 ">Add note</button>
                         </div>
                     </div>
                     {{ form_end(form) }}
 
                     {% if quote.notes | length > 0 %}
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover dataTable2">
                             <thead>
                             <tr>
                                 <th>User</th>
@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover dataTable2">
                         <thead>
                         <tr>
                             <th>Type</th>

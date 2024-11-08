@@ -26,6 +26,21 @@
   font-weight: normal;
   font-style: normal;
 }
+// @font-face {
+//   font-family: 'Carmen Sans'; 
+//   src: url('/assets/fonts/CarmenSans-Bold.ttf') format('truetype');
+//   font-weight: 700; /* This is for bold */
+//   font-style: normal;
+// }
+
+table.dataTable2 {
+  clear: both;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  max-width: none !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+}
 
 .dashboard-header{
   font-family: 'Carmen Sans';
@@ -91,23 +106,36 @@ body:not(.layout-fixed) .main-sidebar {
   width: 330px;
 }
 #country_entity_name{
-  border-radius: 20PX  !important;
+  border-radius: 16PX  !important;
 }
 #country_entity_code{
-  border-radius: 20PX  !important;
+  border-radius: 16PX  !important;
 
 }
 #country_entity_dialCode{
-  border-radius: 20PX  !important;
+  border-radius: 16PX  !important;
 
 }
 #country_entity_sortOrder{
-  border-radius: 20PX  !important;
+  border-radius: 16PX  !important;
 
 }
 #country_entity_active{
-  border-radius: 20PX  !important;
+  border-radius: 16PX  !important;
 
+}
+#zone_price_entity_type{
+  border-radius: 16PX  !important;
+
+}
+#zone_price_entity_for{
+  border-radius: 16px !important;
+}
+#zone_price_entity_price{
+  border-radius: 16px !important;
+}
+#zone_price_entity_weight{
+  border-radius: 16px !important;
 }
 .nav-item:hover{
   background-color: #1985A1;
@@ -312,16 +340,17 @@ select.custom-select.custom-select-sm {
  }
  .inner1-div{
  
-  width: 580px;padding: 33px 0px 15px 29px ;
+  width: 580px;padding: 19px 0px 15px 29px ;
   background-color: #ffffff;
   border-radius: 20px;
+  height: 245px;
   // margin-right: 120px;
  }
  .filter-border{
 border-radius: 5px !important;
  }
  .rupees-heading{
-  font-weight:700 ;font-size: 22px;
+  font-weight:500 ;font-size: 30px;
  }
  .rupees-heading-text{
   // font-weight: 400;
@@ -391,21 +420,30 @@ a .icn4:hover{
   word-wrap: break-word;
 }
 .img-set{
+  width: 70px;
+  height: 70px;
+}
+.img-set-dashboard{
   width: 50px;
   height: 50px;
 }
 .img-side-head{
   font-weight: 700;color: #46494c;
-  font-size: 28px;margin-left: 20px;
+  font-size: 28px;margin-left: 16px;
 }
 .img-side-text{
   font-weight: 200;margin-top: -9px;
-  font-size:11px;color: #46494c;
+  font-size:12px;color: #46494c;
 }
 th{
   font-size:18px;
   font-weight: 500;
   color: #46494C;
+}
+.navbar-nav > .user-menu .user-image{
+  height: 43px;
+  width: 43px;
+
 }
 .content-wrapper > .content {
   padding: 20px !important;
@@ -425,13 +463,13 @@ th{
 
 .order-pg-btn1{
   height: 50px;background-color: #ffffff;
-  border-radius: 5px;border: none;gap: 20px;
+  border-radius: 10px;border: none;gap: 20px;
   width: 170px;display: flex;padding: 10px;
   box-shadow: 2px 2px 2px 1px lightgray;
 }
 .order-pg-btn2{
   height: 50px;background-color: #ffffff;
-  border-radius: 5px;border: none;gap: 20px;
+  border-radius: 10px;border: none;gap: 20px;
   width: 170px;display: flex;padding: 10px;box-shadow: 2px 2px 2px 1px lightgray;
 }
 .img-side-text-order{
@@ -452,7 +490,19 @@ margin-top: 7px;
   height: 35px;width: 35px;
 }
 .title-heading{
-  margin-top: 6px;
+  margin-top: 2px;
+  font-size: 36px;
+  font-weight: 500;
+}
+.title-heading1{
+  margin-top: 7px;
+  font-size: 36px;
+  font-weight: 500;
+}
+.title-heading2{
+  margin-top: 12px;
+  font-size: 36px;
+  font-weight: 500;
 }
 div.dataTables_wrapper div.dataTables_filter {
   text-align: right;
@@ -588,7 +638,7 @@ font-size: 32px;color: #fff;
 .select2-container--default .select2-selection--single {
   background-color: #fff;
   border: 1px solid #ced4da;
-  border-radius: 1.25rem;
+  border-radius: 16px;
   height: calc(2.25rem + 2px);
   padding: 0.375rem 0.75rem;
 }
@@ -749,7 +799,8 @@ border: none;background-color: transparent;
   width: 250px;
 }
 .bgcolor-table{
-  border-radius: 10px;
+    overflow-x: auto;
+    border-radius: 10px;
   margin-bottom: 25px !important;
 }
 .input-container-password img {
@@ -906,8 +957,9 @@ td{
   color: #46494C;
   ;
 }
-th{
-  color: #46494C;
+.card-body > .table > thead > tr > th, .card-body > .table > thead > tr > td{
+  color: #46494C !important;
+  font-weight: 500 !important;
 }
 label:not(.form-check-label):not(.custom-file-label) {
   font-weight: 700;
@@ -932,9 +984,48 @@ label:not(.form-check-label):not(.custom-file-label) {
 
 }
 .btns-last-icon{
-padding-top: 3px;
-padding-right: 8px;
+padding-top: 6px;
+padding-right: 5px;
 
+}
+#package_type_entity_name{
+  border-radius: 16px !important;
+}
+#package_type_entity_type{
+  border-radius:  16px !important;
+}
+#package_type_entity_code{
+  border-radius:  16px !important;
+}
+#package_type_entity_description{
+  border-radius:  16px !important;
+}
+#package_type_entity_packageImageFile{
+  border-radius:  16px !important;
+}
+#package_type_entity_iconImageFile_help{
+  border-radius:  16px !important;
+}
+#package_type_entity_iconImageFile{
+  border-radius:  16px !important;
+}
+#package_type_entity_weight{
+  border-radius:  16px !important;
+}
+#package_type_entity_maxWeight{
+  border-radius:  16px !important;
+}
+#package_type_entity_length{
+  border-radius:  16px !important;
+}
+#package_type_entity_width{
+  border-radius:  16px !important;
+}
+#package_type_entity_height{
+  border-radius:  16px !important;
+}
+#package_type_entity_sortOrder{
+  border-radius:  16px !important;
 }
 .compani-btns-last{
 width: 120px;height: 30px;
@@ -949,22 +1040,67 @@ color: #1985a1 !important;
 
 }
 #price_search_type{
-  border-radius: 20px !important;
+  border-radius: 16px !important;
 }
 #price_search_weight{
-  border-radius: 20px !important;
+  border-radius: 16px !important;
 
 }
 #price_search_length{
-  border-radius: 20px !important;
+  border-radius: 16px !important;
 
 }
 #price_search_width{
-  border-radius: 20px !important;
+  border-radius: 16px !important;
 
 }
 #price_search_height{
-  border-radius: 20px !important;
+  border-radius: 16px !important;
+
+}
+#company_entity_name{
+  border-radius: 16px !important;
+
+}
+#company_entity_code{
+  border-radius: 16px !important;
+
+}
+#company_entity_noteSummary{
+  border-radius: 16px !important;
+
+}
+#company_entity_boeThreshold{
+  border-radius: 16px !important;
+}
+#company_entity_type{
+  border-radius: 16px !important;
+}
+#company_entity_boeAmount{
+  border-radius: 16px !important;
+}
+
+#company_entity_logoWidth{
+  border-radius: 16px !important;
+}
+#company_entity_noteTitle{
+  border-radius: 16px !important;
+
+}
+#zone_price_import_type{
+  border-radius: 16px !important;
+
+}
+#zone_price_import_for{
+  border-radius: 16px !important;
+
+}
+#zone_price_import_csvFile{
+  border-radius: 16px !important;
+
+}
+#zone_price_import_csvFile{
+  border-radius: 16px !important;
 
 }
 .btn-danger {
@@ -1015,7 +1151,7 @@ div.card-footer{
 .icn41pakages {
  
   padding-right: 5px;
-  padding-top: 5px;
+  padding-top: 3px;
 }
 
 .icn412:hover{
@@ -1236,7 +1372,7 @@ flex-direction: column;justify-content: space-between;
       }
       .about-dashboard{
         margin-left: 280px;
-
+color: #6f6f6f !important;
       }
       .bgcolor-table{
         background-color: white;

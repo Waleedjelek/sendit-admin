@@ -3,8 +3,8 @@
 {% block title %}Export Price - {{ company.name }} ({{ company.type }}){% endblock %}
 
 {% block body %}
-    <div class="card card-primary">
-        <div class="card-header">
+    <div class="card card-primary"style="border-radius:15px !important">
+        <div class="card-header"style="border-radius:15px 15px 0px 0px !important">
             <h3 class="card-title">Export Price - {{ company.name }} ({{ company.type }})</h3>
         </div>
         {{ form_start(form) }}
@@ -12,10 +12,10 @@
             {{ form_widget(form) }}
         </div>
 
-        <div class="card-footer">
+        <div class="card-footer"style="border-radius:15px !important">
             <button  class="btn btn-danger btn-back icn4">{{ button_label|default('Export') }}</button>
 
-            <a class="btn btn-danger btn-back icn4 " href="{{ path('app_company_show',{ id:company.id }) }}">Cancel</a>
+            <a style="color:red !important; border-color:red !important" class="btn btn-danger btn-back icn4 " href="{{ path('app_company_show',{ id:company.id }) }}">Cancel</a>
         </div>
         {{ form_end(form) }}
     </div>
