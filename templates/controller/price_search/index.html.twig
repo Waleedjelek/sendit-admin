@@ -38,8 +38,8 @@
 
 
     <div class="row">
-        <div class="col-12 bgcolor-table2">
-            <div class="card">
+        <div  class="col-12 bgcolor-table2">
+            <div class="card" style="border-radius:10px !important">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i style="  height: 15px;" class="fas fa-money-check-alt mr-1 "></i>
@@ -51,14 +51,24 @@
                     {{ form_widget(form) }}
                 </div>
 
-                <div  style="background-color: #eaeaea ;"  class="card-footer">
-                    <button style="background-color: transparent ; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); " class="btn btn-danger btn-back icn4 search-bgremove" id="btnSearch">Search</button>
                 </div>
-                
+                </div>
+
+
+
+                <div  style="background-color: #eaeaea ;padding-top:10px"  class="card-footer">
+                    <button style="background-color: transparent ; box-shadow: -1px 0px 5px 1px rgba(0, 0, 0, 0.1); " class="btn btn-danger btn-back icn4 search-bgremove" id="btnSearch">Search</button>
+                </div>
+                    </div>
                 {{ form_end(form) }}
 
-                <div  class="card-body" >
-                    <table class="table table-bordered table-hover" id="priceTableList">
+
+
+
+                <div style="  overflow-x: auto !important;background:white; border-radius:10px !important" class="card-body  bgcolor-table2" >
+                 <div class="row bgcolor-table2">
+        <div style="background:white;padding:15px ;border-radius:10px !important" class="col-12 bgcolor-table2">
+                    <table class="table table-bordered table-hover " id="priceTableList">
                         <thead>
                         <tr>
                             <th>Company</th>
@@ -73,8 +83,8 @@
                 </div>
             </div>
         </div>
-    </div>
 
+    
 {% endblock %}
 
 {% block inlineJs %}

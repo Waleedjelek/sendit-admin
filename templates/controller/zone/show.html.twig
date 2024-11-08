@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card" style="border-radius:10px !important">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-atlas mr-1"></i>
@@ -59,8 +59,8 @@
                     </table>
                 </div>
 
-                <div class="card-footer">
-                    <a  style="width:87px" href="{{ path('app_company_show',{'id':company.id}) }}" class="btn btn-danger btn-back">
+                <div class="card-footer"style="border-radius:10px !important">
+                    <a  style="width:87px" href="{{ path('app_company_show',{'id':company.id}) }}" class="btn btn-danger btn-back icn4">
                         <i  class="fas fa-arrow-alt-circle-left icn4"></i> Back</a>
 
                     <a href="{{ path('app_zone_edit', {'companyId': company.id,'id': zone.id}) }}" class="btn btn-danger pakag-show-btn icn4">
@@ -81,7 +81,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card"style="border-radius:10px !important; padding-top:5px">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-money-check-alt mr-1"></i>
@@ -91,11 +91,11 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item"id="for-border" style="margin-right: 10px;">
                                 <a style="width:129px" href="{{ path('app_zone_price_import', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
-                                    <i class="fa fa-file-import btns-last-icon"></i> Import Price</a>
+                                    <i style="padding-top:4px" class="fa fa-file-import btns-last-icon"></i> Import Price</a>
                             </li>
                             <li class="nav-item"id="for-border">
                                 <a  href="{{ path('app_zone_price_new', {'zoneId': zone.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
-                                    <i class="fa fa-plus  btns-last-icon"></i> Add Price</a>
+                                    <i style="padding-top:4px" class="fa fa-plus  btns-last-icon"></i> Add Price</a>
                             </li>
                         </ul>
                     </div>

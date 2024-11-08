@@ -13,7 +13,7 @@
 <img class="img-set"  src="{{ asset('build/images/Company.png') }}" alt="Logo">
 
 
-<h2 class="title-heading">Companies</h2>
+<h2 class="title-heading2">Companies</h2>
 </div>
 
 <div class="order-pg-btn-flex">
@@ -41,7 +41,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card"style="border-radius:15px !important">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-building mr-1"></i>
@@ -126,8 +126,8 @@
                     </table>
                 </div>
 
-                <div class="card-footer">
-                    <a  style="width:87px" href="{{ path('app_company_index') }}" class="btn btn-danger btn-back">
+                <div class="card-footer"style="border-radius:15px !important">
+                    <a  style="width:87px" href="{{ path('app_company_index') }}" class="btn btn-danger btn-back icn4">
                         <i class="fas fa-arrow-alt-circle-left icn4"></i> Back</a>
 
                     {% if is_granted('ROLE_ADMIN')  %}
@@ -150,7 +150,7 @@
 
     <div class="row">
         <div class="col-12 bgcolor-table">
-            <div class="card">
+            <div class="card"style="border-radius:15px !important ;padding-top:5px">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-atlas mr-1"></i>
@@ -159,13 +159,13 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item"id="for-border" style="margin-right: 10px;">
-                                <a style="width:129px"  href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
-                                    <i class="fa fa-file-export btns-last-icon "></i> Export Price</a>
+                                <a style="width:129px ;height:32px"  href="{{ path('app_company_export', {'id': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                    <i style="padding-top:4px" class="fa fa-file-export btns-last-icon "></i> Export Price</a>
                             </li>
                             {% if is_granted('ROLE_ADMIN')  %}
                                 <li class="nav-item" id="for-border">
-                                    <a  href="{{ path('app_zone_new', {'companyId': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
-                                        <i class="fa fa-plus btns-last-icon"></i> Add Zone</a>
+                                    <a style="height:32px"  href="{{ path('app_zone_new', {'companyId': company.id}) }}" class="btn btn-primary btn-block btn-sm compani-btns-last">
+                                        <i style="padding-top:4px " class="fa fa-plus btns-last-icon"></i> Add Zone</a>
                                 </li>
                             {% endif %}
                         </ul>
