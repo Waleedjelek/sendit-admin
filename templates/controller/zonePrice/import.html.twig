@@ -17,12 +17,12 @@
                 <li>Needed Header - {{ zone.code }}</li>
             </ul>
         </div>
+ </div>
+        <div class="card-footer"style="background-color: #eaeaea ;">
+            <button style="background-color: transparent;" class="btn btn-danger btn-back icn4">{{ button_label|default('Import') }}</button>
 
-        <div class="card-footer">
-            <button class="btn btn-danger btn-back icn4">{{ button_label|default('Import') }}</button>
-
-            <a style="color:red !important;border-color:red !important" class="btn btn-danger btn-back icn4" href="{{ path('app_zone_show',{ id:zone.id,companyId:company.id }) }}">Cancel</a>
+            <a style="background-color: transparent; color:red !important;border-color:red !important" class="btn btn-danger btn-back icn4" href="{{ path('app_zone_show',{ id:zone.id,companyId:company.id }) }}">Cancel</a>
         </div>
         {{ form_end(form) }}
-    </div>
+   
 {% endblock %}

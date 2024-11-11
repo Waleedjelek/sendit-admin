@@ -26,12 +26,34 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Carmen Sans';
+  src: url('/assets/fonts/CarmenSansBold.otf') format('truetype');
+  font-weight: bold; /* 700 weight */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Carmen Sans';
+  src: url('/assets/fonts/CarmenSansSemiBold.ttf') format('truetype');
+  font-weight: 600; /* 600 weight */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Carmen Sans';
+  src: url('/assets/fonts/CarmenSansMedium.ttf') format('truetype');
+  font-weight: 500; /* 600 weight */
+  font-style: normal;
+}
 // @font-face {
 //   font-family: 'Carmen Sans'; 
 //   src: url('/assets/fonts/CarmenSans-Bold.ttf') format('truetype');
 //   font-weight: 700; /* This is for bold */
 //   font-style: normal;
 // }
+p{
+  font-weight: 500;
+}
+
 
 table.dataTable2 {
   clear: both;
@@ -44,6 +66,10 @@ table.dataTable2 {
 
 .dashboard-header{
   font-family: 'Carmen Sans';
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: 700 !important;
+
 }
 .box-text{
   margin-left: -2px;
@@ -321,6 +347,9 @@ padding-bottom: 40px;
 #for-border:hover{
   border-radius: 20px !important;
 }
+#for-border2:hover{
+  border-radius: 20px !important;
+}
  
 
 
@@ -353,7 +382,7 @@ border-radius: 5px !important;
   font-weight:500 ;font-size: 30px;
  }
  .rupees-heading-text{
-  // font-weight: 400;
+  font-weight: 400;
 font-size: 13px;margin-top: -7px;
 }
  .inner2-div{
@@ -429,15 +458,15 @@ a .icn4:hover{
 }
 .img-side-head{
   font-weight: 700;color: #46494c;
-  font-size: 28px;margin-left: 16px;
+  font-size: 30px;margin-left: 16px;
 }
 .img-side-text{
-  font-weight: 200;margin-top: -9px;
-  font-size:12px;color: #46494c;
+  font-weight: 600;margin-top: -9px;
+  font-size:10px;color: #46494c;
 }
 th{
   font-size:18px;
-  font-weight: 500;
+  font-weight: 700;
   color: #46494C;
 }
 .navbar-nav > .user-menu .user-image{
@@ -473,11 +502,15 @@ th{
   width: 170px;display: flex;padding: 10px;box-shadow: 2px 2px 2px 1px lightgray;
 }
 .img-side-text-order{
-  font-weight: 400;
+  font-weight: 500;
   font-size: 12px;
 margin-top: 7px;
    display: flex;
    color:#46494C ;
+}
+span{
+  color: #46494C;
+  font-weight: 500;
 }
 // style #attribute {
 //   background: #9e2929;
@@ -548,6 +581,10 @@ div.dataTables_wrapper div.dataTables_filter {
   border-color:#1985A1 !important;
   color: rgb(255, 255, 255) !important;
 }
+nav .nav-pills .ml-auto:hover li .nav-link a .foruser{
+  border-radius: 20px !important;
+
+}
 .company-searcher{
   display: flex;
   justify-content: space-between;
@@ -562,7 +599,7 @@ margin-left: -15px;
 
 .input-container input {
   width: 100%;
-  height: 35px;
+  height: 36px;
   padding: 10px;
   padding-right: 35px; /* Add padding to the right to make space for the icon */
   font-size: 16px;
@@ -597,6 +634,13 @@ input::placeholder {
 
   transform: translatex(10px); /* Adjust position vertically */
 
+}
+.search-feild-text::placeholder{
+  // position: absolute;
+  // right: 10px;
+  // top: 50%;
+  transform: translateY(-7px);
+  transform: translateX(12px);
 }
 input::placeholder::after{
 
@@ -946,6 +990,8 @@ div.dataTables_processing > div:last-child > div:nth-child(4) {
 }
 .search-bgremove{
   background-color: transparent ;
+  padding-left: 8px !important;
+  width: 89px !important;
 }
 .card{
   
@@ -955,11 +1001,12 @@ div.dataTables_processing > div:last-child > div:nth-child(4) {
 }
 td{
   color: #46494C;
-  ;
+ font-weight: 400;
 }
 .card-body > .table > thead > tr > th, .card-body > .table > thead > tr > td{
   color: #46494C !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
+
 }
 label:not(.form-check-label):not(.custom-file-label) {
   font-weight: 700;
@@ -1167,7 +1214,12 @@ div.card-footer{
 .icn41pakages {
  
   padding-right: 5px;
-  padding-top: 3px;
+  padding-top: 4px;
+}
+.icn41pakages2 {
+ 
+  padding-right: 15px;
+  padding-top: 4px;
 }
 
 .icn412:hover{
@@ -1300,7 +1352,7 @@ width: 780px;
    margin-left: 91px;
   }
   .img-side-text{
-   margin-left: 72px;
+   margin-left: 62px;
    
 
 }

@@ -11,11 +11,11 @@
         <div class="card-body">
             {{ form_widget(form) }}
         </div>
-
-        <div class="card-footer">
+    </div>
+        <div class="card-footer"style="background-color: #eaeaea ;">
             <button style="background-color: transparent ;" class="btn btn-danger btn-back icn4">{{ button_label|default('Save') }}</button>
-            <a style="background-color: transparent ;" class="btn btn-danger btn-back icn4" href="{{ path('app_country_index') }}">Cancel</a>
+            <a style="background-color: transparent; color:red !important;border-color:red !important" class="btn btn-danger btn-back icn4" href="{{ path('app_country_index') }}">Cancel</a>
         </div>
         {{ form_end(form) }}
-    </div>
+
 {% endblock %}
