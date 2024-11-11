@@ -12,10 +12,10 @@
             {{ form_widget(form) }}
         </div>
 
-        <div class="card-footer">
-            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        <div class="card-footer"style="background-color: #eaeaea ;">
+            <button style="background-color: transparent ;" class="btn btn-primary">{{ button_label|default('Save') }}</button>
 
-            <a class="btn btn-danger" href="{{ path('app_coupon_index') }}">Cancel</a>
+            <a style="background-color: transparent; border-color:red !important" class="btn btn-danger2" href="{{ path('app_coupon_index') }}">Cancel</a>
         </div>
         {{ form_end(form) }}
     </div>

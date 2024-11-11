@@ -15,7 +15,7 @@
 
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered dataTable2">
                         <tbody>
                         <tr>
                             <th  style="width: 30%;">Name</th>
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="card-footer"style="border-radius:10px !important">
-                    <a  style="width:87px" href="{{ path('app_company_show',{'id':company.id}) }}" class="btn btn-danger btn-back icn4">
+                    <a  style=" width:87px ;padding-top:5px;padding-right:3px" href="{{ path('app_company_show',{'id':company.id}) }}" class="btn btn-danger btn-back icn4">
                         <i  class="fas fa-arrow-alt-circle-left icn4"></i> Back</a>
 
                     <a href="{{ path('app_zone_edit', {'companyId': company.id,'id': zone.id}) }}" class="btn btn-danger pakag-show-btn icn4">
