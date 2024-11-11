@@ -44,15 +44,15 @@
                 <div class="card-header">
                    <div class="company-searcher">
                     <div class="input-container">
-      <input type="text" placeholder="Search">
+      <input class="search-feild-text"  type="text" placeholder="Search">
       <i class="fa fa-search"></i>
     </div>
                     {% if is_granted('ROLE_ADMIN')  %}
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                    <a href="{{ path('app_user_new') }}" class="btn btn-primary btn-block btn-sm user-btn">
-                                        <i class="fa fa-plus icon-user"></i> Add User</a>
+                                <li class="nav-item" id="for-border2">
+                                    <a style="width:130px;padding-top:-1px !important" href="{{ path('app_user_new') }}" class="btn btn-primary btn-block btn-sm pakagestype-btn ">
+                                        <i class="fa fa-plus icn41pakages2"></i> Add User</a>
                                 </li>
                             </ul>
                         </div>
