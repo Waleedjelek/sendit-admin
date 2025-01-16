@@ -85,7 +85,7 @@ class UserOrderEntity
     /**
      * @ORM\Column(type="string", length=255,name="coupon",options={"default":" "})
      */
-    private string $coupon = '';
+    public string $coupon = '';
 
 
 

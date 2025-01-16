@@ -31,6 +31,47 @@ use Symfony\Component\Security\Core\User\User;
  */
 class UserController extends AdminController
 {
+
+    /**
+     * @Route("/users/download", name="app_user_download")
+     */
+    public function downloadCsv(
+        UserEntityRepository $userRepository
+    ): Response {
+        $users = $userRepository->findAll();
+
+        $csvData = [];
+        $csvData[] = ['Name', 'Email', 'Phone', 'Role', 'Registered', 'Last Login'];
+
+        $qb = $userRepository->createQueryBuilder('u')
+            ->where('u.role = :role')
+            ->setParameter('role', 'ROLE_MEMBER')
+            ->orderBy('u.createdDate', 'DESC');
+        $users = $qb->getQuery()->getResult();
+        foreach ($users as $user) {
+            $csvData[] = [
+                $user->getFirstName() . ' ' . $user->getLastName(),
+                $user->getEmail(),
+                $user->getMobileNumber(),
+                $user->getRole(), // Adjust based on your role caption logic
+                $user->getCreatedDate()->format('Y-m-d H:i:s'),
+                $user->getLastLoginDate() instanceof \DateTime ? $user->getLastLoginDate()->format('Y-m-d H:i:s') : '-',
+            ];
+        }
+
+        $csvContent = '';
+        foreach ($csvData as $row) {
+            $csvContent .= implode(',', $row) . "\n";
+        }
+
+        $response = new Response($csvContent);
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="users.csv"');
+
+        return $response;
+    }
+
+
     /**
      * @Route("/", name="app_user_index", methods={"GET","POST"})
      */
@@ -62,7 +103,7 @@ class UserController extends AdminController
 
         if (!empty($searchString)) {
             $qb->andWhere(' ( u.email LIKE :query1 OR  u.firstName LIKE :query1  OR  u.lastName LIKE :query1  ) ');
-            $qb->setParameter('query1', '%'.$searchString.'%');
+            $qb->setParameter('query1', '%' . $searchString . '%');
         }
 
         $qb->add('orderBy', ' u.createdDate DESC ');
@@ -88,8 +129,9 @@ class UserController extends AdminController
             foreach ($result as $userEntity) {
                 $ca = [];
                 $ca['DT_RowId'] = $userEntity->getId();
-                $ca['name'] = $userEntity->getFirstName().' '.$userEntity->getLastName();
+                $ca['name'] = $userEntity->getFirstName() . ' ' . $userEntity->getLastName();
                 $ca['email'] = $userEntity->getEmail();
+                $ca['phone'] = $userEntity->getMobileNumber();
                 $ca['role'] = $userService->getRoleCaption($userEntity->getRole());
                 $ca['created'] = $this->formatToTimezone($userEntity->getCreatedDate());
                 $ca['lastLogin'] = '-';
@@ -118,9 +160,11 @@ class UserController extends AdminController
 
         $form = $this->createForm(
             UserProfileType::class,
-            null, [
-            'user' => $userEntity,
-        ]);
+            null,
+            [
+                'user' => $userEntity,
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -160,7 +204,7 @@ class UserController extends AdminController
                 $this->addLog(
                     'User',
                     'Update Profile',
-                    'Update user profile - '.$userEntity->getEmail(),
+                    'Update user profile - ' . $userEntity->getEmail(),
                     $userEntity->getId()
                 );
 
@@ -187,9 +231,11 @@ class UserController extends AdminController
 
         $form = $this->createForm(
             UserChangePasswordType::class,
-            null, [
-            'user' => $userEntity,
-        ]);
+            null,
+            [
+                'user' => $userEntity,
+            ]
+        );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
@@ -215,7 +261,7 @@ class UserController extends AdminController
                 $this->addLog(
                     'User',
                     'Update Password',
-                    'Update user password - '.$userEntity->getEmail(),
+                    'Update user password - ' . $userEntity->getEmail(),
                     $userEntity->getId()
                 );
 
@@ -239,11 +285,14 @@ class UserController extends AdminController
         UserService $userService
     ): Response {
         $userEntity = new UserEntity();
-        $form = $this->createForm(UserEntityType::class, $userEntity,
-            ['roles' => $userService->getCurrentUserCapableRoles()]);
+        $form = $this->createForm(
+            UserEntityType::class,
+            $userEntity,
+            ['roles' => $userService->getCurrentUserCapableRoles()]
+        );
         $form->handleRequest($request);
 
-//        $this->isGranted()
+        //        $this->isGranted()
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -257,7 +306,7 @@ class UserController extends AdminController
             $this->addLog(
                 'User',
                 'Add',
-                'Added user - '.$userEntity->getEmail(),
+                'Added user - ' . $userEntity->getEmail(),
                 $userEntity->getId()
             );
 
@@ -282,14 +331,14 @@ class UserController extends AdminController
         $qb = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
         $qb->setFirstResult(0);
         $qb->setMaxResults(5);
-        $qb->andWhere(" o.user = '".$user->getId()."' ");
+        $qb->andWhere(" o.user = '" . $user->getId() . "' ");
         $qb->add('orderBy', ' o.createdDate DESC ');
         $orders = $qb->getQuery()->getResult();
 
         $qb = $this->em()->getRepository(UserTransactionEntity::class)->createQueryBuilder('t');
         $qb->setFirstResult(0);
         $qb->setMaxResults(5);
-        $qb->andWhere(" t.user = '".$user->getId()."' ");
+        $qb->andWhere(" t.user = '" . $user->getId() . "' ");
         $qb->add('orderBy', ' t.createdDate DESC ');
         $transactions = $qb->getQuery()->getResult();
 
@@ -310,8 +359,11 @@ class UserController extends AdminController
         UserEntity $user,
         UserService $userService
     ): Response {
-        $form = $this->createForm(UserEntityType::class, $user,
-            ['roles' => $userService->getCurrentUserCapableRoles()]);
+        $form = $this->createForm(
+            UserEntityType::class,
+            $user,
+            ['roles' => $userService->getCurrentUserCapableRoles()]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -321,7 +373,7 @@ class UserController extends AdminController
             $this->addLog(
                 'User',
                 'Edit',
-                'Edited user - '.$user->getEmail(),
+                'Edited user - ' . $user->getEmail(),
                 $user->getId()
             );
 
@@ -344,13 +396,13 @@ class UserController extends AdminController
         UserEntity $userEntity,
         UserService $userService
     ): Response {
-        if ($this->isCsrfTokenValid('reset-password'.$userEntity->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('reset-password' . $userEntity->getId(), $request->request->get('_token'))) {
             $userService->resetPassword($userEntity);
 
             $this->addLog(
                 'User',
                 'Reset Password',
-                'Reset user password - '.$userEntity->getEmail(),
+                'Reset user password - ' . $userEntity->getEmail(),
                 $userEntity->getId()
             );
 
@@ -367,7 +419,7 @@ class UserController extends AdminController
      */
     public function delete(Request $request, UserEntity $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             try {
                 $userId = $user->getId();
                 $userEmail = $user->getEmail();
@@ -378,7 +430,7 @@ class UserController extends AdminController
                 $this->addLog(
                     'User',
                     'Delete',
-                    'Deleted user - '.$userEmail,
+                    'Deleted user - ' . $userEmail,
                     $userId
                 );
 

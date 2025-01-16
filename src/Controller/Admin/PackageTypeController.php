@@ -47,7 +47,7 @@ class PackageTypeController extends BaseController
         $qb->setMaxResults($length);
 
         if (!empty($searchString)) {
-            $qb->andWhere(' ( pt.name LIKE :query1 OR  pt.code LIKE :query1 OR pt.description LIKE :query1 ) ');
+            $qb->andWhere(' ( pt.name LIKE :query1 OR  pt.code LIKE :query1 OR pt.type LIKE :query1 ) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
 

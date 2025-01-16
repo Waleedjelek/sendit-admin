@@ -1,97 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Audit Log{% endblock %}
+{% block title %}Audit Log
+{% endblock %}
 
 {% block body %}
-<div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\Info.311e7535.png" > #}
-<img class="img-set"  src="{{ asset('build/images/Info.png') }}" alt="Logo">
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\Info.311e7535.png" > #}
+					<img class="img-set" src="{{ asset('build/images/Info.png') }}" alt="Logo">
 
-<h2 class="title-heading1"> Audit Log</h2>
-</div>
+					<h2 class="title-heading1">
+						Audit Log</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+				<div class="order-pg-btn-flex">
+					<div
+						class="order-pg-btn1">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
+							<p class="img-side-text-order">
+								New Orders(7)</p>
+						</div>
+					</div>
 
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+					<div
+						class="order-pg-btn2">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
-    <div class="row">
-        <div  class="col-12 bgcolor-table">
-            <div class="card"style="border-radius:15px !important;">
-                <div class="card-header">
-                   <div class="company-searcher">
-                    <div class="input-container">
-      <input class="search-feild-text" type="text" placeholder="Search">
-      <i class="fa fa-search"></i>
-    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-hover" id="userTableList">
-                        <thead>
-                        <tr>
-                            <th>Module</th>
-                            <th>Action</th>
-                            <th>Description</th>
-                            <th>IP</th>
-                            <th>User</th>
-                            <th>Date</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+							<p class="img-side-text-order">
+								New Ouote(0)</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 bgcolor-table">
+					<div class="card" style="border-radius:15px !important;">
+						<div class="card-header">
+							<div class="company-searcher">
+								<div class="input-container">
+									<input id="searchField" class="search-feild-text" type="text" placeholder="Search"
+									style="margin-top: 30px;">
+									<i class="fa fa-search"></i>
+								</div>
+								<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div>
+							</div>
+							<div class="card-body">
+								<table class="table table-bordered table-hover" id="userTableList">
+									<thead>
+										<tr>
+											<th>Module</th>
+											<th>Action</th>
+											<th>Description</th>
+											<th>IP</th>
+											<th>User</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 
-{% endblock %}
+			{% endblock %}
 
-{% block inlineJs %}
-    <script>
-        $(document).ready(function () {
-            $('#userTableList ').DataTable({
-                "paging": true,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_audit_index') | raw }}",
-                    "type": 'POST',
-                    global: true
-                },
-                "columns": [
-                    {"data": "module"},
-                    {"data": "action"},
-                    {"data": "description"},
-                    {"data": "ip"},
-                    {"data": "user"},
-                    {"data": "date"},
-                ]
-            });
-
-        });
-    </script>
-{% endblock %}
-
-
+			{% block inlineJs %}
+				 <script>
+								        $(document).ready(function () {
+								            let table = $('#userTableList ').DataTable({
+								                "paging": true,
+								                "ordering": false,
+								                "responsive": true,
+								                "processing": true,
+								                "serverSide": true,
+								                "ajax": {
+								                    "url": "{{ path('app_audit_index') | raw }}",
+								                    "type": 'POST',
+								                    "data": function (d) {
+				                                     d.search.value = $('#searchField').val(); // Pass search input value to backend
+				                                    }
+								                },
+								                "columns": [
+								                    {"data": "module"},
+								                    {"data": "action"},
+								                    {"data": "description"},
+								                    {"data": "ip"},
+								                    {"data": "user"},
+								                    {"data": "date"},
+								                ]
+								            });
+											 // Move "Show Entries" dropdown next to Add Company button
+								    let entriesDropdown = $('#userTableList_length').detach();
+								    $('#entriesDropdownContainer').append(entriesDropdown);
+											 // Trigger search on input change
+				                                $('#searchField').on('input', function () {
+				                                 table.search(this.value).draw();
+				                             });
+								        });
+								    </script>
+			{% endblock %}
