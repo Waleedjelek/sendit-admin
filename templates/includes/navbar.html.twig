@@ -6,7 +6,7 @@
         {% set menuList = getTopMenu() %}
         {% for menu in menuList %}
             <li class="nav-item">
-                <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
+                <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %} companies-btn">
                     <i class="{{ menu.iconClass }}"></i>
                     {{ menu.caption }}
                 </a>
@@ -14,7 +14,7 @@
         {% endfor %}
     </ul>
     <a href="http://127.0.0.1:8000/" class="brand-second-logo">
-        <img src="/build/images/logo.c0d7454d.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
+        <img src="/build/images/logo.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
     </a>
 
     <ul class="navbar-nav ml-auto">

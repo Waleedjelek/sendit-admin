@@ -1,129 +1,146 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Companies{% endblock %}
+{% block title %}Companies
+{% endblock %}
 
 {% block body %}
 
-<div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\Company.4ed89b3c.png" > #}
-<img class="img-set"  src="{{ asset('build/images/Company.png') }}" alt="Logo">
-
-
-<h2 class="title-heading2">Companies</h2>
-</div>
-
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png"  class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
-
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
-
-    <div class="row">
-        <div  class="col-12 bgcolor-table">
-            <div class="card"style="border-radius:15px !important;">
-                <div class="company-searcher">
-                    <div class="input-container">
-      <input class="search-feild-text"  type="text" placeholder="Search">
-      <i class="fa fa-search"></i>
-    </div>
-   
-                    {% if is_granted('ROLE_ADMIN')  %}
-                        <div class="card-tools">
-                            <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                    <a style="padding-top:4px;width:150px" href="{{ path('app_company_new') }}" class="btn  btn-block btn-sm companies-btn">
-                                        <i class="fa fa-plus icn4"></i> Add Company</a>
-                                </li>
-                            </ul>
-                        </div>
-                    {% endif %}
-
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-hover" id="userTableList">
-                        <thead>
-                        <tr>
-                            <th>Logo</th>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>Type</th>
-                            <th>Active</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
-
-{% block inlineJs %}
-    <script>
-        $(document).ready(function () {
-            $('#userTableList').DataTable({
-                "paging": true,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_company_index') | raw }}",
-                    "type": 'POST',
-                    global: true
-                },
-                "columns": [
-                    {
-                        "data": "logoImage",
-                        "render": function (data, type, row, meta) {
-                            return '<img src="' + data + '" width="' + row['logoWidth'] + '" alt="' + row['name'] + '" />';
-                        }
-                    },
-                    {"data": "name"},
-                    {"data": "code"},
-                    {"data": "type"},
-                    {
-                        "data": "active",
-                        "render": function (data) {
-                            if (data) {
-                                return '<i class="fas fa-check-square cheakicon"></i>';
-                            }
-                            return '<i class="far fa-square"></i>';
-                        }
-                    },
-                    {
-                        "data": "action",
-                        "render": function (data) {
-                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn "></i> Details</a>';
-                        }
-                    }
-                ]
-            });
-
-        });
-    </script>
-{% endblock %}
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\Company.4ed89b3c.png" > #}
+					<img class="img-set" src="{{ asset('build/images/Company.png') }}" alt="Logo">
 
 
+					<h2 class="title-heading2">Companies</h2>
+				</div>
+
+				<div class="order-pg-btn-flex">
+					<div
+						class="order-pg-btn1">
+						{# <img  src="\build\images\Receipt.bedbb541.png"  class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+
+						<div>
+
+							<p class="img-side-text-order">
+								New Orders(7)</p>
+						</div>
+					</div>
+
+					<div
+						class="order-pg-btn2">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+
+						<div>
+
+							<p class="img-side-text-order">
+								New Ouote(0)</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 bgcolor-table">
+					<div class="card" style="border-radius:15px !important;">
+						<div class="company-searcher">
+							<div class="input-container">
+								<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
+								<i class="fa fa-search" ></i>
+							</div>
+
+							{% if is_granted('ROLE_ADMIN')  %}
+								<div class="card-tools d-flex">
+									<ul class="nav nav-pills ml-auto" style="height: 30px;">
+										<li class="nav-item" style="margin-top: 30px !important;">
+											<a style="padding-top:4px;width:150px" href="{{ path('app_company_new') }}" class="btn btn-block btn-sm companies-btn">
+												<i class="fa fa-plus icn4"></i>
+												Add Company</a>
+										</li>
+									</ul>
+									<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></span>
+								</div>
+							{% endif %}
+							
+						</div>
+						<div class="card-body">
+							<table class="table table-bordered table-hover" id="userTableList">
+								<thead>
+									<tr>
+										<th>Logo</th>
+										<th>Name</th>
+										<th>Code</th>
+										<th>Type</th>
+										<th>Active</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		{% endblock %}
+
+		{% block inlineJs %}
+			 <script>
+						         $(document).ready(function () {
+			        let table = $('#userTableList').DataTable({
+			            paging: true,
+			            ordering: false,
+			            responsive: true,
+			            processing: true,
+			            serverSide: true,
+			            ajax: {
+			                url: "{{ path('app_company_index') }}",
+			                type: 'POST',
+			                data: function (d) {
+			                    d.search.value = $('#searchField').val(); // Bind search input to DataTables
+			                }
+			            },
+			            columns: [
+			                {
+			                    data: "logoImage",
+			                    render: function (data, type, row) {
+			                        return `<img src="${data}" width="${row.logoWidth}" alt="${row.name}" />`;
+			                    }
+			                },
+			                { data: "name" },
+			                { data: "code" },
+			                { data: "type" },
+			                {
+			                    data: "active",
+			                    render: function (data) {
+			                        return data
+			                            ? '<i class="fas fa-check-square cheakicon"></i>'
+			                            : '<i class="far fa-square"></i>';
+			                    }
+			                },
+			                {
+			                    data: "action",
+			                    render: function (data) {
+			                        return `<a href="${data.details}" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details
+			                                </a>`;
+			                    }
+			                }
+			            ],
+						 dom: 'lfrtip'
+			        });
+			
+			    // Move "Show Entries" dropdown next to Add Company button
+			    let entriesDropdown = $('#userTableList_length').detach();
+			    $('#entriesDropdownContainer').append(entriesDropdown);
+			
+			        // Trigger search on input change
+			        $('#searchField').on('input', function () {
+			            table.search(this.value).draw();
+			        });
+			    });
+						    </script>
+		{% endblock %}
