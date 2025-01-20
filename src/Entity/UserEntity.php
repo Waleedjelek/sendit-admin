@@ -306,13 +306,6 @@ class UserEntity implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
-        $filteredRoles = array_diff($roles, ['ROLE_USER']);
-        $this->role = reset($filteredRoles) ?: 'ROLE_USER'; // Assign first role or default
-        return $this;
-    }
-
     public function getProfileImageURL(): ?string
     {
         if (is_null($this->profileImage)) {
