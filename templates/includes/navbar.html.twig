@@ -6,7 +6,7 @@
         {% set menuList = getTopMenu() %}
         {% for menu in menuList %}
             <li class="nav-item">
-                <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
+                <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %} companies-btn">
                     <i class="{{ menu.iconClass }}"></i>
                     {{ menu.caption }}
                 </a>
@@ -14,7 +14,7 @@
         {% endfor %}
     </ul>
     <a href="http://127.0.0.1:8000/" class="brand-second-logo">
-        <img src="/build/images/logo.c0d7454d.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
+        <img src="/build/images/logo.svg" alt="Logo" class="brand-image" style="opacity: .8;float: none; height:40px">
     </a>
 
     <ul class="navbar-nav ml-auto">
@@ -23,7 +23,7 @@
         <li class="nav-item signup-icon dropdown user-menu show">
             <a href="#" class="nav-link dropdown-toggle signup-btn" data-toggle="dropdown" aria-expanded="true">
                 {% if app.user.profileImage is empty %}
-                    <img src="{{ asset('build/images/FemaleProfile.png') }}" class="user-image img-circle " alt="User Image">
+                    <img src="{{ asset('images/FemaleProfile.png') }}" class="user-image img-circle " alt="User Image">
                 {% else %}
                     <img src="/uploads/{{ app.user.profileImage }}" class="user-image img-circle elevation-2" alt="User Image">
                 {% endif %}
@@ -32,7 +32,7 @@
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                 <li class="user-header bg-primary" style="height: auto;">
                     {% if app.user.profileImage is empty %}
-                        <img src="{{ asset('build/images/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('images/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     {% else %}
                         <img src="/uploads/{{ app.user.profileImage }}" class="img-circle elevation-2" alt="User Image">
                     {% endif %}

@@ -139,6 +139,118 @@ class OrderController extends AdminController
         return new JsonResponse($data);
     }
 
+    // /**
+    //  * @Route("/", name="app_order_index", methods={"GET", "POST"})
+    //  */
+    // public function index(
+    //     Request $request,
+    //     CountryEntityRepository $countryEntityRepository
+    // ): Response {
+    //     $orderStatus = [
+    //         'Draft',
+    //         'Ready',
+    //         'Processing',
+    //         'Collected',
+    //         'Shipped',
+    //         'Cancelled',
+    //     ];
+
+    //     // Handle GET request to render the page
+    //     if ($request->isMethod('GET')) {
+    //         return $this->render('controller/order/index.html.twig', [
+    //             'orderStatus' => $orderStatus,
+    //         ]);
+    //     }
+
+    //     // Handle POST request for DataTables
+    //     $draw = (int) $request->get('draw', 0);
+    //     $start = (int) $request->get('start', 0);
+    //     $length = (int) $request->get('length', 10);
+    //     $length = $length < 0 ? 10 : $length;
+
+    //     $filterStatus = $request->get('filter_status', '');
+    //     $filterStartDate = $request->get('filter_start_date', '');
+    //     $filterEndDate = $request->get('filter_end_date', '');
+
+    //     $qb = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
+
+    //     // Handle search input
+    //     $search = $request->get('search');
+    //     $searchString = $search['value'] ?? null;
+    //     if (!empty($searchString)) {
+    //         $qb->andWhere('o.orderId LIKE :query')
+    //             ->setParameter('query', '%' . $searchString . '%');
+    //     }
+
+    //     // Filter by status
+    //     if (!empty($filterStatus)) {
+    //         $qb->andWhere('o.status = :status')
+    //             ->setParameter('status', $filterStatus);
+    //     } else {
+    //         $qb->andWhere('o.status != :draft')
+    //             ->setParameter('draft', 'Draft');
+    //     }
+
+    //     // Filter by date range
+    //     if (!empty($filterStartDate) && !empty($filterEndDate)) {
+    //         $qb->andWhere($qb->expr()->between('o.createdDate', ':startDate', ':endDate'))
+    //             ->setParameter('startDate', $filterStartDate . ' 00:00:00')
+    //             ->setParameter('endDate', $filterEndDate . ' 23:59:59');
+    //     }
+
+    //     // Pagination and ordering
+    //     $qb->setFirstResult($start)
+    //         ->setMaxResults($length)
+    //         ->orderBy('o.createdDate', 'DESC');
+
+    //     $results = $qb->getQuery()->getResult();
+
+    //     // Count total records for DataTables
+    //     $totalRecords = $this->em()->getRepository(UserOrderEntity::class)
+    //         ->createQueryBuilder('o')
+    //         ->select('COUNT(o.id)')
+    //         ->getQuery()
+    //         ->getSingleScalarResult();
+
+    //     // Build DataTables response
+    //     $data = [];
+    //     foreach ($results as $userOrderEntity) {
+    //         $data[] = [
+    //             'DT_RowId' => $userOrderEntity->getId(),
+    //             'orderId' => $userOrderEntity->getOrderId(),
+    //             'company' => $userOrderEntity->getSelectedCompany()->getCode(),
+    //             'method' => ucwords($userOrderEntity->getMethod()),
+    //             'from' => $userOrderEntity->getSourceCountry()->getCode(),
+    //             'to' => $userOrderEntity->getDestinationCountry()->getCode(),
+    //             'weight' => number_format($userOrderEntity->getFinalWeight(), 3),
+    //             'price' => number_format($userOrderEntity->getTotalPrice(), 2),
+    //             'user' => [
+    //                 'firstName' => $userOrderEntity->getUser()->getFirstName(),
+    //                 'lastName' => $userOrderEntity->getUser()->getLastName(),
+    //                 'email' => $userOrderEntity->getUser()->getEmail(),
+    //                 'mobile' => $userOrderEntity->getUser()->getMobileNumber(),
+    //             ],
+    //             'status' => $userOrderEntity->getStatus(),
+    //             'discounted' => $userOrderEntity->getDiscounted(),
+    //             'coupon' => $userOrderEntity->getCouponCode(),
+    //             'paymentStatus' => $userOrderEntity->getPaymentStatus(),
+    //             'createdDate' => $this->formatToTimezone($userOrderEntity->getCreatedDate()),
+    //             'action' => [
+    //                 'details' => $this->generateUrl('app_order_show', ['id' => $userOrderEntity->getId()]),
+    //             ],
+    //         ];
+    //     }
+
+    //     return new JsonResponse([
+    //         'draw' => $draw,
+    //         'recordsTotal' => $totalRecords,
+    //         'recordsFiltered' => $totalRecords,
+    //         'data' => $data,
+    //     ]);
+    // }
+
+
+
     /**
      * @Route("/{id}", name="app_order_show", methods={"GET","POST"})
      */
@@ -175,7 +287,7 @@ class OrderController extends AdminController
             $this->addLog(
                 'Order',
                 'Note',
-                '#'.$userOrderEntity->getOrderId().' - Added Note',
+                '#' . $userOrderEntity->getOrderId() . ' - Added Note',
                 $userOrderNoteEntity->getId()
             );
 
@@ -187,8 +299,11 @@ class OrderController extends AdminController
 
             $this->addFlash('message', 'Added note!');
 
-            return $this->redirectToRoute('app_order_show', ['id' => $userOrderEntity->getId()],
-                Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_order_show',
+                ['id' => $userOrderEntity->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->renderForm('controller/order/show.html.twig', [
@@ -231,7 +346,7 @@ class OrderController extends AdminController
                 $userOrderNoteEntity = new UserOrderNoteEntity();
                 $userOrderNoteEntity->setOrder($userOrderEntity);
                 $userOrderNoteEntity->setUser($currentUser);
-                $userOrderNoteEntity->setDescription('Updated tracking code - '.$trackingCode);
+                $userOrderNoteEntity->setDescription('Updated tracking code - ' . $trackingCode);
                 $userOrderNoteEntity->setOldStatus($currentStatus);
                 $userOrderNoteEntity->setNewStatus($currentStatus);
                 $userOrderNoteEntity->setCreatedDate(new \DateTime());
@@ -243,15 +358,18 @@ class OrderController extends AdminController
                 $this->addLog(
                     'Order',
                     'Tracking',
-                    '#'.$userOrderEntity->getOrderId().' - Updated tracking code - '.$trackingCode
+                    '#' . $userOrderEntity->getOrderId() . ' - Updated tracking code - ' . $trackingCode
                 );
 
                 $trackService->sendCustomerTrackingEmail($userOrderEntity);
 
                 $this->addFlash('message', 'Updated tracking!');
 
-                return $this->redirectToRoute('app_order_show', ['id' => $userOrderEntity->getId()],
-                    Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute(
+                    'app_order_show',
+                    ['id' => $userOrderEntity->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
             }
         }
 
@@ -317,7 +435,7 @@ class OrderController extends AdminController
         Request $request,
         UserOrderEntity $userOrderEntity
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$userOrderEntity->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $userOrderEntity->getId(), $request->request->get('_token'))) {
             try {
                 $orderId = $userOrderEntity->getId();
                 $orderOrderId = $userOrderEntity->getOrderId();
@@ -328,7 +446,7 @@ class OrderController extends AdminController
                 $this->addLog(
                     'Order',
                     'Delete',
-                    'Deleted Order - '.$orderOrderId,
+                    'Deleted Order - ' . $orderOrderId,
                     $orderId
                 );
 
@@ -336,8 +454,11 @@ class OrderController extends AdminController
             } catch (\Exception $exception) {
                 $this->addFlash('error', 'Unable to delete order!');
 
-                return $this->redirectToRoute('app_order_show', ['id' => $userOrderEntity->getId()],
-                    Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute(
+                    'app_order_show',
+                    ['id' => $userOrderEntity->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
             }
         }
 

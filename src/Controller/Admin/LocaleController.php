@@ -34,11 +34,19 @@ class LocaleController extends AdminController
             $length = 10;
         }
 
+        $search = $request->get('search');
+        $searchString = null;
+        if (null != $search && isset($search['value']) && !empty($search['value'])) {
+            $searchString = $search['value'];
+        }
         $qb = $this->em()->getRepository(LocaleEntity::class)->createQueryBuilder('l');
 
         $qb->setFirstResult($start);
         $qb->setMaxResults($length);
-
+        if (!empty($searchString)) {
+            $qb->andWhere(' ( l.code LIKE :query1) ');
+            $qb->setParameter('query1', '%'.$searchString.'%');
+        }
         $qb->add('orderBy', ' l.code ASC ');
         $result = $qb->getQuery()->getResult();
 

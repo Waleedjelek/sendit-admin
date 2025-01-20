@@ -45,8 +45,8 @@ class AuditController extends AdminController
         $qb->setMaxResults($length);
 
         if (!empty($searchString)) {
-            $qb->andWhere(' ( a.module LIKE :query1 OR  a.action LIKE :query1 OR  a.description LIKE :query1 OR  a.ip LIKE :query1 ) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
+            $qb->andWhere(' ( a.module LIKE :query1 OR  a.action LIKE :query1 OR  a.description LIKE :query1 OR  a.ip LIKE :query1 ) ');
         }
         $qb->andWhere($qb->expr()->gte('a.actionDate', ':date_until_from'));
         $qb->setParameter(':date_until_from', date('Y-m-d', strtotime('-4 week')).' 00:00:00');

@@ -8,14 +8,14 @@
 <div class="main-order-pg-btn-flex">
 
 <div class="accept-order-img">
-<img class="img-set"  src="{{ asset('build/images/User.png') }}" alt="Logo">
+<img class="img-set"  src="{{ asset('images/User.png') }}" alt="Logo">
 
 <h2 class="title-heading1"> Users</h2>
 </div>
 
 <div class="order-pg-btn-flex">
 <div class="order-pg-btn1">
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
 <div>
 
@@ -24,7 +24,7 @@
 </div>
 
 <div class="order-pg-btn2">
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
 <div>
 
@@ -111,7 +111,7 @@
                     <form method="post" style="display: inline;" action="{{ path('app_user_pass_reset', {'id': user.id}) }}"
                           onsubmit="return confirm('Are you sure you want to reset this user password?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('reset-password' ~ user.id) }}">
-                        <button style="width:178px;border-radius:20px" class="btn btn-danger"><i class="fas fa-key icon-key"></i> Password Rest</button>
+                        <button style="width:178px;border-radius:20px" class="btn btn-danger"><i class="fas fa-key icon-key"></i> Password Reset</button>
                     </form>
 
                     {% if is_granted('ROLE_SUPER_ADMIN')  %}
