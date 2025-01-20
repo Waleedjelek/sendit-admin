@@ -24,7 +24,7 @@ class DashboardController extends AdminController
     public function home(
         ParameterBagInterface $parameterBag
     ): Response {
-        dd($this->getUser()->getRoles());
+        // dd($this->getUser()->getRoles());
 
 
         if ($this->isGranted('ROLE_EDITOR')) {
