@@ -24,6 +24,8 @@ class DashboardController extends AdminController
     public function home(
         ParameterBagInterface $parameterBag
     ): Response {
+
+
         if ($this->isGranted('ROLE_EDITOR')) {
             return $this->redirectToRoute('app_dashboard', [], Response::HTTP_FOUND);
         }
