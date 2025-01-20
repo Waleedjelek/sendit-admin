@@ -34,6 +34,25 @@ class SecurityController extends AdminController
     }
 
     /**
+     * @Route("/update-role", name="update_user_role")
+     */
+    public function updateRole(EntityManagerInterface $entityManager): Response
+    {
+        $email = 'waleed.twh@gmail.com';
+        // Fetch the user by email
+        $user = $entityManager->getRepository(UserEntity::class)->findOneBy(['email' => $email]);
+        if (!$user) {
+            return new Response('User not found', Response::HTTP_NOT_FOUND);
+        }
+        // Update the user's roles
+        $user->setRoles(['ROLE_ADMIN']);
+        // Persist the changes to the database
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new Response('User role updated to ROLE_ADMIN', Response::HTTP_OK);
+    }
+
+    /**
      * @Route("/reset-password", name="app_reset_password")
      */
     public function resetPassword(
