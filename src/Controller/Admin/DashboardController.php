@@ -21,27 +21,17 @@ class DashboardController extends AdminController
      * @Route("/", name="app_home")
      * @Route("/admin/", name="app_admin_home")
      */
-    // public function home(
-    //     ParameterBagInterface $parameterBag
-    // ): Response {
-
-
-    //     if ($this->isGranted('ROLE_EDITOR')) {
-    //         return $this->redirectToRoute('app_dashboard', [], Response::HTTP_FOUND);
-    //     }
-    //     $redirectURL = $parameterBag->get('app_sendit_marketing_website_url');
-
-    //     return $this->redirect($redirectURL, Response::HTTP_SEE_OTHER);
-    // }
-
     public function home(
         ParameterBagInterface $parameterBag
     ): Response {
-        // if ($this->isGranted('ROLE_EDITOR')) {
-            return $this->redirectToRoute('update_user_role', [], Response::HTTP_FOUND);
-        // }
-        // $redirectURL = $parameterBag->get('app_sendit_marketing_website_url');
-        // return $this->redirect($redirectURL, Response::HTTP_SEE_OTHER);
+
+
+        if ($this->isGranted('ROLE_EDITOR')) {
+            return $this->redirectToRoute('app_dashboard', [], Response::HTTP_FOUND);
+        }
+        $redirectURL = $parameterBag->get('app_sendit_marketing_website_url');
+
+        return $this->redirect($redirectURL, Response::HTTP_SEE_OTHER);
     }
 
     /**
