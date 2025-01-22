@@ -1,185 +1,193 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quotes{% endblock %}
+{% block title %}Quotes
+{% endblock %}
 
 {% block body %}
 
 
-  <div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\Help.3a8f99be.png" > #}
-<img class="img-set"  src="{{ asset('build/images/Help.png') }}" alt="Logo">
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\Help.3a8f99be.png" > #}
+					<img class="img-set" src="{{ asset('images/Help.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 9px;">
 
-<h2 class="title-heading1">All  Ouotes</h2>
-</div>
+					<h2 class="title-heading1">All  Quotes
+					</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+				<div class="order-pg-btn-flex">
+					<div
+						class="order-pg-btn1">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
+							<p class="img-side-text-order">
+								New Orders(7)</p>
+						</div>
+					</div>
 
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+					<div
+						class="order-pg-btn2">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
-
-
-</div>
-</div>
-
-
-
-
-
-    <div class="row">
-        <div  class="col-12 bgcolor-table">
-            <div class="card"style="border-radius:15px !important;">
-               
+							<p class="img-side-text-order">
+								New Ouote(0)</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-                <div class="card-body">
+		</div>
+	</div>
 
-                    <div class="row align-items-center ">
-                        <div class="col-md-3" style="padding: 5px;">
-                            <select id="filter_status" name="filter_status" class="form-control filter-border">
-                                <option value="">Filter Status</option>
-                                {% for status in quoteStatus %}
-                                    <option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-3"  style="padding: 5px;">
-                            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;width:400px ;border-radius:5px;color:#46494C ;">
-                                <i class="fa fa-calendar calender-icn"></i>&nbsp;
-                                <span></span> <i class="fas fa-angle-down rotate-i  rotate-i1"></i>
-                            </div>
-                            <input type="hidden" id="filter_start_date" name="filter_start_date" />
-                            <input type="hidden" id="filter_end_date" name="filter_end_date" />
-                        </div>
-                    </div>
 
-                    <table class="table table-bordered table-hover" id="quotesTableList">
-                        <thead>
-                        <tr>
-                            <th>Quote ID</th>
-                            <th>Contact Name</th>
-                            <th>Type</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Details</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12 bgcolor-table">
+			<div class="card" style="border-radius:15px !important;">
+
+
+				<div class="card-body">
+
+					<div class="row align-items-center justify-content-between">
+						<div class="d-flex">
+							<div class="col-md-4" style="padding: 5px;">
+								<select id="filter_status" name="filter_status" class="form-control filter-border">
+									<option value="">Filter Status</option>
+									{% for status in quoteStatus %}
+										<option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="col-md-3" style="padding: 5px;">
+								<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;width:400px ;border-radius:5px;color:#46494C ;">
+									<i class="fa fa-calendar calender-icn"></i>&nbsp;
+									<span></span>
+									<i class="fas fa-angle-down rotate-i  rotate-i1"></i>
+								</div>
+								<input type="hidden" id="filter_start_date" name="filter_start_date"/>
+								<input type="hidden" id="filter_end_date" name="filter_end_date"/>
+							</div>
+
+						</div>
+						<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div>
+					</div>
+
+					<table class="table table-bordered table-hover" id="quotesTableList">
+						<thead>
+							<tr>
+								<th>Quote ID</th>
+								<th>Contact Name</th>
+								<th>Type</th>
+								<th>From</th>
+								<th>To</th>
+								<th>Status</th>
+								<th>Date</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block inlineCss %}
-    <link rel="stylesheet" href="{{ asset('build/js/daterangepicker/daterangepicker.css') }}">
+	<link rel="stylesheet" href="{{ asset('js/daterangepicker/daterangepicker.css') }}">
 {% endblock %}
 
-{% block inlineJs %}
-    <script src="{{ asset('build/js/daterangepicker/moment.min.js') }}"></script>
-    <script src="{{ asset('build/js/daterangepicker/daterangepicker.js') }}"></script>
+{% block inlineJs %} <script src="{{ asset('js/daterangepicker/moment.min.js') }}"></script>
+	 <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
 
-    <script>
-        let quotesTable;
-
-        $(document).ready(function () {
-
-            var start = moment().subtract(29, 'days');
-            var end = moment();
-
-            function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                $('#filter_start_date').val(start.format('YYYY-MM-DD'));
-                $('#filter_end_date').val(end.format('YYYY-MM-DD'));
-                if(quotesTable){
-                    quotesTable.ajax.reload();
-                }
-            }
-
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                }
-            }, cb);
-
-            cb(start, end);
-
-            $( "#filter_status" ).change(function() {
-                quotesTable.ajax.reload();
-            });
-
-            quotesTable = $('#quotesTableList').DataTable({
-                "paging": true,
-                "searching": true,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_quote_index') | raw }}",
-                    "type": 'POST',
-                    'data': function (params) {
-                        params.filter_status = $('#filter_status').val();
-                        params.filter_start_date = $('#filter_start_date').val();
-                        params.filter_end_date = $('#filter_end_date').val();
-                        return params;
-                    },
-                    global: true
-                },
-                "columns": [
-                    {"data": "orderId"},
-                    {"data": "contactName"},
-                    {"data": "type"},
-                    {"data": "from"},
-                    {"data": "to"},
-                    {"data": "status"},
-                    {"data": "createdDate"},
-                    {
-                        "data": "action",
-                        "render": function (data) {
-                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
-                        }
-                    }
-                ]
-            });
-
-            $('#btnSearch').click(function () {
-                quotesTable.ajax.reload();
-                return false;
-            });
-
-        });
-    </script>
+	 <script>
+		        let quotesTable;
+		
+		        $(document).ready(function () {
+		
+		            var start = moment().subtract(29, 'days');
+		            var end = moment();
+		
+		            function cb(start, end) {
+		                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+		                $('#filter_start_date').val(start.format('YYYY-MM-DD'));
+		                $('#filter_end_date').val(end.format('YYYY-MM-DD'));
+		                if(quotesTable){
+		                    quotesTable.ajax.reload();
+		                }
+		            }
+		
+		            $('#reportrange').daterangepicker({
+		                startDate: start,
+		                endDate: end,
+		                ranges: {
+		                    'Today': [moment(), moment()],
+		                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+		                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		                }
+		            }, cb);
+		
+		            cb(start, end);
+		
+		            $( "#filter_status" ).change(function() {
+		                quotesTable.ajax.reload();
+		            });
+		
+		            quotesTable = $('#quotesTableList').DataTable({
+		                "paging": true,
+		                "searching": true,
+		                "ordering": false,
+		                "responsive": true,
+		                "processing": true,
+		                "serverSide": true,
+		                "ajax": {
+		                    "url": "{{ path('app_quote_index') | raw }}",
+		                    "type": 'POST',
+		                    'data': function (params) {
+		                        params.filter_status = $('#filter_status').val();
+		                        params.filter_start_date = $('#filter_start_date').val();
+		                        params.filter_end_date = $('#filter_end_date').val();
+		                        return params;
+		                    },
+		                    global: true
+		                },
+		                "columns": [
+		                    {"data": "orderId"},
+		                    {"data": "contactName"},
+		                    {"data": "type"},
+		                    {"data": "from"},
+		                    {"data": "to"},
+		                    {"data": "status"},
+		                    {"data": "createdDate"},
+		                    {
+		                        "data": "action",
+		                        "render": function (data) {
+		                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
+		                        }
+		                    }
+		                ]
+		            });
+		
+		            $('#btnSearch').click(function () {
+		                quotesTable.ajax.reload();
+		                return false;
+		            });
+		 // Move "Show Entries" dropdown next to Add Company button
+					    let entriesDropdown = $('#quotesTableList_length').detach();
+					    $('#entriesDropdownContainer').append(entriesDropdown);
+		        });
+		    </script>
 {% endblock %}
-

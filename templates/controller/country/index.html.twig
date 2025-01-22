@@ -1,117 +1,135 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Countries{% endblock %}
+{% block title %}Countries
+{% endblock %}
 
 {% block body %}
-<div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\Middle East.5330047a.png" > #}
-<img class="img-set"  src="{{ asset('build/images/MiddleEast.png') }}" alt="Logo">
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\Middle East.5330047a.png" > #}
+					<img class="img-set" src="{{ asset('images/MiddleEast.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 10px;">
 
-<h2 class="title-heading1"> Countries</h2>
-</div>
+					<h2 class="title-heading1">
+						Countries</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png"class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+				<div class="order-pg-btn-flex">
+					<div
+						class="order-pg-btn1">
+						{# <img  src="\build\images\Receipt.bedbb541.png"class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
+							<p class="img-side-text-order">
+								New Orders(7)</p>
+						</div>
+					</div>
 
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+					<div
+						class="order-pg-btn2">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
+							<p class="img-side-text-order">
+								New Ouote(0)</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    <div class="row">
-        <div  class="col-12 bgcolor-table">
-            <div class="card"style="border-radius:15px !important;">
-                <div class="card-header">
-                  <div class="company-searcher">
-                    <div class="input-container">
-      <input class="search-feild-text"  type="text" placeholder="Search">
-      <i class="fa fa-search"></i>
-    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-hover" id="countryTableList">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>Dail Code</th>
-                            <th>Flag</th>
-                            <th>Sort</th>
-                            <th>Active</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="row">
+				<div class="col-12 bgcolor-table">
+					<div class="card" style="border-radius:15px !important;">
+						<div class="card-header">
+							<div class="company-searcher">
+								<div class="input-container">
+									<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
+									<i class="fa fa-search"></i>
+								</div>
+								<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div>
+							</div>
+							<div class="card-body">
+								<table class="table table-bordered table-hover" id="countryTableList">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Code</th>
+											<th>Dail Code</th>
+											<th>Flag</th>
+											<th>Sort</th>
+											<th>Active</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 
-{% endblock %}
+			{% endblock %}
 
-{% block inlineJs %}
-    <script>
-        $(document).ready(function () {
-            $('#countryTableList').DataTable({
-                "paging": true,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_country_index') | raw }}",
-                    "type": 'POST',
-                    global: true
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "code"},
-                    {"data": "dailCode"},
-                    {
-                        "data": "flag",
-                        "render": function (data, type, row, meta) {
-                            return '<img src="' + data + '" width="32" alt="' + row['name'] + '" />';
-                        }
-                    },
-                    {"data": "sortOrder"},
-                    {
-                        "data": "active",
-                        "render": function (data) {
-                            if (data) {
-                                return '<i class="fas fa-check-square"></i>';
-                            }
-                            return '<i class="far fa-square"></i>';
-                        }
-                    },
-                    {
-                        "data": "action",
-                        "render": function (data) {
-                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit icn"></i> Edit</a>';
-                        }
-                    }
-                ]
-            });
+			{% block inlineJs %}
+				 <script>
+				        $(document).ready(function () {
+				            let table = $('#countryTableList').DataTable({
+				                "paging": true,
+				                "ordering": false,
+				                "responsive": true,
+				                "processing": true,
+				                "serverSide": true,
+				                "ajax": {
+				                    "url": "{{ path('app_country_index') | raw }}",
+				                    "type": 'POST',
+				                    "data": function (d) {
+                                     d.search.value = $('#searchField').val(); // Pass search input value to backend
+                                    }
+				                },
+				                "columns": [
+				                    {"data": "name"},
+				                    {"data": "code"},
+				                    {"data": "dailCode"},
+				                    {
+				                        "data": "flag",
+				                        "render": function (data, type, row, meta) {
+				                            return '<img src="' + data + '" width="32" alt="' + row['name'] + '" />';
+				                        }
+				                    },
+				                    {"data": "sortOrder"},
+				                    {
+				                        "data": "active",
+				                        "render": function (data) {
+				                            if (data) {
+				                                return '<i class="fas fa-check-square"></i>';
+				                            }
+				                            return '<i class="far fa-square"></i>';
+				                        }
+				                    },
+				                    {
+				                        "data": "action",
+				                        "render": function (data) {
+				                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit icn"></i> Edit</a>';
+				                        }
+				                    }
+				                ]
+				            });
 
-        });
-    </script>
-{% endblock %}
+							
+		    // Move "Show Entries" dropdown next to Add Company button
+				    let entriesDropdown = $('#countryTableList_length').detach();
+				    $('#entriesDropdownContainer').append(entriesDropdown);
 
+				                // Trigger search on input change
+                                $('#searchField').on('input', function () {
+                                 table.search(this.value).draw();
+                             });
+				        });
+				    </script>
+			{% endblock %}

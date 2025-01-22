@@ -1,113 +1,156 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}Users
+{% endblock %}
 
 {% block body %}
-   <div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\User.01ee2492.png" > #}
-<img class="img-set"  src="{{ asset('build/images/User.png') }}" alt="Logo">
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\User.01ee2492.png" > #}
+					<img class="img-set" src="{{ asset('images/User.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 10px;">
 
-<h2 class="title-heading1">Users</h2>
-</div>
+					<h2 class="title-heading1">Users</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+				<div class="order-pg-btn-flex">
+					<div
+						class="order-pg-btn1">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
+							<p class="img-side-text-order">
+								New Orders(7)</p>
+						</div>
+					</div>
 
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('build/images/Receipt.png') }}" alt="Logo">
+					<div
+						class="order-pg-btn2">
+						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
+						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
 
-<div>
+						<div>
 
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
+							<p class="img-side-text-order">
+								New Ouote(0)</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-    <div class="row">
-        <div  class="col-12 bgcolor-table">
-            <div class="card"style="border-radius:15px !important;">
-                <div class="card-header">
-                   <div class="company-searcher">
-                    <div class="input-container">
-      <input class="search-feild-text"  type="text" placeholder="Search">
-      <i class="fa fa-search"></i>
-    </div>
-                    {% if is_granted('ROLE_ADMIN')  %}
-                        <div class="card-tools">
-                            <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item" id="for-border2">
-                                    <a style="width:130px;padding-top:-1px !important" href="{{ path('app_user_new') }}" class="btn btn-primary btn-block btn-sm pakagestype-btn ">
-                                        <i class="fa fa-plus icn41pakages2"></i> Add User</a>
-                                </li>
-                            </ul>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-hover" id="userTableList">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Registered</th>
-                            <th>Last Login</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="row">
+				<div class="col-12 bgcolor-table">
+					<div class="card" style="border-radius:15px !important;">
+						<div class="card-header">
+							<div class="company-searcher">
+								<div class="input-container">
+									<input id="searchField" class="search-feild-text" type="text" placeholder="Search"
+									style="margin-top: 30px;">
+									<i class="fa fa-search"></i>
+								</div>
+								{% if is_granted('ROLE_ADMIN')  %}
+									<div class="card-tools d-flex">
+										<ul class="nav nav-pills ml-auto" style="height: 30px;">
+											<li class="nav-item" id="for-border2" style="margin-top: 30px !important;">
+												<a style="width:130px; padding: 8px !important; margin-right: 10px !important; height: 40px !important;" href="{{ path('app_user_new') }}" class="btn btn-primary btn-block btn-sm pakagestype-btn companies-btn">
+													<i class="fa fa-plus icn41pakages2"></i>
+													Add User</a>
+											</li>
+											<li class="nav-item" id="for-border2" style="margin-top: 30px !important;">
+												<a style="width:140px !important; height: 40px !important; padding: 8px !important;" href="{{ path('app_user_download') }}" class="btn btn-primary btn-block btn-sm pakagestype-btn companies-btn">
+											Download<i class="fa fa-download pt-1 icn41pakages2" style="padding-left: 10px; padding-right: 0px"></i>
+										</a>
+											</li>
+										</ul>
+										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></span>
+									</div>
+								{% endif %}
+							</div>
+							<div class="card-body">
+								<table class="table table-bordered table-hover" id="userTableList">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Phone</th>
+											<th>Role</th>
+											<th>Registered</th>
+											<th>Last Login</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 
-{% endblock %}
+			{% endblock %}
 
-{% block inlineJs %}
-    <script>
-        $(document).ready(function () {
-            $('#userTableList').DataTable({
-                "paging": true,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_user_index') | raw }}",
-                    "type": 'POST',
-                    global: true
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "email"},
-                    {"data": "role"},
-                    {"data": "created"},
-                    {"data": "lastLogin"},
-                    {
-                        "data": "action",
-                        "render": function (data) {
-                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
-                        }
-                    }
-                ]
-            });
-
+			{% block inlineJs %} <script>
+								        $(document).ready(function () {
+								             let table = $('#userTableList').DataTable({
+								                "paging": true,
+								                "ordering": false,
+								                "responsive": true,
+								                "processing": true,
+								                "serverSide": true,
+								                "ajax": {
+								                    "url": "{{ path('app_user_index') | raw }}",
+								                    "type": 'POST',
+								                    "data": function (d) {
+                    								d.search.value = $('#searchField').val(); // Pass search input value to backend
+               									}
+								                },
+								                "columns": [
+								    {"data": "name"},
+								    {"data": "email"},
+								    {"data": "phone"},
+								    {"data": "role"},
+								    {"data": "created"},
+								    {"data": "lastLogin"},
+								    {
+								        "data": "action",
+								        "render": function (data) {
+								            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
+								        }
+								    },
+								]
+								
+								            });
+																						 // Move "Show Entries" dropdown next to Add Company button
+								    let entriesDropdown = $('#userTableList_length').detach();
+								    $('#entriesDropdownContainer').append(entriesDropdown);
+								 // Trigger search on input change
+        $('#searchField').on('input', function () {
+            table.search(this.value).draw();
         });
-    </script>
-{% endblock %}
-
+								        });
+								    </script>
+				 <script>
+								 $(document).on('click', '.download-btn', function () {
+								        const user = $(this).data('user'); // Get user data
+								
+								        // Convert user data to CSV format
+								        const csvContent = `Name,Email,Phone,Role,Registered,Last Login\n` +
+								            `"${user.name}","${user.email}","${user.phone}","${user.role}","${user.created}","${user.lastLogin}"`;
+								
+								        const blob = new Blob([csvContent], { type: 'text/csv' });
+								        const url = window.URL.createObjectURL(blob);
+								        const a = document.createElement('a');
+								        a.href = url;
+								        a.download = `${user.name.replace(/\s+/g, '_')}_data.csv`; // Create a file name
+								        document.body.appendChild(a);
+								        a.click();
+								        document.body.removeChild(a);
+								        window.URL.revokeObjectURL(url);
+								    });
+								
+								    </script>
+			{% endblock %}

@@ -27,11 +27,92 @@ class CompanyController extends AdminController
     /**
      * @Route("/", name="app_company_index", methods={"GET","POST"})
      */
+
+    //  public function index(Request $request): Response
+    //  {
+    //      // Handle GET request for rendering the page
+    //      if ($request->isMethod('get')) {
+    //          return $this->render('controller/company/index.html.twig');
+    //      }
+     
+    //      // DataTables parameters
+    //      $draw = $request->get('draw', 0);
+    //      $start = $request->get('start', 0);
+    //      $length = $request->get('length', 10);
+    //      $length = ($length < 0) ? 10 : $length;
+     
+    //      $search = $request->get('search', []);
+    //      $searchString = $search['value'] ?? null;
+     
+    //      // Query builder for data
+    //      $qb = $this->em()->getRepository('App:CompanyEntity')->createQueryBuilder('c');
+    //      $qb->setFirstResult($start)
+    //          ->setMaxResults($length);
+     
+    //      // Apply search filter
+    //      if (!empty($searchString)) {
+    //          $qb->andWhere('c.name LIKE :query ')
+    //             ->setParameter('query', '%' . $searchString . '%');
+    //      }
+     
+    //      // Apply sorting
+    //      $qb->orderBy('c.name', 'ASC');
+    //      $result = $qb->getQuery()->getResult();
+     
+    //      // Clone query builder for counting total records
+    //      $qb2 = clone $qb;
+    //      $qb2->resetDQLPart('orderBy');
+    //      $qb2->resetDQLPart('having');
+    //      $qb2->select('COUNT(c) AS cnt');
+    //      $countResult = $qb2->getQuery()->setFirstResult(0)->getScalarResult();
+    //      $totalCount = $countResult[0]['cnt'];
+     
+    //      // Prepare response data
+    //      $data = [
+    //          'draw' => $draw,
+    //          'recordsTotal' => $totalCount,
+    //          'recordsFiltered' => $totalCount,
+    //          'data' => [],
+    //      ];
+     
+    //      if (!empty($result)) {
+    //          foreach ($result as $companyEntity) {
+    //              $companyEntity->setImagePrefix($request->getSchemeAndHttpHost() . '/uploads');
+     
+    //              $data['data'][] = [
+    //                  'DT_RowId' => $companyEntity->getId(),
+    //                  'name' => $companyEntity->getName(),
+    //                  'code' => $companyEntity->getCode(),
+    //                  'type' => $companyEntity->getType() === 'dom' ? 'Domestic' : 'International',
+    //                  'logoImage' => $companyEntity->getLogoImageURL(),
+    //                  'logoWidth' => $companyEntity->getLogoWidth(),
+    //                  'active' => $companyEntity->isActive(),
+    //                  'action' => [
+    //                      'details' => $this->generateUrl('app_company_show', ['id' => $companyEntity->getId()]),
+    //                  ],
+    //              ];
+    //          }
+    //      }
+     
+    //      return new JsonResponse($data);
+    //  }
     public function index(
         Request $request
     ): Response {
         if ($request->isMethod('get')) {
-            return $this->render('controller/company/index.html.twig');
+            // return $this->render('controller/company/index.html.twig');
+            $activeCompaniesCount = $this->em()
+            ->getRepository('App:CompanyEntity')
+            ->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.active = :active')
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $this->render('controller/company/index.html.twig', [
+            'activeCompaniesCount' => $activeCompaniesCount
+        ]);
         }
 
         $draw = $request->get('draw', 0);
@@ -53,7 +134,7 @@ class CompanyController extends AdminController
         $qb->setMaxResults($length);
 
         if (!empty($searchString)) {
-            $qb->andWhere(' ( c.name LIKE :query1 OR  c.description LIKE :query1 ) ');
+            $qb->andWhere(' ( c.name LIKE :query1 OR c.code LIKE :query1 OR c.type LIKE :query1) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
 
@@ -133,7 +214,7 @@ class CompanyController extends AdminController
             $this->addLog(
                 'Company',
                 'Add',
-                'Added Company - '.$form->get('name')->getData(),
+                'Added Company - ' . $form->get('name')->getData(),
                 $companyEntity->getId()
             );
             $this->addFlash('message', 'Added company!');
@@ -189,14 +270,17 @@ class CompanyController extends AdminController
             $this->addLog(
                 'Company',
                 'Edit',
-                'Edited Company - '.$form->get('name')->getData(),
+                'Edited Company - ' . $form->get('name')->getData(),
                 $companyEntity->getId()
             );
 
             $this->addFlash('message', 'Company updated!');
 
-            return $this->redirectToRoute('app_company_show', ['id' => $companyEntity->getId()],
-                Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_company_show',
+                ['id' => $companyEntity->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->renderForm('controller/company/edit.html.twig', [
@@ -214,7 +298,7 @@ class CompanyController extends AdminController
         CompanyEntity $companyEntity,
         CompanyService $companyService
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$companyEntity->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $companyEntity->getId(), $request->request->get('_token'))) {
             try {
                 $companyId = $companyEntity->getId();
                 $companyName = $companyEntity->getName();
@@ -227,7 +311,7 @@ class CompanyController extends AdminController
                 $this->addLog(
                     'Company',
                     'Delete',
-                    'Deleted Company - '.$companyName,
+                    'Deleted Company - ' . $companyName,
                     $companyId
                 );
 
@@ -235,8 +319,11 @@ class CompanyController extends AdminController
             } catch (\Exception $exception) {
                 $this->addFlash('error', 'Unable to delete company!');
 
-                return $this->redirectToRoute('app_company_show', ['id' => $companyEntity->getId()],
-                    Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute(
+                    'app_company_show',
+                    ['id' => $companyEntity->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
             }
         }
 
@@ -258,7 +345,7 @@ class CompanyController extends AdminController
             $qb = $this->em()->getRepository('App:ZoneEntity')->createQueryBuilder('z');
             $qb->setFirstResult(0);
             $qb->setMaxResults(9999);
-            $qb->andWhere(" z.company = '".$companyEntity->getId()."' ");
+            $qb->andWhere(" z.company = '" . $companyEntity->getId() . "' ");
             $qb->add('orderBy', ' z.code ASC ');
             $zoneList = $qb->getQuery()->getResult();
 
@@ -277,9 +364,9 @@ class CompanyController extends AdminController
 
             $qb->setFirstResult(0);
             $qb->setMaxResults(999999);
-            $qb->andWhere(" jzone.company = '".$companyEntity->getId()."' ");
-            $qb->andWhere(" zp.type = '".$formData['type']."' ");
-            $qb->andWhere(" zp.for = '".$formData['for']."' ");
+            $qb->andWhere(" jzone.company = '" . $companyEntity->getId() . "' ");
+            $qb->andWhere(" zp.type = '" . $formData['type'] . "' ");
+            $qb->andWhere(" zp.for = '" . $formData['for'] . "' ");
             $qb->add('orderBy', ' zp.weight ASC ');
             $priceList = $qb->getQuery()->getResult();
 
@@ -302,22 +389,22 @@ class CompanyController extends AdminController
             }
 
             $downloadFilename = date('Ymd')
-                .'-'.$companyEntity->getName()
-                .'-'.$companyEntity->getType()
-                .'-'.$formData['for']
-                .'-'.$formData['type'];
-            $downloadFilename = $slugger->slug($downloadFilename).'.csv';
+                . '-' . $companyEntity->getName()
+                . '-' . $companyEntity->getType()
+                . '-' . $formData['for']
+                . '-' . $formData['type'];
+            $downloadFilename = $slugger->slug($downloadFilename) . '.csv';
 
             $this->addLog(
                 'Company',
                 'Export',
-                'Export CSV - '.$companyEntity->getName(),
+                'Export CSV - ' . $companyEntity->getName(),
                 $companyEntity->getId()
             );
 
             $response = new Response();
             $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set('Content-Disposition', 'attachment; filename="'.$downloadFilename.'"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . $downloadFilename . '"');
             $response->setContent($csv->toString());
 
             return $response;

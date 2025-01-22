@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{ url('app_home') }}" class="brand-link">
-        <img src="{{ asset('build/images/logo.svg') }}" alt="Logo"
+        <img src="{{ asset('images/logo-sidebar.png') }}" alt="Logo"
              class="brand-image" style="opacity: .8;float: none;height:45px">
     </a>
  
@@ -11,8 +11,8 @@
             {% set menuList = getLeftMenu() %}
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                  {% for menu in menuList %}
-                     <li class="nav-item">
-                         <a href="{{ menu.url }}" class="nav-link {% if menu.active %} active {% endif %}">
+                     <li class="nav-item ">
+                         <a href="{{ menu.url }}" class="nav-link  {% if menu.active %} active {% endif %} ">
                               <div style="display: flex;">
                              <div style="margin-right:15px" ><i class="{{ menu.iconClass }}"></i></div>
                             <div> <p >{{ menu.caption }}</p></div>

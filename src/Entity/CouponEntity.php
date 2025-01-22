@@ -41,7 +41,10 @@ class CouponEntity
      */
     private ?\DateTime $createdDate;
   
-
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $modifiedDate = null;
     /**
      * @param string $id
      */
@@ -99,6 +102,18 @@ class CouponEntity
     public function setCreatedDate(?\DateTime $createdDate): self
     {
         $this->createdDate = $createdDate;
+
+        return $this;
+    }
+    
+    public function getModifiedDate(): ?\DateTime
+    {
+        return $this->modifiedDate;
+    }
+
+    public function setModifiedDate(?\DateTime $modifiedDate): self
+    {
+        $this->modifiedDate = $modifiedDate;
 
         return $this;
     }
