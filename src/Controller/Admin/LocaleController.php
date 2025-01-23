@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Classes\Controller\AdminController;
 use App\Entity\LocaleEntity;
 use App\Form\LocaleEntityType;
+use App\Service\OrderQuoteService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LocaleController extends AdminController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_locale_index", methods={"GET","POST"})
      */
@@ -24,7 +31,11 @@ class LocaleController extends AdminController
         Request $request
     ): Response {
         if ($request->isMethod('get')) {
-            return $this->render('controller/locale/index.html.twig');
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/locale/index.html.twig',[
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+            ]);
         }
 
         $draw = $request->get('draw', 0);

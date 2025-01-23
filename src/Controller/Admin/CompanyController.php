@@ -8,6 +8,7 @@ use App\Entity\ZonePriceEntity;
 use App\Form\CompanyEntityType;
 use App\Form\ZonePriceExportType;
 use App\Service\CompanyService;
+use App\Service\OrderQuoteService;
 use App\Service\TrackService;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,6 +25,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class CompanyController extends AdminController
 {
+
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_company_index", methods={"GET","POST"})
      */
@@ -109,8 +117,10 @@ class CompanyController extends AdminController
             ->setParameter('active', true)
             ->getQuery()
             ->getSingleScalarResult();
-
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->render('controller/company/index.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'activeCompaniesCount' => $activeCompaniesCount
         ]);
         }

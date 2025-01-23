@@ -6,6 +6,7 @@ use App\Classes\Controller\AdminController;
 use App\Entity\ZonePriceEntity;
 use App\Form\PriceSearchType;
 use App\Repository\CountryEntityRepository;
+use App\Service\OrderQuoteService;
 use App\Service\ZoneService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PriceSearchController extends AdminController
 {
+
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_price_search", methods={"GET"})
      */
@@ -30,8 +38,10 @@ class PriceSearchController extends AdminController
 
         $form = $this->createForm(PriceSearchType::class, null, ['countries' => $countries]);
         $form->handleRequest($request);
-
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->renderForm('controller/price_search/index.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'form' => $form,
         ]);
     }

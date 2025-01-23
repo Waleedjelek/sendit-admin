@@ -17,31 +17,7 @@
 						Countries</h2>
 				</div>
 
-				<div class="order-pg-btn-flex">
-					<div
-						class="order-pg-btn1">
-						{# <img  src="\build\images\Receipt.bedbb541.png"class="img-order-pix"> #}
-						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-						<div>
-
-							<p class="img-side-text-order">
-								New Orders(7)</p>
-						</div>
-					</div>
-
-					<div
-						class="order-pg-btn2">
-						{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-						<img class="img-order-pix" src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-						<div>
-
-							<p class="img-side-text-order">
-								New Ouote(0)</p>
-						</div>
-					</div>
-				</div>
+				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
 			</div>
 
 			<div class="row">

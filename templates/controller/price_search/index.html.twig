@@ -1,136 +1,113 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Price Search{% endblock %}
+{% block title %}Price Search
+{% endblock %}
 
 {% block body %}
 
-<div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-{# <img class="img-set" src="\build\images\Card Security Code.png" > #}
-<h2 class="title-heading">Price Search</h2>
-</div>
+				<div
+					class="accept-order-img">
+					{# <img class="img-set" src="\build\images\Card Security Code.png" > #}
+					<h2 class="title-heading">Price Search</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
-
-<div class="order-pg-btn2">
-{# <img  src="\build\images\Receipt.bedbb541.png" class="img-order-pix"> #}
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
+				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+			</div>
 
 
-    <div class="row">
-        <div  class="col-12 bgcolor-table2">
-            <div class="card" style="border-radius:10px !important">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i style="  height: 15px;" class="fas fa-money-check-alt mr-1 "></i>
-                        Price Search
-                    </h3>
-                </div>
-                {{ form_start(form) }}
-                <div class="card-body">
-                    {{ form_widget(form) }}
-                </div>
+			<div class="row">
+				<div class="col-12 bgcolor-table2">
+					<div class="card" style="border-radius:10px !important">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i style="  height: 15px;" class="fas fa-money-check-alt mr-1 "></i>
+								Price Search
+							</h3>
+						</div>
+						{{ form_start(form) }}
+						<div class="card-body">
+							{{ form_widget(form) }}
+						</div>
 
-                </div>
-                </div>
-
-
-
-                <div  style="background-color: #eaeaea ;padding-top:10px"  class="card-footer">
-                    <button style="background-color: transparent ; box-shadow: -1px 0px 5px 1px rgba(0, 0, 0, 0.1); " class="btn btn-danger btn-back icn4 search-bgremove" id="btnSearch">Search</button>
-                </div>
-                    </div>
-                {{ form_end(form) }}
+					</div>
+				</div>
 
 
+				<div style="background-color: #eaeaea ;padding-top:10px" class="card-footer">
+					<button style="background-color: transparent ; box-shadow: -1px 0px 5px 1px rgba(0, 0, 0, 0.1); " class="btn btn-danger btn-back icn4 search-bgremove" id="btnSearch">Search</button>
+				</div>
+			</div>
+			{{ form_end(form) }}
 
 
-                <div style="  overflow-x: auto !important;background:white; border-radius:10px !important" class="card-body  bgcolor-table2" >
-                 <div class="row bgcolor-table2">
-        <div style="background:white;padding:15px ;border-radius:10px !important" class="col-12 bgcolor-table2">
-                    <table class="table table-bordered table-hover " id="priceTableList">
-                        <thead>
-                        <tr>
-                            <th>Company</th>
-                            <th>Zone</th>
-                            <th>Method</th>
-                            <th>Type</th>
-                            <th>Weight (kg)</th>
-                            <th>Price (AED)</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    
-{% endblock %}
-
-{% block inlineJs %}
-    <script>
-        let priceTable;
-
-        $(document).ready(function () {
-            priceTable = $('#priceTableList').DataTable({
-                "paging": false,
-                "searching": false,
-                "ordering": false,
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ path('app_price_search_data') | raw }}",
-                    "type": 'POST',
-                    'data': function (params) {
-                        params.from = $('#price_search_countryFrom').val();
-                        params.to = $('#price_search_countryTo').val();
-                        params.type = $('#price_search_type').val();
-                        params.weight = $('#price_search_weight').val();
-                        params.length = $('#price_search_length').val();
-                        params.width = $('#price_search_width').val();
-                        params.height = $('#price_search_height').val();
-                        return params;
-                    },
-                    global: true
-                },
-                "columns": [
-                    {"data": "name"},
-                    {"data": "zone"},
-                    {"data": "method"},
-                    {"data": "type"},
-                    {"data": "weight"},
-                    {"data": "price"},
-                ]
-            });
-
-            $('#btnSearch').click(function () {
-                priceTable.ajax.reload();
-                return false;
-            });
-
-        });
-    </script>
-{% endblock %}
+			<div style="  overflow-x: auto !important;background:white; border-radius:10px !important" class="card-body  bgcolor-table2">
+				<div class="row bgcolor-table2">
+					<div style="background:white;padding:15px ;border-radius:10px !important" class="col-12 bgcolor-table2">
+						<table class="table table-bordered table-hover " id="priceTableList">
+							<thead>
+								<tr>
+									<th>Company</th>
+									<th>Zone</th>
+									<th>Method</th>
+									<th>Type</th>
+									<th>Weight (kg)</th>
+									<th>Price (AED)</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
 
 
+		{% endblock %}
+
+		{% block inlineJs %}
+			 <script>
+			        let priceTable;
+			
+			        $(document).ready(function () {
+			            priceTable = $('#priceTableList').DataTable({
+			                "paging": false,
+			                "searching": false,
+			                "ordering": false,
+			                "responsive": true,
+			                "processing": true,
+			                "serverSide": true,
+			                "ajax": {
+			                    "url": "{{ path('app_price_search_data') | raw }}",
+			                    "type": 'POST',
+			                    'data': function (params) {
+			                        params.from = $('#price_search_countryFrom').val();
+			                        params.to = $('#price_search_countryTo').val();
+			                        params.type = $('#price_search_type').val();
+			                        params.weight = $('#price_search_weight').val();
+			                        params.length = $('#price_search_length').val();
+			                        params.width = $('#price_search_width').val();
+			                        params.height = $('#price_search_height').val();
+			                        return params;
+			                    },
+			                    global: true
+			                },
+			                "columns": [
+			                    {"data": "name"},
+			                    {"data": "zone"},
+			                    {"data": "method"},
+			                    {"data": "type"},
+			                    {"data": "weight"},
+			                    {"data": "price"},
+			                ]
+			            });
+			
+			            $('#btnSearch').click(function () {
+			                priceTable.ajax.reload();
+			                return false;
+			            });
+			
+			        });
+			    </script>
+		{% endblock %}

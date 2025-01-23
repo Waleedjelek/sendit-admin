@@ -10,6 +10,7 @@ use App\Form\UserChangePasswordType;
 use App\Form\UserEntityType;
 use App\Form\UserProfileType;
 use App\Repository\UserEntityRepository;
+use App\Service\OrderQuoteService;
 use App\Service\UserService;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberFormat;
@@ -32,6 +33,12 @@ use Symfony\Component\Security\Core\User\User;
 class UserController extends AdminController
 {
 
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/users/download", name="app_user_download")
      */
@@ -81,7 +88,11 @@ class UserController extends AdminController
         UserEntityRepository $userRepository
     ): Response {
         if ($request->isMethod('get')) {
-            return $this->render('controller/user/index.html.twig');
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/user/index.html.twig',[
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+            ]);
         }
 
         $draw = $request->get('draw', 0);

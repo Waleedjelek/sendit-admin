@@ -8,6 +8,7 @@ use App\Entity\QuoteNoteEntity;
 use App\Entity\UserEntity;
 use App\Form\QuoteAddNoteType;
 use App\Repository\CountryEntityRepository;
+use App\Service\OrderQuoteService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class QuoteController extends AdminController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_quote_index",  methods={"GET","POST"})
      */
@@ -35,7 +42,10 @@ class QuoteController extends AdminController
         ];
 
         if ($request->isMethod('get')) {
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
             return $this->renderForm('controller/quote/index.html.twig', [
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
                 'quoteStatus' => $quoteStatus,
             ]);
         }
