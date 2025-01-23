@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Classes\Controller\AdminController;
+use App\Service\OrderQuoteService;
+use App\Entity\QuoteEntity;
 use App\Entity\UserEntity;
 use App\Entity\UserOrderEntity;
 use App\Entity\UserOrderNoteEntity;
@@ -24,6 +26,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OrderController extends AdminController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
+
     /**
      * @Route("/", name="app_order_index",  methods={"GET","POST"})
      */
@@ -40,11 +49,16 @@ class OrderController extends AdminController
             'Cancelled',
         ];
 
-        if ($request->isMethod('get')) {
-            return $this->renderForm('controller/order/index.html.twig', [
+       // Handle GET request to render the page
+        if ($request->isMethod('GET')) {
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/order/index.html.twig', [
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
                 'orderStatus' => $orderStatus,
             ]);
         }
+     
 
         $draw = $request->get('draw', 0);
         $start = $request->get('start', 0);
