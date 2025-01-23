@@ -24,6 +24,7 @@ parameters:
     app_17_track_api_key: '%env(TRACK17_API_KEY)%'
 
 services:
+    App\Service\OrderQuoteService: ~
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
