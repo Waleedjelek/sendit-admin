@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Classes\Controller\AdminController;
+use App\Service\OrderQuoteService;
 use App\Entity\AuditLogEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuditController extends AdminController
 {
+    private $orderQuoteService;
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_audit_index", methods={"GET","POST"})
      */
@@ -23,7 +29,11 @@ class AuditController extends AdminController
         Request $request
     ): Response {
         if ($request->isMethod('get')) {
-            return $this->render('controller/audit/index.html.twig');
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/audit/index.html.twig',[
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+            ]);
         }
 
         $draw = $request->get('draw', 0);

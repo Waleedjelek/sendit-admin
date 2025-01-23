@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Classes\Controller\AdminController;
 use App\Entity\UserTransactionEntity;
 use App\Repository\CountryEntityRepository;
+use App\Service\OrderQuoteService;
 use App\Service\TransactionService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TransactionController extends AdminController
 {
+
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_transaction_index",  methods={"GET","POST"})
      */
@@ -26,7 +34,10 @@ class TransactionController extends AdminController
         CountryEntityRepository $countryEntityRepository
     ): Response {
         if ($request->isMethod('get')) {
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
             return $this->renderForm('controller/transaction/index.html.twig', [
+                    'newOrders' => $data['newOrders'],
+                    'newQuotes' => $data['newQuotes'],
             ]);
         }
 

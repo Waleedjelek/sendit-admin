@@ -6,6 +6,7 @@ use App\Classes\Controller\AdminController;
 use App\Entity\CountryEntity;
 use App\Form\CountryEntityType;
 use App\Repository\CountryEntityRepository;
+use App\Service\OrderQuoteService;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CountryController extends AdminController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_country_index", methods={"GET","POST"})
      */
@@ -26,7 +33,11 @@ class CountryController extends AdminController
         CountryEntityRepository $countryEntityRepository
     ): Response {
         if ($request->isMethod('get')) {
-            return $this->render('controller/country/index.html.twig');
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/country/index.html.twig',[
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+            ]);
         }
 
         $draw = $request->get('draw', 0);

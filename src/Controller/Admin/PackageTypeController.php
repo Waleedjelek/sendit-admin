@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Classes\Controller\BaseController;
 use App\Entity\PackageTypeEntity;
 use App\Form\PackageTypeEntityType;
+use App\Service\OrderQuoteService;
 use App\Service\PackageService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,13 +20,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PackageTypeController extends BaseController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
     /**
      * @Route("/", name="app_package_type_index", methods={"GET","POST"})
      */
     public function index(Request $request): Response
     {
         if ($request->isMethod('get')) {
-            return $this->render('controller/package_type/index.html.twig');
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/package_type/index.html.twig',[
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+            ]);
         }
 
         $draw = $request->get('draw', 0);
