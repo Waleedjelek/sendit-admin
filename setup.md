@@ -25,3 +25,12 @@ npm install -g @symfony/webpack-encore --save-dev
 npx encore production --progress
 npm install admin-lte@^3.1.0 --save
 npm install bootstrap@^4.6.2 --save
+
+
+## when the build was failed then run the following command to set the node options for globaly
+
+export NODE_OPTIONS=--openssl-legacy-provider
+
+## cache clear command
+
+php bin/console cache:clear
