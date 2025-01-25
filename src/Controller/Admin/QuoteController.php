@@ -140,60 +140,6 @@ class QuoteController extends AdminController
     /**
      * @Route("/{id}", name="app_quote_show", methods={"GET","POST"})
      */
-    // public function show(
-    //     Request $request,
-    //     QuoteEntity $quoteEntity
-    // ): Response {
-    //     $form = $this->createForm(QuoteAddNoteType::class);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $formData = $form->getData();
-
-    //         /** @var UserEntity $currentUser */
-    //         $currentUser = $this->getUser();
-    //         $currentStatus = $quoteEntity->getStatus();
-    //         $newStatus = $quoteEntity->getStatus();
-    //         if (!is_null($formData['changeStatus'])) {
-    //             $newStatus = $formData['changeStatus'];
-    //         }
-
-    //         $quoteNoteEntity = new QuoteNoteEntity();
-    //         $quoteNoteEntity->setQuote($quoteEntity);
-    //         $quoteNoteEntity->setUser($currentUser);
-    //         $quoteNoteEntity->setDescription($formData['noteDescription']);
-    //         $quoteNoteEntity->setOldStatus($currentStatus);
-    //         $quoteNoteEntity->setNewStatus($newStatus);
-    //         $quoteNoteEntity->setCreatedDate(new \DateTime());
-
-    //         $entityManager = $this->getDoctrine()->getManager();
-    //         $entityManager->persist($quoteNoteEntity);
-    //         $entityManager->flush();
-
-    //         $this->addLog(
-    //             'Quote',
-    //             'Note',
-    //              '#'.$quoteEntity->getQuoteId().' - Added Note',
-    //             $quoteNoteEntity->getId()
-    //         );
-
-    //         if ($currentStatus != $newStatus) {
-    //             $quoteEntity->setStatus($newStatus);
-    //             $quoteEntity->setModifiedDate(new \DateTime());
-    //             $this->em()->flush();
-    //         }
-
-    //         $this->addFlash('message', 'Added note!');
-
-    //         return $this->redirectToRoute('app_quote_show', ['id' => $quoteEntity->getId()],
-    //             Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('controller/quote/show.html.twig', [
-    //         'quote' => $quoteEntity,
-    //         'form' => $form,
-    //     ]);
-    // }
     public function show(
         Request $request,
         QuoteEntity $quoteEntity

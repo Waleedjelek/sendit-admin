@@ -33,14 +33,14 @@
 				<div class="card-body">
 
 
-					<div class="row align-items-center justify-content-between">
+					<div class="row align-items-center justify-content-between" style="height: 25px;">
 						<div class="d-flex">
 							<div class="col-md-4" style="padding: 5px;">
 								<select id="filter_status" name="filter_status" class="form-control filter-border">
 									<option value="">Filter Status</option>
-									{# {% for status in quoteStatus %}
-								    <option {% if app.request.get('filter_status')== status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
-								     {% endfor %} #}
+									{% for paymentStatus in transactionStatus %}
+										<option {% if app.request.get('filter_status')== paymentStatus %} selected {% endif %} value="{{ paymentStatus }}">{{ paymentStatus }}</option>
+									{% endfor %}
 								</select>
 							</div>
 
@@ -54,20 +54,27 @@
 								<input type="hidden" id="filter_end_date" name="filter_end_date"/>
 							</div>
 						</div>
-                        <div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div>
+                        {# <div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div> #}
 					</div>
+					<div class="row d-flex justify-content-between" style="height: 80px;">
+						<div class="input-container">
+							<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 25px;">
+							<i class="fa fa-search"></i>
+						</div>
 
+						<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size: 13px;"></div>
+					</div>
 
 					<table class="table table-bordered table-hover" id="transactionTableList">
 						<thead>
 							<tr>
-								<th>Trans ID</th>
-								<th>Order ID</th>
-								<th>Amount</th>
-								<th>Currency</th>
-								<th>Status</th>
-								<th>Date</th>
-								<th>Details</th>
+								<th class="text-center align-middle">Trans ID</th>
+								<th class="text-center align-middle">Order ID</th>
+								<th class="text-center align-middle">Amount</th>
+								<th class="text-center align-middle">Currency</th>
+								<th class="text-center align-middle">Status</th>
+								<th class="text-center align-middle">Date</th>
+								<th class="text-center align-middle">Details</th>
 							</tr>
 						</thead>
 					</table>
@@ -117,6 +124,9 @@
 		
 		            cb(start, end);
 		
+		 			$( "#filter_status" ).change(function() {
+		                transactionTable.ajax.reload();
+		            });
 		            transactionTable = $('#transactionTableList').DataTable({
 		                "paging": true,
 		                "searching": true,
@@ -124,12 +134,21 @@
 		                "responsive": true,
 		                "processing": true,
 		                "serverSide": true,
+								columnDefs: [ // Align all columns centrally
+        { targets: [0], width: '20%' }, // Example: Adjust width for Country column
+        { targets: [1], width: '20%' }, // Example: Adjust width for Country column
+        { targets: [5], width: '20%' }, // Example: Adjust width for Country column
+        // { targets: [8], width: '25%' }, // Example: Adjust width for Country column
+        { targets: [2, 3, 4, 6], width: '10%' }, // Example: Adjust width for numeric columns
+    			],
 		                "ajax": {
 		                    "url": "{{ path('app_transaction_index') | raw }}",
 		                    "type": 'POST',
 		                    'data': function (params) {
+								params.filter_status = $('#filter_status').val();
 		                        params.filter_start_date = $('#filter_start_date').val();
 		                        params.filter_end_date = $('#filter_end_date').val();
+								params.search = { value: $('#searchField').val() };
 		                        return params;
 		                    },
 		                    global: true
@@ -139,7 +158,7 @@
 		                    {"data": "orderId"},
 		                    {"data": "amount"},
 		                    {"data": "currency"},
-		                    {"data": "status"},
+		                    {"data": "paymentStatus"},
 		                    {"data": "createdDate"},
 		                    {
 		                        "data": "action",
@@ -157,6 +176,10 @@
 		 // Move "Show Entries" dropdown next to Add Company button
 				    let entriesDropdown = $('#transactionTableList_length').detach();
 				    $('#entriesDropdownContainer').append(entriesDropdown);
+					
+					 $('#searchField').on('input', function () {
+        					transactionTable.ajax.reload();
+    					});
 		        });
 		    </script>
 {% endblock %}
