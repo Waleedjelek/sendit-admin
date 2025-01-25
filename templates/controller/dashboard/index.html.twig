@@ -8,28 +8,39 @@
 
 	<div class="row col-12 heading-dashboard">
 		<div>
-			<h2 class="dashboard-header">Dashboard</h2>
+			<h4 class="dashboard-header">Dashboard</h2>
 			<p style="color: #6f6f6f" class="about-dashboard">Hi
 				{{ app.user.firstName }}
 				{{ app.user.lastName }}, Welcome back to Send it</p>
 		</div>
 		<form id="dateFilterForm" method="GET">
-			<div class="calender-input">
-				<div class="input-group password-bg-white2" id="datepickerFrom">
-					<div class="input-group-append setting">
-						<div class="input-group-text">
-							<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
-						</div>
-					</div>
-					<input type="date" name="fromDate" id="fromDate" class="form-control password-feild2" value="{{ fromDate|default('') }}"/ style="padding-left: 0px;">
+			<div class="calender-input d-flex flex-column">
+				<div>
+					{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
 				</div>
-				<div class="input-group password-bg-white2" id="datepickerTo">
-					<div class="input-group-append setting">
-						<div class="input-group-text">
-							<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
-						</div>
+				<div class="d-flex mb-3">
+					<p style="color: #6f6f6f; margin-bottom: 0px;">From:</p>
+					<div
+						class="input-group password-bg-white2" id="datepickerFrom">
+						{# <div class="input-group-append setting">
+												<div class="input-group-text">
+												<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
+												</div>
+												</div> #}
+
+						<input type="date" name="fromDate" id="fromDate" class="form-control password-feild2" value="{{ fromDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px;">
 					</div>
-					<input type="date" name="toDate" id="toDate" class="form-control password-feild2" value="{{ toDate|default('') }}"/ style="padding-left: 0px;">
+					<p style="color: #6f6f6f; margin-bottom: 0px;">To:</p>
+					<div
+						class="input-group password-bg-white2" id="datepickerTo">
+						{# <div class="input-group-append setting">
+												<div class="input-group-text">
+													<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
+													</div>
+												</div> #}
+
+						<input type="date" name="toDate" id="toDate" class="form-control password-feild2" value="{{ toDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px;">
+					</div>
 				</div>
 			</div>
 		</form>
@@ -40,23 +51,25 @@
 				<div class="inner1-div justify-content-between d-flex">
 					<div>
 						<div>
-							<h5 class="rupees-heading">${{ totalPriceLastYear }}</h5>
+							<h5 class="rupees-heading">AED
+								{{ totalPriceLastYear }}</h5>
 							<p class="rupees-heading-text">Current Annual Sale</p>
 						</div>
 						<div>
-							<h5 class="rupees-heading">${{ totalPriceLastThirtyDays }}</h5>
+							<h5 class="rupees-heading flex-heading-1">AED
+								{{ totalPriceLastThirtyDays }}</h5>
 							<p class="rupees-heading-text">Current Monthly Sale</p>
 						</div>
-
-						<div>
-							<h5 class="rupees-heading">${{ totalPriceLastSevenDays }}</h5>
-							<p class="rupees-heading-text">Current Weekly Sale</p>
-						</div>
 					</div>
-					<div class="" style="margin-left: 4px !important; padding-inline: 26px !important;">
+					<div style="margin-left: 4px !important; padding-inline: 26px !important;">
 						<div>
-							<h5 class="rupees-heading text-center">{{ activeCompaniesCount }}</h5>
+							<h5 class="rupees-heading ">{{ activeCompaniesCount }}</h5>
 							<p class="rupees-heading-text">Total Active Companies</p>
+						</div>
+						<div>
+							<h5 class="rupees-heading flex-heading-2">AED
+								{{ totalPriceLastSevenDays }}</h5>
+							<p class="rupees-heading-text">Current Weekly Sale</p>
 						</div>
 					</div>
 				</div>
@@ -69,8 +82,8 @@
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/twoboxes.png') }}" alt="Logo"/>
 
 							<div>
-								<h5 class="img-side-head">{{ countNewOrders }}</h5>
-								<p class="img-side-text box-text">Total New Orders</p>
+								<h5 class="rupees-heading">{{ countNewOrders }}</h5>
+								<p class="rupees-heading-text">Total New Orders</p>
 							</div>
 						</div>
 						<div
@@ -79,8 +92,8 @@
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/quote.png') }}" alt="Logo"/>
 
 							<div>
-								<h5 class="img-side-head">{{ countNewQuotes }}</h5>
-								<p class="img-side-text box-text">Total New Quotes</p>
+								<h5 class="rupees-heading">{{ countNewQuotes }}</h5>
+								<p class="rupees-heading-text">Total New Quotes</p>
 							</div>
 						</div>
 					</div>
@@ -92,20 +105,20 @@
 							<img style="margin-left: 8px;" class="img-set-dashboard img-set-large" src="{{ asset('images/handtrolley.png') }}" alt="Logo"/>
 
 							<div>
-								<h5 class="img-side-head">{{ countPendingOrders }}</h5>
-								<p class="img-side-text box-text">Total Orders Pending</p>
+								<h5 class="rupees-heading">{{ countPendingOrders }}</h5>
+								<p class="rupees-heading-text">Total Orders Pending</p>
 							</div>
 						</div>
 
 						<div
 							class="oder-inner">
 							{# <img class="img-set" src="\build\images\truck.bd146e83.bd146e83.png">
-																																																																							 #}
+																																																																																																			 #}
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/truck.png') }}" alt="Logo"/>
 
 							<div>
-								<h5 class="img-side-head">{{ countProcessOrders }}</h5>
-								<p class="img-side-text box-text">Total Orders in Process</p>
+								<h5 class="rupees-heading">{{ countProcessOrders }}</h5>
+								<p class="rupees-heading-text">Total Orders in Process</p>
 							</div>
 						</div>
 					</div>
@@ -115,8 +128,8 @@
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/Group.png') }}" alt="Logo"/>
 
 							<div>
-								<h5 class="img-side-head">{{ countCancelledOrders }}</h5>
-								<p class="img-side-text box-text">Total Orders Cancelled</p>
+								<h5 class="rupees-heading">{{ countCancelledOrders }}</h5>
+								<p class="rupees-heading-text">Total Orders Cancelled</p>
 							</div>
 						</div>
 						<div class="oder-inner">
@@ -125,8 +138,8 @@
 
 							{# <img class="img-set" src="\build\images\phone with numbers.476090a8.png"> #}
 							<div>
-								<h5 class="img-side-head">{{ countDraftOrders }}</h5>
-								<p class="img-side-text box-text">Total Orders in Draft</p>
+								<h5 class="rupees-heading">{{ countDraftOrders }}</h5>
+								<p class="rupees-heading-text">Total Orders in Draft</p>
 							</div>
 						</div>
 					</div>
@@ -135,86 +148,76 @@
 		</div>
 	</div>
 	{% if orders is not empty %}
-		{# <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-																				        <i class="fas fa-bars"></i> <!-- Icon for the toggle button -->
-																				    </button> #}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
+				<div class="card">
+					<div class="card-header">
+						<h3
+							class="card-title">
+							{# <i class="fas fa-file-invoice-dollar"></i> #}
+							<img class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
 
-		{# <div class=" row col-12 heading-dashboard">
-																						<div>
-																							<h2 class="dashboard-header">Dashboard</h2>
-																							<p style="color: #6f6f6f" class="about-dashboard">Hi
-																								{{ app.user.firstName }}
-																								{{ app.user.lastName }}, Welcome back to Send it</p>
-																			
-																						</div>
-																						<div class="calender-input">
-																			
-																							<div class="input-group  password-bg-white2 " id="datepicker">
-																			
-																								<div class="input-group-append setting">
-																									<div class="input-group-text">
-																										<img src="{{ asset('images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
-																									</div>
-																								</div>
-																			
-																								<div class="form-control password-feild2 input-password-placeholder setting">
-																									<p class="text-form">From</p>
-																								</div>
-																								<div class="form-control password-feild2 input-password-placeholder setting ">
-																									<i class="fas fa-angle-down rotate-i" id="customDate"></i>
-																								</div>
-																			
-																							</div>
-																							<div class="input-group  password-bg-white2" id="datepicker">
-																			
-																								<div class="input-group-append setting">
-																									<div class="input-group-text">
-																										<img src="{{ asset('images/Calendar.png') }}" alt="Lock Icon" class="icon-lock-color2">
-																									</div>
-																								</div>
-																								<div class="form-control password-feild2 input-password-placeholder setting ">
-																									<p class="text-form">To
-																									</p>
-																								</div>
-																								<div class="form-control password-feild2 input-password-placeholder setting ">
-																									<i class="fas fa-angle-down rotate-i"></i>
-																								</div>
-																			
-																							</div>
-																			                
-																						</div>
-																					</div> #}
+							Recent Orders
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i style="color:#1985a1 !important" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+							<thead>
+								<tr>
+									<th class="text-center align-middle">Order ID</th>
+									<th class="text-center align-middle">Courier Company</th>
+									<th class="text-center align-middle">Country</th>
+									<th class="text-center align-middle">Total (AED)</th>
+									<th class="text-center align-middle">Status</th>
+									<th class="text-center align-middle">Payment Status</th>
+									<th class="text-center align-middle">Order Type</th>
+									<th class="text-center align-middle">Coupon Code</th>
+									<th class="text-center align-middle">Date</th>
+									<th class="text-center align-middle">Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for order in orders %}
+									<tr>
+										<td style="width: 15%;">{{ order.orderId }}</td>
+										<td style="width: 15%;">
+											{{ order.selectedCompany.name }}
+										</td>
+										<td style="width: 10%;">
+											{{ order.sourceCountry.code }}
+											<i class="fas fa-arrow-right"></i>
+											{{ order.destinationCountry.code }}
+										</td>
+										<td style="width: 7%;">{{ order.totalPrice }}</td>
+										{# <td >{{ order.finalWeight }}</td> #}
 
-		{# <div class="row col-12 heading-dashboard">
-									        <div>
-									          <h2 class="dashboard-header">Dashboard</h2>
-									          <p style="color: #6f6f6f" class="about-dashboard">Hi
-									            {{ app.user.firstName }}
-									            {{ app.user.lastName }}, Welcome back to Send it</p>
-									        </div>
-									        <form id="dateFilterForm" method="GET">
-									          <div class="calender-input">
-									            From:<div class="input-group password-bg-white2" id="datepickerFrom">
-									              <div class="input-group-append setting">
-									                <div class="input-group-text">
-									                  <img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2" />
-									                </div>
-									              </div>
-									              <input type="date" name="fromDate" id="fromDate" class="form-control password-feild2" value="{{ fromDate|default('') }}" style="padding-top:0px !important;" />
-									            </div>To:<div class="input-group password-bg-white2" id="datepickerTo">
-									              <div class="input-group-append setting">
-									                <div class="input-group-text">
-									                  <img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2" />
-									                </div>
-									              </div>
-									              <input type="date" name="toDate" id="toDate" class="form-control password-feild2" value="{{ toDate|default('') }}" style="padding-top:0px !important;" />
-									            </div>
-									            <button type="submit" class="btn btn-outline-primary rounded-pill">Filter</button>
-									          </div>
-									        </form>
-									      </div> #}
-
-			<div class="row"> <div class="col-12 bgcolor-table">
+										<td style="width: 7%;">{{ order.status }}</td>
+										<td style="width: 7%;">{{ order.paymentStatus }}</td>
+										<td style="width: 7%;">{{ order.type }}</td>
+										<td style="width: 7%;">{{ order.coupon }}</td>
+										<td style="width: 19%;">{{ order.createdDate|toTZ }}</td>
+										<td style="width: 6%;">
+											<a href="{{ path('app_order_show', { id: order.id }) }}" class="btn btn-default">
+												<i class="fas fa-info-circle icn"></i>
+												Details
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
 				<div class="card">
 					<div class="card-header">
 						<h3
@@ -245,25 +248,64 @@
 									<th class="text-center align-middle">Details</th>
 								</tr>
 							</thead>
+
 							<tbody>
-								{% for order in orders %}
+								<tr>
+									<td colspan="8" class="text-center align-middle">No orders found</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	{% endif %}
+
+	{% if transactions is not empty %}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
+				<div class="card">
+					<div class="card-header">
+						<h3
+							class="card-title">
+							{# <i class="fas fa-credit-card"></i> #}
+							<img
+							class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
+
+							{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
+							Recent Transactions
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+							<thead>
+								<tr>
+									<th class="text-center align-middle">Trans ID</th>
+									<th class="text-center align-middle">Order ID</th>
+									<th class="text-center align-middle">Amount</th>
+									<th class="text-center align-middle">Currency</th>
+									<th class="text-center align-middle">Status</th>
+									<th class="text-center align-middle">Date</th>
+									<th class="text-center align-middle">Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for transaction in transactions %}
 									<tr>
-										<td>{{ order.orderId }}</td>
+										<td>{{ transaction.transId }}</td>
+										<td>{{ transaction.order.orderId }}</td>
+										<td>{{ transaction.paidAmount }}</td>
+										<td>{{ transaction.paidCurrency }}</td>
+										<td>{{ transaction.paymentStatus }}</td>
+										<td>{{ transaction.createdDate|toTZ }}</td>
 										<td>
-											{{ order.selectedCompany.name }}
-											(
-											{{ order.sourceCountry.code }}
-											<i class="fas fa-arrow-right"></i>
-											{{ order.destinationCountry.code }}
-											)
-										</td>
-										<td>{{ order.finalWeight }}</td>
-										<td>{{ order.totalPrice }}</td>
-										<td>{{ order.status }}</td>
-										<td>{{ order.paymentStatus }}</td>
-										<td>{{ order.createdDate|toTZ }}</td>
-										<td>
-											<a href="{{ path('app_order_show', { id: order.id }) }}" class="btn btn-default">
+											<a href="{{ path('app_transaction_show', { id: transaction.id }) }}" class="btn btn-default">
 												<i class="fas fa-info-circle icn"></i>
 												Details
 											</a>
@@ -275,289 +317,187 @@
 					</div>
 				</div>
 			</div>
-		{% else %}
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card">
-						<div class="card-header">
-							<h3
-								class="card-title">
-								{# <i class="fas fa-file-invoice-dollar"></i> #}
-								<img class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
+		</div>
+	{% else %}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
+				<div class="card">
+					<div class="card-header">
+						<h3
+							class="card-title">
+							{# <i class="fas fa-credit-card"></i> #}
+							<img
+							class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
 
-								Recent Orders
-							</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i style="color:#1985a1 !important" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
-								</button>
-							</div>
+							{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
+							Recent Transactions
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
+							</button>
 						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-								<thead>
-									<tr>
-										<th class="text-center align-middle">Order ID</th>
-										<th class="text-center align-middle">Courier Company</th>
-										<th class="text-center align-middle">Weight (kg)</th>
-										<th class="text-center align-middle">Total (AED)</th>
-										<th class="text-center align-middle">Status</th>
-										<th class="text-center align-middle">Payment Status</th>
-										{# <th>Coupon Code</th> #}
-										<th class="text-center align-middle">Date</th>
-										<th class="text-center align-middle">Details</th>
-									</tr>
-								</thead>
-
-								<tbody>
-									<tr>
-										<td colspan="8" class="text-center">No orders found</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+							<thead>
+								<tr>
+									<th class="text-center align-middle">Trans ID</th>
+									<th class="text-center align-middle">Order ID</th>
+									<th class="text-center align-middle">Amount</th>
+									<th class="text-center align-middle">Currency</th>
+									<th class="text-center align-middle">Status</th>
+									<th class="text-center align-middle">Date</th>
+									<th class="text-center align-middle">Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="8" class="text-center align-middle">No transaction found</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
+		</div>
+	{% endif %}
 
-		{% endif %}
+	{% if quotes is not empty %}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
+				<div class="card">
+					<div class="card-header">
+						<h3
+							class="card-title">
+							{# <i class="fas fa-question-circle"></i> #}
+							<img
+							class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
 
-		{% if transactions is not empty %}
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card">
-						<div class="card-header">
-							<h3
-								class="card-title">
-								{# <i class="fas fa-credit-card"></i> #}
-								<img
-								class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
-
-								{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
-								Recent Transactions
-							</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
-								</button>
-							</div>
+							{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
+							Recent Quotes
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
+							</button>
 						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-								<thead>
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+							<thead>
+								<tr>
+									<th class="text-center align-middle">Quote ID</th>
+									<th class="text-center align-middle">Contact Name</th>
+									<th class="text-center align-middle">Type</th>
+									<th class="text-center align-middle">From</th>
+									<th class="text-center align-middle">To</th>
+									<th class="text-center align-middle">Status</th>
+									<th class="text-center align-middle">Date</th>
+									<th class="text-center align-middle">Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for quote in quotes %}
 									<tr>
-										<th>Trans ID</th>
-										<th>Order ID</th>
-										<th>Amount</th>
-										<th>Currency</th>
-										<th>Status</th>
-										<th>Date</th>
-										<th>Details</th>
+										<td style="width: 13%;">{{ quote.quoteId }}</td>
+										<td style="width: 15%;">{{ quote.contactName }}</td>
+										<td style="width: 10%;">International</td>
+										<td style="width: 10%;">{{ quote.sourceCountry.name }}</td>
+										<td style="width: 10%;">{{ quote.destinationCountry.name }}</td>
+										<td style="width: 10%;">{{ quote.status }}</td>
+										<td style="width: 15%;">{{ quote.createdDate|toTZ }}</td>
+										<td style="width: 10%;">
+											<a href="{{ path('app_quote_show', { id: quote.id }) }}" class="btn btn-default">
+												<i class="fas fa-info-circle icn"></i>
+												Details
+											</a>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									{% for transaction in transactions %}
-										<tr>
-											<td>{{ transaction.transId }}</td>
-											<td>{{ transaction.order.orderId }}</td>
-											<td>{{ transaction.paidAmount }}</td>
-											<td>{{ transaction.paidCurrency }}</td>
-											<td>{{ transaction.paymentStatus }}</td>
-											<td>{{ transaction.createdDate|toTZ }}</td>
-											<td>
-												<a href="{{ path('app_transaction_show', { id: transaction.id }) }}" class="btn btn-default">
-													<i class="fas fa-info-circle icn"></i>
-													Details
-												</a>
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
+								{% endfor %}
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
-		{% else %}
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card">
-						<div class="card-header">
-							<h3
-								class="card-title">
-								{# <i class="fas fa-credit-card"></i> #}
-								<img
-								class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
+		</div>
+	{% else %}
+		<div class="row">
+			<div class="col-12 bgcolor-table">
+				<div class="card">
+					<div class="card-header">
+						<h3
+							class="card-title">
+							{# <i class="fas fa-question-circle"></i> #}
+							<img
+							class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
 
-								{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
-								Recent Transactions
-							</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
-								</button>
-							</div>
+							{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
+							Recent Quotes
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
+							</button>
 						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-								<thead>
-									<tr>
-										<th>Trans ID</th>
-										<th>Order ID</th>
-										<th>Amount</th>
-										<th>Currency</th>
-										<th>Status</th>
-										<th>Date</th>
-										<th>Details</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td colspan="8" class="text-center">No transaction found</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+							<thead>
+								<tr>
+									<th class="text-center align-middle">Quote ID</th>
+									<th class="text-center align-middle">Contact Name</th>
+									<th class="text-center align-middle">From</th>
+									<th class="text-center align-middle">To</th>
+									<th class="text-center align-middle">Type</th>
+									<th class="text-center align-middle">Status</th>
+									<th class="text-center align-middle">Date</th>
+									<th class="text-center align-middle">Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="8" class="text-center align-middle">No quote found</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
-		{% endif %}
-
-		{% if quotes is not empty %}
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card">
-						<div class="card-header">
-							<h3
-								class="card-title">
-								{# <i class="fas fa-question-circle"></i> #}
-								<img
-								class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
-
-								{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
-								Recent Quotes
-							</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-								<thead>
-									<tr>
-										<th class="text-center align-middle">Quote ID</th>
-										<th class="text-center align-middle">Contact Name</th>
-										<th class="text-center align-middle">From</th>
-										<th class="text-center align-middle">To</th>
-										<th class="text-center align-middle">Type</th>
-										<th class="text-center align-middle">Status</th>
-										<th class="text-center align-middle">Date</th>
-										<th class="text-center align-middle">Details</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for quote in quotes %}
-										<tr>
-											<td>{{ quote.quoteId }}</td>
-											<td>{{ quote.contactName }}</td>
-											<td>{{ quote.sourceCountry.code }}</td>
-											<td>{{ quote.destinationCountry.code }}</td>
-											<td>{{ quote.type }}</td>
-											<td>{{ quote.status }}</td>
-											<td>{{ quote.createdDate|toTZ }}</td>
-											<td>
-												<a href="{{ path('app_quote_show', { id: quote.id }) }}" class="btn btn-default">
-													<i class="fas fa-info-circle icn"></i>
-													Details
-												</a>
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card">
-						<div class="card-header">
-							<h3
-								class="card-title">
-								{# <i class="fas fa-question-circle"></i> #}
-								<img
-								class="icon-set" src="{{ asset('images/PurchaseOrder.png') }}" alt="Logo"/>
-
-								{# <img class="icon-set" src="\build\images\Purchase Order (1).32a95068.png"> #}
-								Recent Quotes
-							</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse">
-									<i style="color:#1985a1" class="fas fa-angle-down rotate-i rotate-i1 rotate-icon-dashboard"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-								<thead>
-									<tr>
-										<th class="text-center align-middle">Quote ID</th>
-										<th class="text-center align-middle">Contact Name</th>
-										<th class="text-center align-middle">From</th>
-										<th class="text-center align-middle">To</th>
-										<th class="text-center align-middle">Type</th>
-										<th class="text-center align-middle">Status</th>
-										<th class="text-center align-middle">Date</th>
-										<th class="text-center align-middle">Details</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td colspan="8" class="text-center">No quote found</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		{% endif %}
+		</div>
+	{% endif %}
 
 
-		 <script>
-					
-					    const fromDateInput = document.getElementById('fromDate')
-					    const toDateInput = document.getElementById('toDate')
-					    const form = document.getElementById('dateFilterForm')
-					    
-					    function validateAndSubmit() {
-					      const fromDate = fromDateInput.value
-					      const toDate = toDateInput.value
-					    
-					      // Only proceed if both dates are selected
-					      if (fromDate && toDate) {
-					        if (new Date(fromDate) > new Date(toDate)) {
-					          alert('From Date cannot be later than To Date.')
-					        } else {
-					          form.submit()
-					        }
-					      }
-					    }
-					    
-					    // Listen for changes on both inputs
-					    fromDateInput.addEventListener('change', validateAndSubmit)
-					    toDateInput.addEventListener('change', validateAndSubmit)
-					    
-					    // Remove query parameters from URL on page load
-					    window.addEventListener('load', function () {
-					      const url = new URL(window.location.href)
-					      url.searchParams.delete('fromDate')
-					      url.searchParams.delete('toDate')
-					      window.history.replaceState({}, document.title, url.pathname)
-					    })
-					  </script>
-	{% endblock %}
+	 <script>
+										
+										    const fromDateInput = document.getElementById('fromDate')
+										    const toDateInput = document.getElementById('toDate')
+										    const form = document.getElementById('dateFilterForm')
+										    
+										    function validateAndSubmit() {
+										      const fromDate = fromDateInput.value
+										      const toDate = toDateInput.value
+										    
+										      // Only proceed if both dates are selected
+										      if (fromDate && toDate) {
+										        if (new Date(fromDate) > new Date(toDate)) {
+										          alert('From Date cannot be later than To Date.')
+										        } else {
+										          form.submit()
+										        }
+										      }
+										    }
+										    
+										    // Listen for changes on both inputs
+										    fromDateInput.addEventListener('change', validateAndSubmit)
+										    toDateInput.addEventListener('change', validateAndSubmit)
+										    
+										    // Remove query parameters from URL on page load
+										    window.addEventListener('load', function () {
+										      const url = new URL(window.location.href)
+										      url.searchParams.delete('fromDate')
+										      url.searchParams.delete('toDate')
+										      window.history.replaceState({}, document.title, url.pathname)
+										    })
+										  </script>
+{% endblock %}

@@ -24,11 +24,11 @@
 				<div class="col-12 bgcolor-table">
 					<div class="card" style="border-radius:15px !important;">
 						<div class="card-header">
-							<div class="company-searcher">
+							<div class="company-searcher" style="height: 80px;">
 								<div class="input-container">
 									<input id="searchField" class="search-feild-text" type="text" placeholder="Search"
 									style="margin-top: 30px;">
-									<i class="fa fa-search"></i>
+									<i class="fa fa-search" style="margin-top: 22px;"></i>
 								</div>
 								{% if is_granted('ROLE_ADMIN')  %}
 									<div class="card-tools d-flex">
@@ -44,7 +44,7 @@
 										</a>
 											</li>
 										</ul>
-										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></span>
+										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
 									</div>
 								{% endif %}
 							</div>
@@ -77,6 +77,13 @@
 								                "responsive": true,
 								                "processing": true,
 								                "serverSide": true,
+												columnDefs: [ 
+        										{ targets: [0], width: '18%'}, 
+        										{ targets: [1], width: '25%' }, 
+        										{ targets: [4], width: '17%' }, 
+        										// { targets: [8], width: '25%' }, 
+        										{ targets: [2, 3, 5 , 6], width: '10%' }, 
+    											],
 								                "ajax": {
 								                    "url": "{{ path('app_user_index') | raw }}",
 								                    "type": 'POST',

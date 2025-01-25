@@ -7,6 +7,7 @@ use App\Entity\QuoteEntity;
 use App\Entity\UserOrderEntity;
 use App\Entity\CompanyEntity;
 use App\Entity\UserTransactionEntity;
+use App\Service\OrderQuoteService;
 use App\Service\OrderService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -33,11 +34,6 @@ class DashboardController extends AdminController
 
         return $this->redirect($redirectURL, Response::HTTP_SEE_OTHER);
     }
-
-    /**
-     * @Route("/admin/dashboard", name="app_dashboard")
-     * @IsGranted("ROLE_EDITOR")
-     */
 
     // public function index(Request $request): Response
     // {
@@ -94,6 +90,21 @@ class DashboardController extends AdminController
     //         'toDate' => $toDate
     //     ]);
     // }
+
+
+    
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
+
+     /**
+     * @Route("/admin/dashboard", name="app_dashboard")
+     * @IsGranted("ROLE_EDITOR")
+     */
+
     public function index(Request $request): Response
     {
         $fromDate = $request->query->get('fromDate');
@@ -195,7 +206,7 @@ class DashboardController extends AdminController
             ->getQuery()
             ->getSingleScalarResult();
 
-
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->render('controller/dashboard/index.html.twig', [
             'orders' => $orders,
             'transactions' => $transactions,
@@ -212,7 +223,9 @@ class DashboardController extends AdminController
             'totalPriceLastYear' => $totalPriceLastYearFormatted,
             'activeCompaniesCount' => $activeCompaniesCount,
             'fromDate' => $fromDate,
-            'toDate' => $toDate
+            'toDate' => $toDate,
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
         ]);
     }
 

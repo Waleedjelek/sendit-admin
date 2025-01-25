@@ -19,7 +19,7 @@
 					</h2>
 				</div>
 
-			{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
 			</div>
 
 
@@ -34,7 +34,7 @@
 
 				<div class="card-body">
 
-					<div class="row align-items-center justify-content-between">
+					<div class="row align-items-center justify-content-between" style="height: 25px;">
 						<div class="d-flex">
 							<div class="col-md-4" style="padding: 5px;">
 								<select id="filter_status" name="filter_status" class="form-control filter-border">
@@ -55,20 +55,27 @@
 							</div>
 
 						</div>
-						<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div>
+						{# <div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></div> #}
 					</div>
+					<div class="row d-flex justify-content-between" style="height: 80px;">
+						<div class="input-container">
+							<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 25px;">
+							<i class="fa fa-search"></i>
+						</div>
 
+						<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size: 13px;"></div>
+					</div>
 					<table class="table table-bordered table-hover" id="quotesTableList">
 						<thead>
 							<tr>
-								<th>Quote ID</th>
-								<th>Contact Name</th>
-								<th>Type</th>
-								<th>From</th>
-								<th>To</th>
-								<th>Status</th>
-								<th>Date</th>
-								<th>Details</th>
+								<th class="text-center align-middle">Quote ID</th>
+								<th class="text-center align-middle">Contact Name</th>
+								<th class="text-center align-middle">Type</th>
+								<th class="text-center align-middle">From</th>
+								<th class="text-center align-middle">To</th>
+								<th class="text-center align-middle">Status</th>
+								<th class="text-center align-middle">Date</th>
+								<th class="text-center align-middle">Details</th>
 							</tr>
 						</thead>
 					</table>
@@ -87,83 +94,96 @@
 	 <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
 
 	 <script>
-		        let quotesTable;
-		
-		        $(document).ready(function () {
-		
-		            var start = moment().subtract(29, 'days');
-		            var end = moment();
-		
-		            function cb(start, end) {
-		                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-		                $('#filter_start_date').val(start.format('YYYY-MM-DD'));
-		                $('#filter_end_date').val(end.format('YYYY-MM-DD'));
-		                if(quotesTable){
-		                    quotesTable.ajax.reload();
-		                }
-		            }
-		
-		            $('#reportrange').daterangepicker({
-		                startDate: start,
-		                endDate: end,
-		                ranges: {
-		                    'Today': [moment(), moment()],
-		                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-		                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		                }
-		            }, cb);
-		
-		            cb(start, end);
-		
-		            $( "#filter_status" ).change(function() {
-		                quotesTable.ajax.reload();
-		            });
-		
-		            quotesTable = $('#quotesTableList').DataTable({
-		                "paging": true,
-		                "searching": true,
-		                "ordering": false,
-		                "responsive": true,
-		                "processing": true,
-		                "serverSide": true,
-		                "ajax": {
-		                    "url": "{{ path('app_quote_index') | raw }}",
-		                    "type": 'POST',
-		                    'data': function (params) {
-		                        params.filter_status = $('#filter_status').val();
-		                        params.filter_start_date = $('#filter_start_date').val();
-		                        params.filter_end_date = $('#filter_end_date').val();
-		                        return params;
-		                    },
-		                    global: true
-		                },
-		                "columns": [
-		                    {"data": "orderId"},
-		                    {"data": "contactName"},
-		                    {"data": "type"},
-		                    {"data": "from"},
-		                    {"data": "to"},
-		                    {"data": "status"},
-		                    {"data": "createdDate"},
-		                    {
-		                        "data": "action",
-		                        "render": function (data) {
-		                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
-		                        }
-		                    }
-		                ]
-		            });
-		
-		            $('#btnSearch').click(function () {
-		                quotesTable.ajax.reload();
-		                return false;
-		            });
-		 // Move "Show Entries" dropdown next to Add Company button
-					    let entriesDropdown = $('#quotesTableList_length').detach();
-					    $('#entriesDropdownContainer').append(entriesDropdown);
-		        });
-		    </script>
+			        let quotesTable;
+			
+			        $(document).ready(function () {
+			
+			            var start = moment().subtract(29, 'days');
+			            var end = moment();
+			
+			            function cb(start, end) {
+			                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			                $('#filter_start_date').val(start.format('YYYY-MM-DD'));
+			                $('#filter_end_date').val(end.format('YYYY-MM-DD'));
+			                if(quotesTable){
+			                    quotesTable.ajax.reload();
+			                }
+			            }
+			
+			            $('#reportrange').daterangepicker({
+			                startDate: start,
+			                endDate: end,
+			                ranges: {
+			                    'Today': [moment(), moment()],
+			                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+			                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			                }
+			            }, cb);
+			
+			            cb(start, end);
+			
+			            $( "#filter_status" ).change(function() {
+			                quotesTable.ajax.reload();
+			            });
+			
+			            quotesTable = $('#quotesTableList').DataTable({
+			                "paging": true,
+			                "searching": true,
+			                "ordering": false,
+			                "responsive": true,
+			                "processing": true,
+			                "serverSide": true,
+								autoWidth: false,
+								columnDefs: [ // Align all columns centrally
+	        { targets: [0], width: '13%' }, // Example: Adjust width for Country column
+	        { targets: [1], width: '15%' }, // Example: Adjust width for Country column
+	        { targets: [6], width: '15%' }, // Example: Adjust width for Country column
+	        // { targets: [8], width: '25%' }, // Example: Adjust width for Country column
+	        { targets: [2, 3, 4, 5, 7], width: '10%' }, // Example: Adjust width for numeric columns
+	    			],
+			                "ajax": {
+			                    "url": "{{ path('app_quote_index') | raw }}",
+			                    "type": 'POST',
+			                    'data': function (params) {
+			                        params.filter_status = $('#filter_status').val();
+			                        params.filter_start_date = $('#filter_start_date').val();
+			                        params.filter_end_date = $('#filter_end_date').val();
+									params.search = { value: $('#searchField').val() };
+			                        return params;
+			                    },
+			                    global: true
+			                },
+			                "columns": [
+			                    {"data": "orderId"},
+			                    {"data": "contactName"},
+			                    {"data": "type"},
+			                    {"data": "from"},
+			                    {"data": "to"},
+			                    {"data": "status"},
+			                    {"data": "createdDate"},
+			                    {
+			                        "data": "action",
+			                        "render": function (data) {
+			                            return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
+			                        }
+			                    }
+			                ]
+			            });
+			
+			            $('#btnSearch').click(function () {
+			                quotesTable.ajax.reload();
+			                return false;
+			            });
+			 // Move "Show Entries" dropdown next to Add Company button
+						    let entriesDropdown = $('#quotesTableList_length').detach();
+						    $('#entriesDropdownContainer').append(entriesDropdown);
+
+							 $('#searchField').on('input', function () {
+        					quotesTable.ajax.reload();
+    					});
+			        });
+			    </script>
 {% endblock %}

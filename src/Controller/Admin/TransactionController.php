@@ -33,11 +33,19 @@ class TransactionController extends AdminController
         Request $request,
         CountryEntityRepository $countryEntityRepository
     ): Response {
+        $transactionStatus = [
+            'Failed',
+            'Pending',
+            'Paid',
+            'Refunded',
+            'Cancelled',
+        ];
         if ($request->isMethod('get')) {
             $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
             return $this->renderForm('controller/transaction/index.html.twig', [
                     'newOrders' => $data['newOrders'],
                     'newQuotes' => $data['newQuotes'],
+                    'transactionStatus' => $transactionStatus,
             ]);
         }
 
@@ -47,11 +55,12 @@ class TransactionController extends AdminController
         if ($length < 0) {
             $length = 10;
         }
-
+        $filterStatus = $request->get('filter_status', '');
         $filterStartDate = $request->get('filter_start_date', '');
         $filterEndDate = $request->get('filter_end_date', '');
 
         $qb = $this->em()->getRepository(UserTransactionEntity::class)->createQueryBuilder('t');
+        $qb->leftJoin('t.order', 'o');
 
         $search = $request->get('search');
         $searchString = null;
@@ -59,8 +68,12 @@ class TransactionController extends AdminController
             $searchString = $search['value'];
         }
         if (!empty($searchString)) {
-            $qb->andWhere(' ( t.transId LIKE :query1 ) ');
+            $qb->andWhere(' ( t.transId LIKE :query1 OR t.paidAmount LIKE :query1 OR t.paidCurrency LIKE :query1 OR t.paymentStatus LIKE :query1 OR t.createdDate LIKE :query1 OR o.orderId LIKE :query1) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
+        }
+        if (!empty($filterStatus)) {
+            $qb->andWhere(' ( t.paymentStatus LIKE :paymentStatus ) ');
+            $qb->setParameter('paymentStatus', '%'.$filterStatus.'%');
         }
         if (!empty($filterStartDate) && !empty($filterEndDate)) {
             if ($filterStartDate != $filterEndDate) {
@@ -103,7 +116,7 @@ class TransactionController extends AdminController
                 $ca['orderId'] = $userTransactionEntity->getOrder()->getOrderId();
                 $ca['amount'] = $userTransactionEntity->getPaidAmount();
                 $ca['currency'] = $userTransactionEntity->getPaidCurrency();
-                $ca['status'] = $userTransactionEntity->getPaymentStatus();
+                $ca['paymentStatus'] = $userTransactionEntity->getPaymentStatus();
                 $ca['createdDate'] = $this->formatToTimezone($userTransactionEntity->getCreatedDate());
                 $ca['action'] = [
                     'details' => $this->generateUrl('app_transaction_show', ['id' => $userTransactionEntity->getId()]),
