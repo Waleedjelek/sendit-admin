@@ -26,10 +26,10 @@
 					<div class="card" style="border-radius:15px !important;">
 						<div class="card-header">
 
-							<div class="company-searcher">
+							<div class="company-searcher" style="height: 80px;">
 								<div class="input-container">
 									<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
-									<i class="fa fa-search"></i>
+									<i class="fa fa-search" style="margin-top: 22px;"></i>
 								</div>
 								{% if is_granted('ROLE_ADMIN')  %}
 									<div class="card-tools d-flex">
@@ -40,7 +40,7 @@
 													Add Package Type</a>
 											</li>
 										</ul>
-										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></span>
+										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
 									</div>
 								{% endif %}
 							</div>

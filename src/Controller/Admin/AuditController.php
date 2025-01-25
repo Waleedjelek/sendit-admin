@@ -30,7 +30,7 @@ class AuditController extends AdminController
     ): Response {
         if ($request->isMethod('get')) {
             $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
-            return $this->render('controller/audit/index.html.twig',[
+            return $this->render('controller/audit/index.html.twig', [
                 'newOrders' => $data['newOrders'],
                 'newQuotes' => $data['newQuotes'],
             ]);
@@ -50,16 +50,18 @@ class AuditController extends AdminController
         }
 
         $qb = $this->em()->getRepository(AuditLogEntity::class)->createQueryBuilder('a');
+        // Join the user entity
+        $qb->leftJoin('a.user', 'u');
 
         $qb->setFirstResult($start);
         $qb->setMaxResults($length);
 
         if (!empty($searchString)) {
-            $qb->setParameter('query1', '%'.$searchString.'%');
-            $qb->andWhere(' ( a.module LIKE :query1 OR  a.action LIKE :query1 OR  a.description LIKE :query1 OR  a.ip LIKE :query1 ) ');
+            $qb->setParameter('query1', '%' . $searchString . '%');
+            $qb->andWhere(' ( a.module LIKE :query1 OR  a.action LIKE :query1 OR  a.description LIKE :query1 OR  u.firstName LIKE :query1 ) ');
         }
         $qb->andWhere($qb->expr()->gte('a.actionDate', ':date_until_from'));
-        $qb->setParameter(':date_until_from', date('Y-m-d', strtotime('-4 week')).' 00:00:00');
+        $qb->setParameter(':date_until_from', date('Y-m-d', strtotime('-4 week')) . ' 00:00:00');
 
         $qb->add('orderBy', ' a.actionDate DESC ');
         $result = $qb->getQuery()->getResult();

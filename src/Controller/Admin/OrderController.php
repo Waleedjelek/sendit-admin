@@ -72,6 +72,8 @@ class OrderController extends AdminController
         $filterEndDate = $request->get('filter_end_date', '');
 
         $qb = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
+        $qb->leftJoin('o.selectedCompany', 'c');
+        $qb->leftJoin('o.sourceCountry', 'm');
 
         $search = $request->get('search');
         $searchString = null;
@@ -79,7 +81,7 @@ class OrderController extends AdminController
             $searchString = $search['value'];
         }
         if (!empty($searchString)) {
-            $qb->andWhere(' ( o.orderId LIKE :query1 ) ');
+            $qb->andWhere(' ( o.orderId LIKE :query1 OR  o.status LIKE :query1 OR  o.paymentStatus LIKE :query1 OR  o.type LIKE :query1 OR  o.createdDate LIKE :query1 OR  c.name LIKE :query1 OR  m.code LIKE :query1) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
         if (!empty($filterStatus)) {
@@ -126,7 +128,7 @@ class OrderController extends AdminController
                 $ca = [];
                 $ca['DT_RowId'] = $userOrderEntity->getId();
                 $ca['orderId'] = $userOrderEntity->getOrderId();
-                $ca['company'] = $userOrderEntity->getSelectedCompany()->getCode();
+                $ca['company'] = $userOrderEntity->getSelectedCompany()->getName();
                 $ca['method'] = ucwords($userOrderEntity->getMethod());
                 $ca['from'] = $userOrderEntity->getSourceCountry()->getCode();
                 $ca['to'] = $userOrderEntity->getDestinationCountry()->getCode();
@@ -139,7 +141,7 @@ class OrderController extends AdminController
                     'mobile' => $userOrderEntity->getUser()->getMobileNumber(),
                 ];
                 $ca['status'] = $userOrderEntity->getStatus();
-                $ca['discounted'] = $userOrderEntity->getDiscounted();
+                $ca['type'] = $userOrderEntity->getType();
                 $ca['coupon'] = $userOrderEntity->getCouponCode();
                 $ca['paymentStatus'] = $userOrderEntity->getPaymentStatus();
                 $ca['createdDate'] = $this->formatToTimezone($userOrderEntity->getCreatedDate());

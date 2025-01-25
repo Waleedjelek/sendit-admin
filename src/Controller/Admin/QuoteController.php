@@ -62,6 +62,7 @@ class QuoteController extends AdminController
         $filterEndDate = $request->get('filter_end_date', '');
 
         $qb = $this->em()->getRepository(QuoteEntity::class)->createQueryBuilder('q');
+        $qb->leftJoin('q.sourceCountry', 'm');
 
         $search = $request->get('search');
         $searchString = null;
@@ -69,7 +70,7 @@ class QuoteController extends AdminController
             $searchString = $search['value'];
         }
         if (!empty($searchString)) {
-            $qb->andWhere(' ( q.quoteId LIKE :query1 ) ');
+            $qb->andWhere(' ( q.quoteId LIKE :query1 OR q.contactName LIKE :query1 OR m.name LIKE :query1 OR q.status LIKE :query1) ');
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
         if (!empty($filterStatus)) {

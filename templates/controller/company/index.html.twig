@@ -24,10 +24,10 @@
 			<div class="row">
 				<div class="col-12 bgcolor-table">
 					<div class="card" style="border-radius:15px !important;">
-						<div class="company-searcher">
+						<div class="company-searcher" style="height: 80px;">
 							<div class="input-container">
-								<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
-								<i class="fa fa-search" ></i>
+								<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 25px;">
+								<i class="fa fa-search" style="margin-top: 18px;"></i>
 							</div>
 
 							{% if is_granted('ROLE_ADMIN')  %}
@@ -39,7 +39,7 @@
 												Add Company</a>
 										</li>
 									</ul>
-									<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px;"></span>
+									<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
 								</div>
 							{% endif %}
 							
@@ -73,6 +73,13 @@
 			            responsive: true,
 			            processing: true,
 			            serverSide: true,
+						columnDefs: [ // Align all columns centrally
+        				{ targets: [0], width: '25%' }, // Example: Adjust width for Country column
+        				{ targets: [1], width: '25%' }, // Example: Adjust width for Country column
+        				// { targets: [5], width: '20%' }, // Example: Adjust width for Country column
+        				// { targets: [8], width: '25%' }, // Example: Adjust width for Country column
+        				{ targets: [2, 3, 4, 5], width: '10%' }, // Example: Adjust width for numeric columns
+    					],
 			            ajax: {
 			                url: "{{ path('app_company_index') }}",
 			                type: 'POST',
