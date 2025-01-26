@@ -18,6 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AdminController
 {
+    private $orderQuoteService;
+
+    public function __construct(OrderQuoteService $orderQuoteService)
+    {
+        $this->orderQuoteService = $orderQuoteService;
+    }
+    
     /**
      * @Route("/", name="app_home")
      * @Route("/admin/", name="app_admin_home")
@@ -91,14 +98,6 @@ class DashboardController extends AdminController
     //     ]);
     // }
 
-
-    
-    private $orderQuoteService;
-
-    public function __construct(OrderQuoteService $orderQuoteService)
-    {
-        $this->orderQuoteService = $orderQuoteService;
-    }
 
      /**
      * @Route("/admin/dashboard", name="app_dashboard")
