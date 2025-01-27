@@ -18,7 +18,7 @@
 				<div class="col-12 bgcolor-table">
 					<div class="card" style="border-radius:15px !important;">
 						<div class="card-header">
-							<div class="company-searcher" style="height: 80px;">
+							<div class="company-searcher" style="height: 85px;">
 								<div class="input-container">
 									<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
 									<i class="fa fa-search" style="margin-top: 22px;"></i>
@@ -32,76 +32,76 @@
 													Add Coupon</a>
 											</li>
 										</ul>
-                                        <span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
+										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
 									</div>
 
 								{% endif %}
 
 							</div>
-						</div>
-						<div class="card-body">
-							<table class="table table-bordered table-hover" id="couponTableList">
-								<thead>
-									<tr>
-										<th>Coupon Code</th>
-										<th>Discount</th>
-										<th>Active</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-							</table>
+
+							<div class="card-body">
+								<table class="table table-bordered table-hover" id="couponTableList">
+									<thead>
+										<tr>
+											<th>Coupon Code</th>
+											<th>Discount</th>
+											<th>Active</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 {% endblock %}
 
 {% block inlineJs %}
 	 <script>
-	    $(document).ready(function () {
-	        // Initialize the DataTable
-	        let table = $('#couponTableList').DataTable({
-	            "paging": true,
-	            "ordering": false,
-	            "responsive": true,
-	            "processing": true,
-	            "serverSide": true,
-	            "ajax": {
-	                "url": "{{ path('app_coupon_index') }}",
-	                "type": 'POST',
-	                "data": function (d) {
-	                    d.search.value = $('#searchField').val(); // Pass search input value to backend
-	                }
-	            },
-	            "columns": [
-	                {"data": "coupon"},
-	                {"data": "discount"},
-	                {
-	                    "data": "active",
-	                    "render": function (data) {
-	                        return data ? '<i class="fas fa-check-square"></i>' : '<i class="far fa-square"></i>';
-	                    }
-	                },
-	                {
-	                    "data": "action",
-	                    "render": function (data) {
-	                        return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
-	                    }
-	                }
-	            ]
-	        });
-	
-		    // Move "Show Entries" dropdown next to Add Company button
-				    let entriesDropdown = $('#couponTableList_length').detach();
-				    $('#entriesDropdownContainer').append(entriesDropdown);
-	
-	        // Trigger search on input change
-	        $('#searchField').on('input', function () {
-	            table.search(this.value).draw();
-	        });
-	    });
-	</script>
+				    $(document).ready(function () {
+				        // Initialize the DataTable
+				        let table = $('#couponTableList').DataTable({
+				            "paging": true,
+				            "ordering": false,
+				            "responsive": true,
+				            "processing": true,
+				            "serverSide": true,
+				            "ajax": {
+				                "url": "{{ path('app_coupon_index') }}",
+				                "type": 'POST',
+				                "data": function (d) {
+				                    d.search.value = $('#searchField').val(); // Pass search input value to backend
+				                }
+				            },
+				            "columns": [
+				                {"data": "coupon"},
+				                {"data": "discount"},
+				                {
+				                    "data": "active",
+				                    "render": function (data) {
+				                        return data ? '<i class="fas fa-check-square"></i>' : '<i class="far fa-square"></i>';
+				                    }
+				                },
+				                {
+				                    "data": "action",
+				                    "render": function (data) {
+				                        return '<a href="' + data['details'] + '" class="btn btn-default"><i class="fas fa-info-circle icn"></i> Details</a>';
+				                    }
+				                }
+				            ]
+				        });
+				
+					    // Move "Show Entries" dropdown next to Add Company button
+							    let entriesDropdown = $('#couponTableList_length').detach();
+							    $('#entriesDropdownContainer').append(entriesDropdown);
+				
+				        // Trigger search on input change
+				        $('#searchField').on('input', function () {
+				            table.search(this.value).draw();
+				        });
+				    });
+				</script>
 {% endblock %}
