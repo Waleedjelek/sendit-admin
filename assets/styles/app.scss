@@ -485,17 +485,27 @@ a .icn4:hover{
 //   border-radius: 15px;border: none;gap: 39px;
 //   width: 200px;display: flex;padding: 10px;word-wrap: break-word;
 // }
+// .oder-inner {
+//   height: 75px;
+//   background-color: #ffffff;
+//   /* margin-left: 15px; */
+//   border-radius: 15px;
+//   /* border: none; */
+//   gap: 20px;
+//   width: 270px;
+//   display: flex;
+//   padding: 10px 0px 0px 10px;
+//   word-wrap: break-word;
+// }
 .oder-inner {
-  height: 75px;
-  background-color: #ffffff;
-  /* margin-left: 15px; */
-  border-radius: 15px;
-  /* border: none; */
-  gap: 20px;
-  width: 270px;
-  display: flex;
-  padding: 10px 0px 0px 10px;
   word-wrap: break-word;
+  background-color: #fff;
+  border-radius: 15px;
+  display: flex;
+  gap: 20px;
+  height: 85px;
+  padding: 20px 0 0 10px;
+  width: 270px;
 }
 .img-set{
   width: 70px;
@@ -1452,7 +1462,7 @@ width: 670px;
     justify-content: space-between;
     margin-top: -10px;
     gap: 20px;
-    padding-top: 40px;
+    padding-top: 33px;
 }
   .oder-inner{
     width: 330px;
@@ -1483,7 +1493,7 @@ width: 670px;
     gap: 10px !important;
     padding-left: 0px;
     padding-bottom: 0px;
-    padding-top: 42px;
+    padding-top: 37px;
   }
   .outer-div{
     gap: 20px;
@@ -1506,7 +1516,7 @@ width: 670px;
           width: 520px;
       }
       .flex-head-2{
-        margin-top: 55px;
+        margin-top: 30px;
       }
       .inner2-div {
         border: none;
@@ -1522,7 +1532,7 @@ width: 670px;
     gap: 10px !important;
     padding-left: 0px;
     padding-bottom: 0px;
-    padding-top: 42px;
+    padding-top: 35px;
   }
   .outer-div{
     gap: 20px;
@@ -1545,7 +1555,7 @@ width: 670px;
           width: 660px;
       }
       .flex-head-2{
-        margin-top: 55px;
+        margin-top: 30px;
       }
       .inner2-div {
         border: none;
@@ -1561,7 +1571,7 @@ width: 670px;
     gap: 10px !important;
     padding-left: 0px;
     padding-bottom: 0px;
-    padding-top: 42px;
+    padding-top: 35px;
   }
   .outer-div{
     gap: 20px;
@@ -1584,7 +1594,7 @@ width: 670px;
           width: 660px;
       }
       .flex-head-2{
-        margin-top: 37px;
+        margin-top: 30px;
       }
       .inner2-div {
         border: none;
