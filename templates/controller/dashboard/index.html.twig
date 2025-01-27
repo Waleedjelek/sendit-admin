@@ -13,33 +13,33 @@
 				{{ app.user.firstName }}
 				{{ app.user.lastName }}, Welcome back to Send it</p>
 		</div>
-		<form id="dateFilterForm" method="GET">
+		<form class="" id="dateFilterForm" method="GET">
 			<div class="calender-input d-flex flex-column">
-				<div>
+				<div class="">
 					{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
 				</div>
 				<div class="d-flex mb-3">
-					<p style="color: #6f6f6f; margin-bottom: 0px;">From:</p>
+					<p class="calender-align" style="color: #6f6f6f; margin-bottom: 0px;">From:</p>
 					<div
 						class="input-group password-bg-white2" id="datepickerFrom">
 						{# <div class="input-group-append setting">
-												<div class="input-group-text">
-												<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
-												</div>
-												</div> #}
+																		<div class="input-group-text">
+																		<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
+																		</div>
+																		</div> #}
 
-						<input type="date" name="fromDate" id="fromDate" class="form-control password-feild2" value="{{ fromDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px;">
+						<input type="date" name="fromDate" id="fromDate" class="form-control password-feild2" value="{{ fromDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px; padding-left: 7px">
 					</div>
-					<p style="color: #6f6f6f; margin-bottom: 0px;">To:</p>
+					<p class="" style="color: #6f6f6f; margin-bottom: 0px; margin-left: 8px; margin-right: 10px;">To:</p>
 					<div
 						class="input-group password-bg-white2" id="datepickerTo">
 						{# <div class="input-group-append setting">
-												<div class="input-group-text">
-													<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
-													</div>
-												</div> #}
+																		<div class="input-group-text">
+																			<img src="{{ asset('images/Calendar.png') }}" alt="Calendar Icon" class="icon-lock-color2"/>
+																			</div>
+																		</div> #}
 
-						<input type="date" name="toDate" id="toDate" class="form-control password-feild2" value="{{ toDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px;">
+						<input type="date" name="toDate" id="toDate" class="form-control password-feild2" value="{{ toDate|default('') }}" / style="padding-top: 0px; padding-bottom: 12px; padding-left: 7px">
 					</div>
 				</div>
 			</div>
@@ -49,26 +49,32 @@
 		<div class="col-12 try">
 			<div class="outer-div">
 				<div class="inner1-div justify-content-between d-flex">
-					<div>
+					<div class="col-6">
 						<div>
-							<h5 class="rupees-heading">AED
-								{{ totalPriceLastYear }}</h5>
+							<div class="d-flex flex-column">
+								<h5 class="rupees-heading" style="margin-bottom: 0px;">AED</h5>
+								<h5 class="rupees-heading">{{ totalPriceLastYear }}</h5>
+							</div>
 							<p class="rupees-heading-text">Current Annual Sale</p>
 						</div>
 						<div>
-							<h5 class="rupees-heading flex-heading-1">AED
-								{{ totalPriceLastThirtyDays }}</h5>
+							<div class="d-flex flex-column">
+								<h5 class="rupees-heading flex-heading-1" style="margin-bottom: 0px;">AED</h5>
+								<h5 class="rupees-heading">{{ totalPriceLastThirtyDays }}</h5>
+							</div>
 							<p class="rupees-heading-text">Current Monthly Sale</p>
 						</div>
 					</div>
-					<div style="margin-left: 4px !important; padding-inline: 26px !important;">
+					<div class="col-6" style="margin-left: 4px !important; padding-inline: 10px !important;">
 						<div>
 							<h5 class="rupees-heading ">{{ activeCompaniesCount }}</h5>
 							<p class="rupees-heading-text">Total Active Companies</p>
 						</div>
 						<div>
-							<h5 class="rupees-heading flex-heading-2">AED
-								{{ totalPriceLastSevenDays }}</h5>
+							<div class="d-flex flex-column">
+								<h5 class="rupees-heading flex-head-2" style="margin-bottom: 0px;">AED</h5>
+								<h5 class="rupees-heading">{{ totalPriceLastSevenDays }}</h5>
+							</div>
 							<p class="rupees-heading-text">Current Weekly Sale</p>
 						</div>
 					</div>
@@ -87,13 +93,23 @@
 							</div>
 						</div>
 						<div
-							class="oder-inner">
+							class="oder-inner cj">
 							{# <img class="img-set" src="\build\images\quote.60dca2b5.60dca2b5.png"> #}
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/quote.png') }}" alt="Logo"/>
 
 							<div>
 								<h5 class="rupees-heading">{{ countNewQuotes }}</h5>
 								<p class="rupees-heading-text">Total New Quotes</p>
+							</div>
+						</div>
+						<div
+							class="oder-inner ">
+							{# <img class="img-set" src="\build\images\truck.bd146e83.bd146e83.png"> #}
+							<img class="img-set-dashboard img-set-large" src="{{ asset('images/truck.png') }}" alt="Logo"/>
+
+							<div>
+								<h5 class="rupees-heading">{{ countProcessOrders }}</h5>
+								<p class="rupees-heading-text">Total Orders in Process</p>
 							</div>
 						</div>
 					</div>
@@ -109,21 +125,6 @@
 								<p class="rupees-heading-text">Total Orders Pending</p>
 							</div>
 						</div>
-
-						<div
-							class="oder-inner">
-							{# <img class="img-set" src="\build\images\truck.bd146e83.bd146e83.png">
-																																																																																																			 #}
-							<img class="img-set-dashboard img-set-large" src="{{ asset('images/truck.png') }}" alt="Logo"/>
-
-							<div>
-								<h5 class="rupees-heading">{{ countProcessOrders }}</h5>
-								<p class="rupees-heading-text">Total Orders in Process</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="oder-outer1">
 						<div class="oder-inner cj">
 							<img class="img-set-dashboard img-set-large" src="{{ asset('images/Group.png') }}" alt="Logo"/>
 
@@ -132,7 +133,7 @@
 								<p class="rupees-heading-text">Total Orders Cancelled</p>
 							</div>
 						</div>
-						<div class="oder-inner">
+						<div class="oder-inner ">
 							<img
 							class="img-set-dashboard img-set-large" src="{{ asset('images/phonewithno.png') }}" alt="Logo"/>
 
@@ -143,6 +144,10 @@
 							</div>
 						</div>
 					</div>
+
+					{# <div class="oder-outer1">
+											
+										</div> #}
 				</div>
 			</div>
 		</div>
@@ -469,35 +474,35 @@
 
 
 	 <script>
-										
-										    const fromDateInput = document.getElementById('fromDate')
-										    const toDateInput = document.getElementById('toDate')
-										    const form = document.getElementById('dateFilterForm')
-										    
-										    function validateAndSubmit() {
-										      const fromDate = fromDateInput.value
-										      const toDate = toDateInput.value
-										    
-										      // Only proceed if both dates are selected
-										      if (fromDate && toDate) {
-										        if (new Date(fromDate) > new Date(toDate)) {
-										          alert('From Date cannot be later than To Date.')
-										        } else {
-										          form.submit()
-										        }
-										      }
-										    }
-										    
-										    // Listen for changes on both inputs
-										    fromDateInput.addEventListener('change', validateAndSubmit)
-										    toDateInput.addEventListener('change', validateAndSubmit)
-										    
-										    // Remove query parameters from URL on page load
-										    window.addEventListener('load', function () {
-										      const url = new URL(window.location.href)
-										      url.searchParams.delete('fromDate')
-										      url.searchParams.delete('toDate')
-										      window.history.replaceState({}, document.title, url.pathname)
-										    })
-										  </script>
+											
+											    const fromDateInput = document.getElementById('fromDate')
+											    const toDateInput = document.getElementById('toDate')
+											    const form = document.getElementById('dateFilterForm')
+											    
+											    function validateAndSubmit() {
+											      const fromDate = fromDateInput.value
+											      const toDate = toDateInput.value
+											    
+											      // Only proceed if both dates are selected
+											      if (fromDate && toDate) {
+											        if (new Date(fromDate) > new Date(toDate)) {
+											          alert('From Date cannot be later than To Date.')
+											        } else {
+											          form.submit()
+											        }
+											      }
+											    }
+											    
+											    // Listen for changes on both inputs
+											    fromDateInput.addEventListener('change', validateAndSubmit)
+											    toDateInput.addEventListener('change', validateAndSubmit)
+											    
+											    // Remove query parameters from URL on page load
+											    window.addEventListener('load', function () {
+											      const url = new URL(window.location.href)
+											      url.searchParams.delete('fromDate')
+											      url.searchParams.delete('toDate')
+											      window.history.replaceState({}, document.title, url.pathname)
+											    })
+											  </script>
 {% endblock %}
