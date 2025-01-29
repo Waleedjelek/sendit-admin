@@ -156,7 +156,10 @@ class LocaleController extends AdminController
                 Response::HTTP_SEE_OTHER);
         }
 
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->renderForm('controller/locale/edit.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'locale' => $localEntity,
             'form' => $form,
         ]);

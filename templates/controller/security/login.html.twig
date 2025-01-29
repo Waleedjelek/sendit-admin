@@ -1,17 +1,13 @@
 {% extends 'empty-base.html.twig' %}
-
 {% block title %}Log in!{% endblock %}
 {% block bodyClass %} login-page{% endblock %}
-
 {% block body %}
     {% if app.user %}
         {# <div class="mb-3">
             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div> #}
     {% endif %}
-
-
-    <div class="login-box">
+    <div class="login-box" style="width:390px;">
         <div class="login-logo">
             <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-image logo-large-screen" style="width: 200px;margin-left:75px">
@@ -21,40 +17,34 @@
             <div class="card-body login-card-body">
             <p class="header-login">Admin Panel</p>
                 <p class="login-box-msg">Sign in to your account</p>
-
                 {% if error %}
                     <div class="alert alert-danger">
                         {{ error.message }}
                     </div>
                 {% endif %}
-
                 {% if app.session.flashBag.has('error') %}
                     {% for flashMessage in app.session.flashbag.get('error') %}
                         <div class="alert alert-danger">{{ flashMessage }}</div>
                     {% endfor %}
                 {% endif %}
-
                 {% if app.session.flashBag.has('message') %}
                     {% for flashMessage in app.session.flashbag.get('message') %}
                         <div class="alert alert-success">{{ flashMessage }}</div>
                     {% endfor %}
                 {% endif %}
-
                 <form action="{{ url('app_login') }}" method="post">
                     <div class="input-group mb-3 autofill-color">
-                        <input type="email" value="{{ last_username }}" placeholder="Email Address" name="email" id="inputEmail" class="form-control input-email-placeholder" autocomplete="email" required autofocus>
+                        <input type="email" value="{{ last_username }}" placeholder="Email Address" name="email" id="inputEmail" class="form-control input-email-placeholder" autocomplete="email" required autofocus style="font-size: 18px;">
                         <div class="input-group-append">
                     
                         </div>
                     </div>
-                    <div class="input-group mb-3 password-bg-white autofill-color">
-
+                    <div class="input-group mb-3 password-bg-white autofill-color" style="height: 60px;">
                          <div class="input-group-append ">
                             <div class="input-group-text">
                                 {# <span class="fas fa-lock icon-lock-color"></span> #}
                                 {# <img src="\build\images\password_1.fe78ac0c.png" alt="Lock Icon" class="icon-lock-color"> <!-- Replace with your lock icon image URL --> #}
-<img src="{{ asset('images/password_1.png') }}" alt="Lock Icon" class="icon-lock-color">
-
+                            <img src="{{ asset('images/password_1.png') }}" alt="Lock Icon" class="icon-lock-color">
                             </div>
                         </div>
                         <input type="password" name="password" placeholder="Password"  id="inputPassword" class="form-control password-feild input-password-placeholder " autocomplete="current-password" required>
@@ -75,11 +65,8 @@
                         </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
                 </form>
-
                
-
             </div>
         </div>
     </div>

@@ -1,171 +1,178 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Orders
 {% endblock %}
-
 {% block body %}
-	<div class="row">
-		<div class="col-12">
-			<div class="main-order-pg-btn-flex">
-				<div class="accept-order-img">
-					<img class="img-set" src="{{ asset('images/OrderCompleted.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 6px;">
-					<h2 class="title-heading">All Orders</h2>
-				</div>
-
-				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
-
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12 bgcolor-table">
-			<div style="border-radius:15px !important" class="card">
-				<div class="card-body">
-					<div class="row align-items-center justify-content-between" style="height: 25px;">
-						<div class="d-flex">
-							<div class="col-md-4" style="padding: 5px;">
-								<select id="filter_status" name="filter_status" class="form-control filter-border">
-									<option value="">Coupon Applied</option>
-									{% for status in orderStatus %}
-										<option {% if app.request.get('filter_status') == status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
-									{% endfor %}
-								</select>
-							</div>
-							<div class="col-md-4" style="padding: 5px;">
-								<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:400px; border-radius:5px;">
-									<i class="fa fa-calendar calender-icn"></i>&nbsp;
-									<span></span>
-									<i class="fas fa-angle-down rotate-i rotate-i1"></i>
-								</div>
-								<input type="hidden" id="filter_start_date" name="filter_start_date"/>
-								<input type="hidden" id="filter_end_date" name="filter_end_date"/>
-							</div>
-						</div>
-					</div>
-					<div class="row align-items-center justify-content-between" style="height: 80px;">
-						<div class="input-container">
-							<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 25px;">
-							<i class="fa fa-search" style="margin-top: 13px;"></i>
-						</div>
-
-						<div class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size: 13px;"></div>
-					</div>
-
-					<table class="table table-bordered table-hover dataTable2" id="ordersTableList">
-						<thead>
-							<tr>
-								<th class="text-center align-middle">Order ID</th>
-								<th class="text-center align-middle">Courier Company</th>
-								<th class="text-center align-middle">Country</th>
-								<th class="text-center align-middle">Total (AED)</th>
-								<th class="text-center align-middle">Status</th>
-								<th class="text-center align-middle">Payment Status</th>
-								<th class="text-center align-middle">Order Type</th>
-								<th class="text-center align-middle">Coupon Code</th>
-								<th class="text-center align-middle">Date</th>
-								<th class="text-center align-middle">Details</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="main-order-pg-btn-flex">
+                <div class="accept-order-img">
+                    <img class="img-set" src="{{ asset('images/OrderCompleted.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 6px;">
+                    <h2 class="title-heading">All Orders</h2>
+                </div>
+                {% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 bgcolor-table">
+            <div style="border-radius:15px !important" class="card">
+                <div class="card-body" style="padding-top: 5px;">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="d-flex">
+                            <div class="col-md-4" style="padding: 5px;">
+                                <select id="filter_status" name="filter_status" class="form-control filter-border">
+                                    <option value="">Coupon Applied</option>
+                                    {% for status in orderStatus %}
+                                        <option {% if app.request.get('filter_status') == status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="padding: 5px;">
+                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:400px; border-radius:5px;">
+                                    <i class="fa fa-calendar calender-icn"></i>&nbsp;
+                                    <span></span>
+                                    <i class="fas fa-angle-down rotate-i rotate-i1"></i>
+                                </div>
+                                <input type="hidden" id="filter_start_date" name="filter_start_date"/>
+                                <input type="hidden" id="filter_end_date" name="filter_end_date"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-between">
+                        <div class="input-container">
+                            <input id="searchField" class="search-feild-text" type="text" placeholder="Search">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <div class="mt-2" id="entriesDropdownContainer" style="margin-right: 15px;"></div>
+                    </div>
+                    <table class="table table-bordered table-hover dataTable2" id="ordersTableList">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle">Order ID</th>
+                                <th class="text-center align-middle">Courier Company</th>
+                                <th class="text-center align-middle">Country</th>
+                                <th class="text-center align-middle">Total (AED)</th>
+                                <th class="text-center align-middle">Status</th>
+                                <th class="text-center align-middle">Payment Status</th>
+                                <th class="text-center align-middle">Order Type</th>
+                                <th class="text-center align-middle">Coupon Code</th>
+                                <th class="text-center align-middle">Date</th>
+                                <th class="text-center align-middle">Details</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
 {% block inlineCss %}
-	<style>
-		#reportrange span {
-			font-weight: bold;
-		}
-	</style>
-	<link rel="stylesheet" href="{{ asset('js/daterangepicker/daterangepicker.css') }}">
+    <style>
+        #reportrange span {
+            font-weight: bold;
+        }
+        #entriesDropdownContainer label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    }
+    #entriesDropdownContainer select {
+    margin: 0 5px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    }
+    </style>
+    <link rel="stylesheet" href="{{ asset('js/daterangepicker/daterangepicker.css') }}">
 {% endblock %}
-
 {% block inlineJs %} <script src="{{ asset('js/daterangepicker/moment.min.js') }}"></script>
-	 <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
-	 <script>
-	    $(document).ready(function () {
-	        let ordersTable;
-	        const start = moment().subtract(29, 'days');
-	        const end = moment();
-	
-	        function updateDateRange(start, end) {
-	            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-	            $('#filter_start_date').val(start.format('YYYY-MM-DD'));
-	            $('#filter_end_date').val(end.format('YYYY-MM-DD'));
-	        }
-	
-	        $('#reportrange').daterangepicker({
-	            startDate: start,
-	            endDate: end,
-	            ranges: {
-	                'Today': [moment(), moment()],
-	                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	                'This Month': [moment().startOf('month'), moment().endOf('month')],
-	                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	            }
-	        }, updateDateRange);
-	
-	        updateDateRange(start, end);
-	
-	        $('#filter_status').change(function () {
-	            ordersTable.ajax.reload();
-	        });
-	
-	        ordersTable = $('#ordersTableList').DataTable({
-	            processing: true,
-	            serverSide: true,
-	            autoWidth: false,
-	            dom: '<"row"<"col-md-6"f><"col-md-6"l>>rt<"row"<"col-md-6"i><"col-md-6"p>>',
-	            columnDefs: [
-	                { targets: [0], width: '30%' },
-	                { targets: [1], width: '15%' },
-	                { targets: [8], width: '25%' },
-	                { targets: [2, 3, 4, 5, 6, 7], width: '5%' },
-	            ],
-	            ajax: {
-	                url: "{{ path('app_order_index') }}",
-	                type: 'POST',
-	                data: function (d) {
-	                    d.filter_status = $('#filter_status').val();
-	                    d.filter_start_date = $('#filter_start_date').val();
-	                    d.filter_end_date = $('#filter_end_date').val();
-						d.search = { value: $('#searchField').val() };
-	                }
-	            },
-	            columns: [
-	                { data: "orderId" },
-	                { data: "company" },
-	                {
-	                    data: null,
-	                    render: function (data) {
-	                        return `${data.from} <i class="fas fa-arrow-right"></i> ${data.to}`;
-	                    }
-	                },
-	                { data: "price" },
-	                { data: "status" },
-	                { data: "paymentStatus" },
-	                { data: "type" },
-	                { data: "coupon" },
-	                { data: "createdDate" },
-	                {
-	                    data: "action",
-	                    render: function (data) {
-	                        return `<a href="${data.details}" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a>`;
-	                    }
-	                }
-	            ]
-	        });
-			// Move "Show Entries" dropdown next to Add Company button
-					    let entriesDropdown = $('#ordersTableList_length').detach();
-					    $('#entriesDropdownContainer').append(entriesDropdown);
-						
-						  $('#searchField').on('input', function () {
-        					ordersTable.ajax.reload();
-    					});
-	    });
-	</script>
+     <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
+     <script>
+        $(document).ready(function () {
+            let ordersTable;
+            const start = moment().subtract(29, 'days');
+            const end = moment();
+    
+            function updateDateRange(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#filter_start_date').val(start.format('YYYY-MM-DD'));
+                $('#filter_end_date').val(end.format('YYYY-MM-DD'));
+            }
+    
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                }
+            }, updateDateRange);
+    
+            updateDateRange(start, end);
+    
+            $('#filter_status').change(function () {
+                ordersTable.ajax.reload();
+            });
+    
+            ordersTable = $('#ordersTableList').DataTable({
+                processing: true,
+                serverSide: true,
+                autoWidth: false,
+                dom: '<"row"<"col-md-6"f><"col-md-6"l>>rt<"row"<"col-md-6"i><"col-md-6"p>>',
+                columnDefs: [
+                    { targets: [0], width: '30%' },
+                    { targets: [1], width: '15%' },
+                    { targets: [8], width: '25%' },
+                    { targets: [2, 3, 4, 5, 6, 7], width: '5%' },
+                ],
+                ajax: {
+                    url: "{{ path('app_order_index') }}",
+                    type: 'POST',
+                    data: function (d) {
+                        d.filter_status = $('#filter_status').val();
+                        d.filter_start_date = $('#filter_start_date').val();
+                        d.filter_end_date = $('#filter_end_date').val();
+                        d.search = { value: $('#searchField').val() };
+                    }
+                },
+                columns: [
+                    { data: "orderId" },
+                    { data: "company" },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `${data.from} <i class="fas fa-arrow-right"></i> ${data.to}`;
+                        }
+                    },
+                    { data: "price" },
+                    { data: "status" },
+                    { data: "paymentStatus" },
+                    { data: "type" },
+                    { data: "coupon" },
+                    { data: "createdDate" },
+                    {
+                        data: "action",
+                        render: function (data) {
+                            return `<a href="${data.details}" class="btn btn-default"><i class="fas fa-info-circle"></i> Details</a>`;
+                        }
+                    }
+                ]
+            });
+            // Move "Show Entries" dropdown next to Add Company button
+                let entriesDropdown = $('#ordersTableList_length').detach();
+                $('#entriesDropdownContainer').append(entriesDropdown);
+                    // Trigger search on input change
+                   
+                     $('#searchField').on('input', function (){
+                ordersTable.ajax.reload();
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,62 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Locale{% endblock %}
+{% block title %}Edit Locale
+{% endblock %}
 
 {% block body %}
-<div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-<img class="img-set"  src="{{ asset('images/Region.png') }}" alt="Logo">
+				<div class="accept-order-img">
+					<img class="img-set" src="{{ asset('images/Region.png') }}" alt="Logo">
 
-<h2 class="title-heading1">Edit Locale</h2>
-</div>
+					<h2 class="title-heading1">Edit Locale</h2>
+				</div>
 
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
+				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+			</div>
+			<div
+				class="card card-primary">
+				{# <div class="card-header">
+				            <h3 class="card-title">Edit Locale</h3>
+				        </div> #}
+				{{ form_start(form) }}
+				<div class="card-body">
+					{{ form_widget(form) }}
+				</div>
+			</div>
+		</div>
 
-<div>
+		<div style="background-color: #eaeaea ;" class="card-footer">
+			<button style="background-color: transparent ;" class="btn btn-danger btn-back icn4 ">{{ button_label|default('Save') }}</button>
 
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
+			<a style="background-color: transparent; border-color:red !important" class="btn btn-danger2 btn-back icn4" href="{{ path('app_locale_index') }}">Cancel</a>
 
-<div class="order-pg-btn2">
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
+			{{ form_end(form) }}
 
-<div>
+			{% if is_granted('ROLE_SUPER_ADMIN')  %}
+				<form method="post" style="display: inline;" action="{{ path('app_locale_delete', {'id': locale.id}) }}" onsubmit="return confirm('Are you sure you want to delete this locale?');">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ locale.id) }}">
+					<button style="margin-left:10px" class="btn btn-danger1 icn4">
+						<i class="fas fa-minus icn4"></i>
+						Delete</button>
+				</form>
+			{% endif %}
 
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
-    <div class="card card-primary">
-        {# <div class="card-header">
-            <h3 class="card-title">Edit Locale</h3>
-        </div> #}
-        {{ form_start(form) }}
-        <div class="card-body">
-            {{ form_widget(form) }}
-        </div>
-             </div>
-    </div>  
-
-        <div style="background-color: #eaeaea ;" class="card-footer">
-            <button style="background-color: transparent ;" class="btn btn-danger btn-back icn4 ">{{ button_label|default('Save') }}</button>
-
-            <a style="background-color: transparent; border-color:red !important" class="btn btn-danger2 btn-back icn4" href="{{ path('app_locale_index') }}">Cancel</a>
-    
-     {{ form_end(form) }}
- 
-            {% if is_granted('ROLE_SUPER_ADMIN')  %}
-                <form method="post" style="display: inline;" action="{{ path('app_locale_delete', {'id': locale.id}) }}"
-                      onsubmit="return confirm('Are you sure you want to delete this locale?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ locale.id) }}">
-                    <button style="margin-left:10px" class="btn btn-danger1 icn4"><i class="fas fa-minus icn4"></i> Delete</button>
-                </form>
-            {% endif %}
-       
-{% endblock %}
+		{% endblock %}

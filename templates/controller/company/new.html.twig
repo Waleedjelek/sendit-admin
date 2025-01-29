@@ -1,66 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Company{% endblock %}
+{% block title %}New Company
+{% endblock %}
 
 {% block body %}
-  <div class="row">
-        <div class="col-12">
-<div class="main-order-pg-btn-flex">
+	<div class="row">
+		<div class="col-12">
+			<div class="main-order-pg-btn-flex">
 
-<div class="accept-order-img">
-<img class="img-set"  src="{{ asset('images/Company.png') }}" alt="Logo">
+				<div class="accept-order-img">
+					<img class="img-set" src="{{ asset('images/Company.png') }}" alt="Logo">
 
-<h2 class="title-heading2">Company</h2>
-</div>
-
-
-<div class="order-pg-btn-flex">
-<div class="order-pg-btn1">
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Orders(7)</p>
- </div>
-</div>
-
-<div class="order-pg-btn2">
-<img  class="img-order-pix"  src="{{ asset('images/Receipt.png') }}" alt="Logo">
-
-<div>
-
- <p class="img-side-text-order" > New Ouote(0)</p>
- </div>
-</div>
-</div>
-</div>
+					<h2 class="title-heading2">Company</h2>
+				</div>
 
 
-</div>
-</div>
+				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+			</div>
 
-    <div class="card card-primary"style="border-radius:15px !important; padding-top:5px">
-        <div class="card-header"style="border-radius:15px 15px 0px 0px !important;">
-               <div class="card-tools">
-                            <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                 
-                                </li>
-                            </ul>
-                        </div>
-           <div class="flex-of-comany-form">  <i class="fa fa-building company-icon-head"></i> <p class=" comany-head-form">Company </p> </div>
-                                       
-        </div>
-        {{ form_start(form) }}
-        <div class="card-body">
-            {{ form_widget(form) }}
-        </div>
-   </div>
-        <div class="card-footer" style="background-color: #eaeaea ; "  >
-            <button style=" padding-left:-2px;background:transparent" class="btn btn-danger btn-back icn4 ">{{ button_label|default('Save') }}</button>
 
-            <a style=" border-color:red !important; background:transparent" class="btn btn-danger2 btn-cancle" href="{{ path('app_company_index') }}">Cancel</a>
-        </div>
-        {{ form_end(form) }}
- 
+		</div>
+	</div>
+
+	<div class="card card-primary" style="border-radius:15px !important; padding-top:5px">
+		<div class="card-header" style="border-radius:15px 15px 0px 0px !important;">
+			<div class="card-tools">
+				<ul class="nav nav-pills ml-auto">
+					<li class="nav-item"></li>
+				</ul>
+			</div>
+			<div class="flex-of-comany-form">
+				<i class="fa fa-building company-icon-head"></i>
+				<p class=" comany-head-form">Company
+				</p>
+			</div>
+
+		</div>
+		{{ form_start(form) }}
+		<div class="card-body">
+			{{ form_widget(form) }}
+		</div>
+	</div>
+	<div class="card-footer" style="background-color: #eaeaea ; ">
+		<button style=" padding-left:-2px;background:transparent" class="btn btn-danger btn-back icn4 ">{{ button_label|default('Save') }}</button>
+
+		<a style=" border-color:red !important; background:transparent" class="btn btn-danger2 btn-cancle" href="{{ path('app_company_index') }}">Cancel</a>
+	</div>
+	{{ form_end(form) }}
+
 {% endblock %}

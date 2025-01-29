@@ -1,98 +1,115 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Locale
 {% endblock %}
-
 {% block body %}
-
-	<div class="row">
-		<div class="col-12">
-			<div class="main-order-pg-btn-flex">
-
-				<div
-					class="accept-order-img">
-					{# <img class="img-set" src="\build\images\Region.ba620b14.png" > #}
-					<img class="img-set" src="{{ asset('images/Region.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 10px;">
-
-					<h2 class="title-heading1">
-						Locale</h2>
-				</div>
-
-				{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
-			</div>
-
-			<div class="row">
-				<div class="col-12 bgcolor-table">
-					<div class="card" style="border-radius:15px !important;">
-						<div class="card-header">
-							<div class="company-searcher" style="height: 85px;">
-								<div class="input-container">
-									<input id="searchField" class="search-feild-text" type="text" placeholder="Search" style="margin-top: 30px;">
-									<i class="fa fa-search" style="margin-top: 22px;"></i>
-								</div>
-								{% if is_granted('ROLE_ADMIN')  %}
-									<div class="card-tools  d-flex">
-										<ul class="nav nav-pills ml-auto" style="height: 30px;">
-											<li class="nav-item" style="margin-top: 30px !important;">
-												<a href="{{ path('app_locale_new') }}" class="btn btn-primary btn-block btn-sm companies-btn" style="padding-top:4px;width:150px">
-													<i class="fa fa-plus icn4" style=" margin-top: 3px !important;"></i>
-													Add Locale</a>
-											</li>
-										</ul>
-										<span class="mt-2" id="entriesDropdownContainer" style="margin-left: 20px;width: 75px; font-size:13px;"></span>
-									</div>
-								{% endif %}
-
-							</div>
-							<div class="card-body">
-								<table class="table table-bordered table-hover" id="userTableList">
-									<thead>
-										<tr>
-											<th>Code</th>
-											<th>Actions</th>
-										</tr>
-									</thead>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			{% endblock %}
-
-			{% block inlineJs %}
-				 <script>
-								        $(document).ready(function () {
-								            let table = $('#userTableList').DataTable({
-								                "paging": true,
-								                "ordering": false,
-								                "responsive": true,
-								                "processing": true,
-								                "serverSide": true,
-								                "ajax": {
-								                    "url": "{{ path('app_locale_index') | raw }}",
-								                    "type": 'POST',
-								                    "data": function (d) {
-				                                     d.search.value = $('#searchField').val(); // Pass search input value to backend
-				                                    }
-								                },
-								                "columns": [
-								                    {"data": "code"},
-								                    {
-								                        "data": "action",
-								                        "render": function (data) {
-								                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit icn"></i> Edit</a>';
-								                        }
-								                    }
-								                ]
-								            });
-											// Move "Show Entries" dropdown next to Add Company button
-				    let entriesDropdown = $('#userTableList_length').detach();
-				    $('#entriesDropdownContainer').append(entriesDropdown);
-								                // Trigger search on input change
-				                                $('#searchField').on('input', function () {
-				                                 table.search(this.value).draw();
-				                             });
-								        });
-								    </script>
-			{% endblock %}
+    <div class="row">
+        <div class="col-12">
+            <div class="main-order-pg-btn-flex">
+                <div
+                    class="accept-order-img">
+                    {# <img class="img-set" src="\build\images\Region.ba620b14.png" > #}
+                    <img class="img-set" src="{{ asset('images/Region.png') }}" alt="Logo" style="width: 45px;height: 43px; margin-top: 10px;">
+                    <h2 class="title-heading1">
+                        Locale</h2>
+                </div>
+                {% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
+            </div>
+            <div class="row">
+                <div class="col-12 bgcolor-table">
+                    <div class="card" style="border-radius:15px !important;">
+                        <div class="card-header">
+                            <div class="company-searcher">
+                                <div class="input-container">
+                                    <input id="searchField" class="search-feild-text" type="text" placeholder="Search">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                                {% if is_granted('ROLE_ADMIN')  %}
+                                    <div class="card-tools  d-flex">
+                                        <ul class="nav nav-pills ml-auto" style="height: 30px">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_locale_new') }}" class="btn btn-primary btn-block btn-sm companies-btn" style="padding-top:4px;width:150px">
+                                                    <i class="fa fa-plus icn4" style=" margin-top: 3px !important;"></i>
+                                                    Add Locale</a>
+                                            </li>
+                                        </ul>
+                                        <span id="entriesDropdownContainer" style="margin-left: 20px; margin-right:14px;"></span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-body" style="padding-top: 5px;">
+                                <table class="table table-bordered table-hover" id="userTableList">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+            {% block inlineCss %}
+<style>
+        #reportrange span {
+            font-weight: bold;
+        }
+        #entriesDropdownContainer label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    }
+    #entriesDropdownContainer select {
+    margin: 0 5px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    }
+.input-container {
+    padding-left: 20px;
+}
+.company-searcher {
+    align-items: center;
+}
+    </style>
+{% endblock %}
+            {% block inlineJs %}
+                 <script>
+                                        $(document).ready(function () {
+                                            let table = $('#userTableList').DataTable({
+                                                "paging": true,
+                                                "ordering": false,
+                                                "responsive": true,
+                                                "processing": true,
+                                                "serverSide": true,
+                                                "ajax": {
+                                                    "url": "{{ path('app_locale_index') | raw }}",
+                                                    "type": 'POST',
+                                                    "data": function (d) {
+                                                     d.search.value = $('#searchField').val(); // Pass search input value to backend
+                                                    }
+                                                },
+                                                "columns": [
+                                                    {"data": "code"},
+                                                    {
+                                                        "data": "action",
+                                                        "render": function (data) {
+                                                            return '<a href="' + data['edit'] + '" class="btn btn-default"><i class="fas fa-edit icn"></i> Edit</a>';
+                                                        }
+                                                    }
+                                                ]
+                                            });
+                                             // Move "Show Entries" dropdown next to Add Company button
+                    let entriesDropdown = $('#userTableList_length').detach();
+                    $('#entriesDropdownContainer').append(entriesDropdown);
+                                            // Trigger search on input change
+                        $('#searchField').on('input', function () {
+                            table.search(this.value).draw();
+                        });
+                                        });
+                                    </script>
+            {% endblock %}
