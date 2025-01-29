@@ -6,7 +6,7 @@
 
 {% block body %}
 
-	<div class="row col-12 heading-dashboard">
+	<div class="row col-12 heading-dashboard view-center">
 		<div>
 			<h4 class="dashboard-header">Dashboard</h2>
 			<p style="color: #6f6f6f" class="about-dashboard">Hi
@@ -18,7 +18,7 @@
 				<div class="">
 					{% include 'controller/new_order_quote/index.html.twig' with {'newOrders': newOrders, 'newQuotes': newQuotes} %}
 				</div>
-				<div class="d-flex mb-3">
+				<div class="d-flex mb-3 calender-flex">
 					<p class="calender-align" style="color: #6f6f6f; margin-bottom: 0px;">From:</p>
 					<div
 						class="input-group password-bg-white2" id="datepickerFrom">

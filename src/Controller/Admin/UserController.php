@@ -65,7 +65,6 @@ class UserController extends AdminController
                 $user->getLastLoginDate() instanceof \DateTime ? $user->getLastLoginDate()->format('Y-m-d H:i:s') : '-',
             ];
         }
-
         $csvContent = '';
         foreach ($csvData as $row) {
             $csvContent .= implode(',', $row) . "\n";
@@ -353,7 +352,10 @@ class UserController extends AdminController
         $qb->add('orderBy', ' t.createdDate DESC ');
         $transactions = $qb->getQuery()->getResult();
 
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->render('controller/user/show.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'orders' => $orders,
             'transactions' => $transactions,
             'roleCaption' => $roleCaption,

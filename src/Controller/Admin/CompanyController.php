@@ -231,8 +231,10 @@ class CompanyController extends AdminController
 
             return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->renderForm('controller/company/new.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'company_entity' => $companyEntity,
             'form' => $form,
         ]);
@@ -243,7 +245,10 @@ class CompanyController extends AdminController
      */
     public function show(CompanyEntity $companyEntity): Response
     {
+        $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
         return $this->render('controller/company/show.html.twig', [
+            'newOrders' => $data['newOrders'],
+            'newQuotes' => $data['newQuotes'],
             'company' => $companyEntity,
         ]);
     }

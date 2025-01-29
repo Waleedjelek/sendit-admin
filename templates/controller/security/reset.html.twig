@@ -1,48 +1,40 @@
 {% extends 'empty-base.html.twig' %}
-
 {% block title %}Password Reset!{% endblock %}
 {% block bodyClass %} login-page{% endblock %}
-
 {% block body %}
-
-    <div class="login-box">
+    <div class="login-box" style="width:430px;">
        <div class="login-logo">
             <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-image logo-large-screen" style="width: 200px;margin-left:75px">
             </a>
         </div>
-        <div class="card">
+        <div class="card" style="background: transparent;">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Password Reset</p>
-
                 {% if errorMessage %}
                     <div class="alert alert-danger">{{ errorMessage }}</div>
                 {% endif %}
-
                 {% if app.session.flashBag.has('message') %}
                     {% for flashMessage in app.session.flashbag.get('message') %}
                         <div class="alert alert-success">{{ flashMessage }}</div>
                     {% endfor %}
                 {% endif %}
-
                 {{ form_start(form) }}
                     {{ form_widget(form) }}
-                    <div class="row">
+                    <div class="row" style="justify-content: center;">
                         <div class="col-8">
                            <div class="col-4">
                             <button data-sitekey="{{ google_recaptcha_site_key }}"
                                     data-callback='onSubmit'
                                     data-action='submit'
-                                    class="btn btn-primary btn-block g-recaptcha" >Request</button>
+                                    class="btn btn-primary btn-block g-recaptcha" style="width: 170px; margin-left: 20px;">Request</button>
                         </div>
                         </div>
                      
                     </div>
                 {{ form_end(form) }}
-
-
                 <p class="mb-1">
-                    <a href="{{ url('app_login') }}">Login</a>
+                    <a href="{{ url('app_login') }}" style="margin-top: 15px;">Login</a>
                 </p>
             </div>
         </div>

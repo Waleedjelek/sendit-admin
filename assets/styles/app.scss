@@ -652,7 +652,7 @@ margin-bottom: -15px;
 margin-left: -15px;
 }
 .input-container {
-  position: relative;padding-left: 20px;
+  position: relative;padding-left: 8px;
   width: 300px;
 }
 
@@ -787,7 +787,8 @@ font-size: 32px;color: #fff;
   padding: 20px;
   // background: rgba(18, 123, 149, 0.1) !important; /* Transparent background */
   background: linear-gradient(to right, rgb(25, 133, 161,0.4),rgb(25, 133, 161,0.2),rgb(214, 214, 214,-0.5),rgb(25, 133, 161,0.4)),;
-  backdrop-filter: blur(-2px); /* Blurs the background behind the form */
+  backdrop-filter: blur(-2px);
+  backdrop-filter: blur(10px); /* Blurs the background behind the form */
 
 }
 .logo-large-screen{
@@ -1478,7 +1479,7 @@ width: 670px;
    margin-left: 91px;
   }
   .flex-head-2 {
-    margin-top: 55px;
+    margin-top: 30px;
 }
   .img-side-text{
    margin-left: 62px;
@@ -2008,14 +2009,18 @@ gap: 10px;
   .flex-heading-1{
     margin-top: 55px;
   }
- 
+ .view-center{
+  justify-content: center;
+ }
   .content-responsive{
     margin-left: 0px !important;
   }
   .flex-head-2{
     margin-top: 60px;
   }
-  
+  .calender-flex{
+    flex-direction: column;
+  }
 
   .outer-div{
     display: flex;
@@ -2154,6 +2159,7 @@ gap: 10px;
   // background: rgba(18, 123, 149, 0.1) !important; /* Transparent background */
   background: linear-gradient(to right, rgb(25, 133, 161,0.4),rgb(25, 133, 161,0.2),rgb(214, 214, 214,-0.5),rgb(25, 133, 161,0.4)),;
   backdrop-filter: blur(-2px); /* Blurs the background behind the form */
+  backdrop-filter: blur(10px);
 
 }
 .logo-large-screen{
@@ -2163,10 +2169,10 @@ gap: 10px;
 .card-new-set {
   
   display: flex !important;
-height: 562px;
+height: 515px;
 margin-left: -100px !important;
   word-wrap: break-word !important;
-  width: 661px;
+  width: 620px;
   background-color: rgba(255, 255, 255, 0.2) !important;
   background-clip: border-box !important;
   border: 0 solid rgba(0, 0, 0, 0.125) !important;
@@ -2197,7 +2203,7 @@ font-size: 20px;
   .input-group:not(.has-validation) > .form-control:not(:last-child), .input-group:not(.has-validation) > .custom-select:not(:last-child), .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label, .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label::after {
 
   
-    height: 87px;
+    height: 60px;
   
 }
 .password-bg-white{
@@ -2207,7 +2213,7 @@ height: 87px;
 }
 .login-card-body .input-group .form-control, .register-card-body .input-group .form-control {
 
-  margin-top: 17px;
+  margin-top: 4px;
   padding-left: 32px;
   
 
@@ -2221,7 +2227,7 @@ opacity: 1;
 .logo-large-screen{
   width: 253px;
   height: 92px;
-  margin-left: 100px !important;
+  // margin-left: 100px !important;
   }
   .col-4 .btn-primary {
    padding-top: 12px;
