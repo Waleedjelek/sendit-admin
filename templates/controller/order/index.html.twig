@@ -28,7 +28,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4" style="padding: 5px;">
-                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:400px; border-radius:5px;">
+                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width:420px; border-radius:5px;">
                                     <i class="fa fa-calendar calender-icn"></i>&nbsp;
                                     <span></span>
                                     <i class="fas fa-angle-down rotate-i rotate-i1"></i>
@@ -116,7 +116,10 @@
             }, updateDateRange);
     
             updateDateRange(start, end);
-    
+                 // Reload the table when the date range changes
+	            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+	                ordersTable.ajax.reload();
+	            });
             $('#filter_status').change(function () {
                 ordersTable.ajax.reload();
             });
