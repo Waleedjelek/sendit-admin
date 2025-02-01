@@ -1,48 +1,59 @@
 {% extends 'empty-base.html.twig' %}
-{% block title %}Password Reset!{% endblock %}
-{% block bodyClass %} login-page{% endblock %}
+{% block title %}Password Reset!
+{% endblock %}
+{% block bodyClass %}
+	login-page
+{% endblock %}
 {% block body %}
-    <div class="login-box" style="width:430px;">
-       <div class="login-logo">
-            <a href="https://www.senditworld.com/" target="_blank" rel="noopener">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-image logo-large-screen" style="width: 200px;margin-left:75px">
-            </a>
-        </div>
-        <div class="card" style="background: transparent;">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Password Reset</p>
-                {% if errorMessage %}
-                    <div class="alert alert-danger">{{ errorMessage }}</div>
-                {% endif %}
-                {% if app.session.flashBag.has('message') %}
-                    {% for flashMessage in app.session.flashbag.get('message') %}
-                        <div class="alert alert-success">{{ flashMessage }}</div>
-                    {% endfor %}
-                {% endif %}
-                {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <div class="row" style="justify-content: center;">
-                        <div class="col-8">
-                           <div class="col-4">
-                            <button data-sitekey="{{ google_recaptcha_site_key }}"
-                                    data-callback='onSubmit'
-                                    data-action='submit'
-                                    class="btn btn-primary btn-block g-recaptcha" style="width: 170px; margin-left: 20px;">Request</button>
-                        </div>
-                        </div>
-                     
-                    </div>
-                {{ form_end(form) }}
-               
-            </div>
-        </div>
-    </div>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script>
-        function onSubmit(token) {
-            document.getElementById("user_password_reset_grc_token").value = token;
-            document.getElementById("form_user_password_reset").submit();
-            return false;
-        }
-    </script>
+	<div class="login-box" style="width:430px;">
+		<div class="login-logo">
+			<a href="https://www.senditworld.com/" target="_blank" rel="noopener">
+				<img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-image logo-large-screen" style="width: 200px;margin-left:75px">
+			</a>
+		</div>
+		<div class="card" style="background: transparent;">
+			<div class="card-body login-card-body">
+				<p class="login-box-msg">Password Reset</p>
+				{% if errorMessage %}
+					<div class="alert alert-danger">{{ errorMessage }}</div>
+				{% endif %}
+				{% if app.session.flashBag.has('message') %}
+					{% for flashMessage in app.session.flashbag.get('message') %}
+						<div class="alert alert-success">{{ flashMessage }}</div>
+					{% endfor %}
+				{% endif %}
+				{{ form_start(form) }}
+				{{ form_widget(form) }}
+				<div class="row" style="justify-content: center;">
+					<div class="col-8">
+						<div class="col-4">
+							<button data-sitekey="{{ google_recaptcha_site_key }}" data-callback='onSubmit' data-action='submit' class="btn btn-primary btn-block g-recaptcha" style="width: 170px; margin-left: 20px;">Request</button>
+						</div>
+					</div>
+
+				</div>
+				{{ form_end(form) }}
+				{# <p class="mb-1">
+				                    <a href="{{ url('app_login') }}" style="margin-top: 15px;">Login</a>
+				                </p> #}
+			</div>
+		</div>
+	</div>
+
+	<div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;">
+		<div class="grecaptcha-logo">
+			<iframe title="reCAPTCHA" width="256" height="60" role="presentation" name="a-dhhu03xgjwkj" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LcBVZMbAAAAAH8Qd5lQFuH0qjQ7Gwl5LYskmuvj&amp;co=aHR0cHM6Ly9kZXYuYWRtaW4uc2VuZGl0d29ybGQuY29tOjQ0Mw..&amp;hl=en&amp;v=I0bG74fWAenNf3Z5ncHSz-bd&amp;size=invisible&amp;sa=submit&amp;cb=hn4z05w0d1n"></iframe>
+		</div>
+		<div class="grecaptcha-error"></div>
+		<textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
+	</div>
+
+	 <script src="https://www.google.com/recaptcha/api.js"></script>
+	 <script>
+	        function onSubmit(token) {
+	            document.getElementById("user_password_reset_grc_token").value = token;
+	            document.getElementById("form_user_password_reset").submit();
+	            return false;
+	        }
+	    </script>
 {% endblock %}
