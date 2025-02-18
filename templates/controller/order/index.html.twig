@@ -21,7 +21,7 @@
 						<div class="d-flex">
 							<div class="col-md-4" style="padding: 5px;">
 								<select id="filter_status" name="filter_status" class="form-control filter-border">
-									<option value="">Coupon Applied</option>
+									<option value="">Filter Status</option>
 									{% for status in orderStatus %}
 										<option {% if app.request.get('filter_status') == status %} selected {% endif %} value="{{ status }}">{{ status }}</option>
 									{% endfor %}

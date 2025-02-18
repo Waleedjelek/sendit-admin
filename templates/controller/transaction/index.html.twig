@@ -121,9 +121,9 @@
         
                     cb(start, end);
                          // Reload the table when the date range changes
-	            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-	                transactionTable.ajax.reload();
-	            });
+	                    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+	                        transactionTable.ajax.reload();
+	                    });
                     $( "#filter_status" ).change(function() {
                         transactionTable.ajax.reload();
                     });

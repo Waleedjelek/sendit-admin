@@ -123,10 +123,10 @@
                         }, cb);
             
                         cb(start, end);
-                 // Reload the table when the date range changes
-	            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-	                quotesTable.ajax.reload();
-	            });
+                        // Reload the table when the date range changes
+	                    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+	                        quotesTable.ajax.reload();
+	                    });
                         $( "#filter_status" ).change(function() {
                             quotesTable.ajax.reload();
                         });
