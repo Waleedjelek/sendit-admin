@@ -154,9 +154,130 @@ class OrderController extends AdminController
 
         return new JsonResponse($data);
     }
+    /**
+     * @Route("/new-order", name="app_new_order_index",  methods={"GET","POST"})
+     */
+    public function newOrder(
+        Request $request,
+        CountryEntityRepository $countryEntityRepository
+    ): Response {
+        $orderStatus = [
+            'Draft',
+            'Ready',
+            'Processing',
+            'Collected',
+            'Shipped',
+            'Cancelled',
+        ];
+
+       // Handle GET request to render the page
+        if ($request->isMethod('GET')) {
+            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            return $this->render('controller/order/new-order.html.twig', [
+                'newOrders' => $data['newOrders'],
+                'newQuotes' => $data['newQuotes'],
+                'orderStatus' => $orderStatus,
+            ]);
+        }
+     
+
+        $draw = $request->get('draw', 0);
+        $start = $request->get('start', 0);
+        $length = $request->get('length', 10);
+        if ($length < 0) {
+            $length = 10;
+        }
+
+        $filterStatus = $request->get('filter_status', '');
+        $filterStartDate = $request->get('filter_start_date', '');
+        $filterEndDate = $request->get('filter_end_date', '');
+
+        $qb = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
+        $qb->leftJoin('o.selectedCompany', 'c');
+        $qb->leftJoin('o.sourceCountry', 'm');
+
+        $search = $request->get('search');
+        $searchString = null;
+        if (null != $search && isset($search['value']) && !empty($search['value'])) {
+            $searchString = $search['value'];
+        }
+        if (!empty($searchString)) {
+            $qb->andWhere(' ( o.orderId LIKE :query1 OR  o.status LIKE :query1 OR  o.paymentStatus LIKE :query1 OR  o.type LIKE :query1 OR  o.createdDate LIKE :query1 OR  c.name LIKE :query1 OR  m.code LIKE :query1) ');
+            $qb->setParameter('query1', '%'.$searchString.'%');
+        }
+        if (!empty($filterStatus)) {
+            $qb->andWhere(' ( o.status LIKE :status ) ');
+            $qb->setParameter('status', '%'.$filterStatus.'%');
+        } else {
+            $qb->andWhere(" ( o.status != 'Draft' ) ");
+        }
+        if (!empty($filterStartDate) && !empty($filterEndDate)) {
+            if ($filterStartDate != $filterEndDate) {
+                $qb->andWhere($qb->expr()->between('o.createdDate', ':startDate', ':endDate'));
+                $qb->setParameter('startDate', $filterStartDate.' 00:00:00');
+                $qb->setParameter('endDate', $filterEndDate.' 23:59:59');
+            } else {
+                $qb->andWhere(' ( o.createdDate LIKE :onlyDate ) ');
+                $qb->setParameter('onlyDate', '%'.$filterStartDate.'%');
+            }
+        }
+
+        $qb->setFirstResult($start);
+        $qb->setMaxResults($length);
+
+        $qb->add('orderBy', ' o.createdDate DESC ');
+        $result = $qb->getQuery()->getResult();
+
+        $qb2 = clone $qb; // don't modify existing query
+        $qb2->resetDQLPart('orderBy');
+        $qb2->resetDQLPart('having');
+        $qb2->select('COUNT(o) AS cnt');
+        $countResult = $qb2->getQuery()->setFirstResult(0)->getScalarResult();
+        $totalCount = $countResult[0]['cnt'];
+
+        $data = [];
+        $data['draw'] = $draw;
+        $data['recordsFiltered'] = $totalCount;
+        $data['recordsTotal'] = $totalCount;
+        $data['data'] = [];
+
+        if (!empty($result)) {
+            /**
+             * @var $userOrderEntity UserOrderEntity
+             */
+            foreach ($result as $userOrderEntity) {
+                $ca = [];
+                $ca['DT_RowId'] = $userOrderEntity->getId();
+                $ca['orderId'] = $userOrderEntity->getOrderId();
+                $ca['company'] = $userOrderEntity->getSelectedCompany()->getName();
+                $ca['method'] = ucwords($userOrderEntity->getMethod());
+                $ca['from'] = $userOrderEntity->getSourceCountry()->getCode();
+                $ca['to'] = $userOrderEntity->getDestinationCountry()->getCode();
+                $ca['weight'] = number_format($userOrderEntity->getFinalWeight(), 3);
+                $ca['price'] = number_format($userOrderEntity->getTotalPrice(), 2);
+                $ca['user'] = [
+                    'firstName' => $userOrderEntity->getUser()->getFirstName(),
+                    'lastName' => $userOrderEntity->getUser()->getLastName(),
+                    'email' => $userOrderEntity->getUser()->getEmail(),
+                    'mobile' => $userOrderEntity->getUser()->getMobileNumber(),
+                ];
+                $ca['status'] = $userOrderEntity->getStatus();
+                $ca['type'] = $userOrderEntity->getType();
+                $ca['coupon'] = $userOrderEntity->getCouponCode();
+                $ca['paymentStatus'] = $userOrderEntity->getPaymentStatus();
+                $ca['createdDate'] = $this->formatToTimezone($userOrderEntity->getCreatedDate());
+                $ca['action'] = [
+                    'details' => $this->generateUrl('app_order_show', ['id' => $userOrderEntity->getId()]),
+                ];
+                $data['data'][] = $ca;
+            }
+        }
+
+        return new JsonResponse($data);
+    }
 
     // /**
-    //  * @Route("/", name="app_order_index", methods={"GET", "POST"})
+    //  * @Route("/new-order", name="app_new_order_index", methods={"GET", "POST"})
     //  */
     // public function index(
     //     Request $request,
