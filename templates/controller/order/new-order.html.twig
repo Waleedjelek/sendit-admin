@@ -124,7 +124,6 @@
 	                ordersTable.ajax.reload();
 	            });
 	    
-	            {% set todayDate = "now"|date("Y-m-d") %}
 	            ordersTable = $('#ordersTableList').DataTable({
 	                processing: true,
 	                serverSide: true,
@@ -140,9 +139,9 @@
 	                    url: "{{ path('app_new_order_index') }}",
 	                    type: 'POST',
 	                    data: function (d) {
-	                        d.filter_status = $('#filter_status').val();
-	                        d.filter_start_date = '{{ app.request.get('filter_start_date') ?: todayDate }}';
-	                        d.filter_end_date = '{{ app.request.get('filter_end_date') ?: todayDate }}';
+	                        d.filter_status = 'Ready';
+	                        // d.filter_start_date = $('#filter_start_date').val();
+	                        // d.filter_end_date = $('#filter_end_date').val();
 	                        d.search = { value: $('#searchField').val() };
 	                    }
 	                },
