@@ -21,11 +21,10 @@ class OrderQuoteService
         $todayStart = (new \DateTime())->setTime(0, 0, 0);
         $todayEnd = (new \DateTime())->setTime(23, 59, 59);
 
-        // Fetch orders created today
+        // Fetch orders with status 'ready'
         $orderQuery = $this->entityManager->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
-        $orderQuery->andWhere('o.createdDate BETWEEN :todayStart AND :todayEnd')
-                   ->setParameter('todayStart', $todayStart->format('Y-m-d H:i:s'))
-                   ->setParameter('todayEnd', $todayEnd->format('Y-m-d H:i:s'));
+        $orderQuery->andWhere('o.status = :status')
+                   ->setParameter('status',  'Ready');
         $orderQuery->orderBy('o.createdDate', 'DESC');
         $newOrders = $orderQuery->getQuery()->getResult();
 
