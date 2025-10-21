@@ -209,7 +209,7 @@ class OrderController extends AdminController
             $qb->andWhere(' ( o.status LIKE :status ) ');
             $qb->setParameter('status', '%'.$filterStatus.'%');
         } else {
-            $qb->andWhere(" ( o.status != 'Draft' ) ");
+            $qb->andWhere(" ( o.status IN ('Draft', 'Ready') ) ");
         }
         if (!empty($filterStartDate) && !empty($filterEndDate)) {
             if ($filterStartDate != $filterEndDate) {
