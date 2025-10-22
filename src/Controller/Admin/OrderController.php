@@ -211,6 +211,8 @@ class OrderController extends AdminController
         } else {
             $qb->andWhere(" ( o.status IN ('Draft', 'Ready') ) ");
         }
+        
+        // Apply date filtering - use default last 30 days if no dates provided
         if (!empty($filterStartDate) && !empty($filterEndDate)) {
             if ($filterStartDate != $filterEndDate) {
                 $qb->andWhere($qb->expr()->between('o.createdDate', ':startDate', ':endDate'));
@@ -220,6 +222,11 @@ class OrderController extends AdminController
                 $qb->andWhere(' ( o.createdDate LIKE :onlyDate ) ');
                 $qb->setParameter('onlyDate', '%'.$filterStartDate.'%');
             }
+        } else {
+            // Default to last 30 days if no date filter is provided
+            $thirtyDaysAgo = (new \DateTime())->modify('-29 days')->setTime(0, 0, 0);
+            $qb->andWhere('o.createdDate >= :thirtyDaysAgo');
+            $qb->setParameter('thirtyDaysAgo', $thirtyDaysAgo);
         }
 
         $qb->setFirstResult($start);
