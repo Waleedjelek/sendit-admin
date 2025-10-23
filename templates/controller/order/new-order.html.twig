@@ -139,9 +139,28 @@
 	                    url: "{{ path('app_new_order_index') }}",
 	                    type: 'POST',
 	                    data: function (d) {
-	                        d.filter_status = 'Ready';
-	                        // d.filter_start_date = $('#filter_start_date').val();
-	                        // d.filter_end_date = $('#filter_end_date').val();
+	                        // Check URL parameters first
+	                        const urlParams = new URLSearchParams(window.location.search);
+	                        const urlFilterStatus = urlParams.get('filter_status');
+						
+	                        if (urlFilterStatus !== null) {
+	                            d.filter_status = urlFilterStatus;
+	                        } else {
+	                            d.filter_status = $('#filter_status').val() || '';
+	                        }
+						
+	                        // Check for date parameters
+	                        const urlStartDate = urlParams.get('filter_start_date');
+	                        const urlEndDate = urlParams.get('filter_end_date');
+						
+	                        if (urlStartDate !== null && urlEndDate !== null) {
+	                            d.filter_start_date = urlStartDate;
+	                            d.filter_end_date = urlEndDate;
+	                        } else {
+	                            d.filter_start_date = $('#filter_start_date').val();
+	                            d.filter_end_date = $('#filter_end_date').val();
+	                        }
+						
 	                        d.search = { value: $('#searchField').val() };
 	                    }
 	                },
@@ -168,6 +187,26 @@
 	                    }
 	                ]
 	            });
+	            
+	            // Set initial form values based on URL parameters
+	            const urlParams = new URLSearchParams(window.location.search);
+	            const urlFilterStatus = urlParams.get('filter_status');
+	            const urlStartDate = urlParams.get('filter_start_date');
+	            const urlEndDate = urlParams.get('filter_end_date');
+	            
+	            if (urlFilterStatus !== null) {
+	                $('#filter_status').val(urlFilterStatus);
+	            }
+	            
+	            if (urlStartDate !== null && urlEndDate !== null) {
+	                $('#filter_start_date').val(urlStartDate);
+	                $('#filter_end_date').val(urlEndDate);
+	                // Update the date range picker display
+	                const startMoment = moment(urlStartDate);
+	                const endMoment = moment(urlEndDate);
+	                $('#reportrange span').html(startMoment.format('MMMM D, YYYY') + ' - ' + endMoment.format('MMMM D, YYYY'));
+	            }
+	            
 	            // Move "Show Entries" dropdown next to Add Company button
 	                let entriesDropdown = $('#ordersTableList_length').detach();
 	                $('#entriesDropdownContainer').append(entriesDropdown);

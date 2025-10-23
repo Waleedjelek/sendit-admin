@@ -20,16 +20,11 @@ class OrderQuoteService
         // Get the start and end of today's date
         $todayStart = (new \DateTime())->setTime(0, 0, 0);
         $todayEnd = (new \DateTime())->setTime(23, 59, 59);
-        
-        // Get the start of 30 days ago (to match the page's default date range)
-        $thirtyDaysAgo = (new \DateTime())->modify('-29 days')->setTime(0, 0, 0);
 
-        // Fetch orders with status 'Draft' or 'Ready' (unprocessed orders) from last 30 days
+        // Fetch orders with status 'Draft' or 'Ready' (unprocessed orders) - all time
         $orderQuery = $this->entityManager->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
         $orderQuery->andWhere('o.status IN (:statuses)')
-                   ->andWhere('o.createdDate >= :thirtyDaysAgo')
-                   ->setParameter('statuses', ['Draft', 'Ready'])
-                   ->setParameter('thirtyDaysAgo', $thirtyDaysAgo);
+                   ->setParameter('statuses', ['Draft', 'Ready']);
         $orderQuery->orderBy('o.createdDate', 'DESC');
         $newOrders = $orderQuery->getQuery()->getResult();
 

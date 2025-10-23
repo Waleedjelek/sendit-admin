@@ -150,11 +150,26 @@
                                 "url": "{{ path('app_new_quote_index') | raw }}",
                                 "type": 'POST',
                                 'data': function (params) {
-                                    params.filter_status = $('#filter_status').val();
-                                    // params.filter_start_date = $('#filter_start_date').val();
-                                    // params.filter_end_date = $('#filter_end_date').val();
-                                       params.filter_start_date = '{{ app.request.get('filter_start_date') ?: todayDate }}';
-	                        params.filter_end_date = '{{ app.request.get('filter_end_date') ?: todayDate }}';
+                                    // Check URL parameters first
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    const urlFilterStatus = urlParams.get('filter_status');
+                                    const urlStartDate = urlParams.get('filter_start_date');
+                                    const urlEndDate = urlParams.get('filter_end_date');
+                                    
+                                    if (urlFilterStatus !== null) {
+                                        params.filter_status = urlFilterStatus;
+                                    } else {
+                                        params.filter_status = $('#filter_status').val() || '';
+                                    }
+                                    
+                                    if (urlStartDate !== null && urlEndDate !== null) {
+                                        params.filter_start_date = urlStartDate;
+                                        params.filter_end_date = urlEndDate;
+                                    } else {
+                                        params.filter_start_date = $('#filter_start_date').val();
+                                        params.filter_end_date = $('#filter_end_date').val();
+                                    }
+                                    
                                     params.search = { value: $('#searchField').val() };
                                     return params;
                                 },

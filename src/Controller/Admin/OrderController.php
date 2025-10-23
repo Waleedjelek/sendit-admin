@@ -206,8 +206,8 @@ class OrderController extends AdminController
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
         if (!empty($filterStatus)) {
-            $qb->andWhere(' ( o.status LIKE :status ) ');
-            $qb->setParameter('status', '%'.$filterStatus.'%');
+            $qb->andWhere('o.status = :status');
+            $qb->setParameter('status', $filterStatus);
         } else {
             $qb->andWhere(" ( o.status IN ('Draft', 'Ready') ) ");
         }
@@ -223,10 +223,8 @@ class OrderController extends AdminController
                 $qb->setParameter('onlyDate', '%'.$filterStartDate.'%');
             }
         } else {
-            // Default to last 30 days if no date filter is provided
-            $thirtyDaysAgo = (new \DateTime())->modify('-29 days')->setTime(0, 0, 0);
-            $qb->andWhere('o.createdDate >= :thirtyDaysAgo');
-            $qb->setParameter('thirtyDaysAgo', $thirtyDaysAgo);
+            // No date filter provided - show all orders (all time)
+            // No additional date restrictions applied
         }
 
         $qb->setFirstResult($start);
