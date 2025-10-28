@@ -141,6 +141,13 @@
 	                    data: function (d) {
 	                        // Check URL parameters first
 	                        const urlParams = new URLSearchParams(window.location.search);
+						
+	                        // Pass show_all parameter from URL
+	                        const urlShowAll = urlParams.get('show_all');
+	                        if (urlShowAll !== null) {
+	                            d.show_all = urlShowAll;
+	                        }
+						
 	                        const urlFilterStatus = urlParams.get('filter_status');
 						
 	                        if (urlFilterStatus !== null) {

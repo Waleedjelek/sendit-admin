@@ -172,11 +172,37 @@ class OrderController extends AdminController
 
        // Handle GET request to render the page
         if ($request->isMethod('GET')) {
-            $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            // Check if show_all parameter is set
+            $showAll = $request->get('show_all', false);
+            
+            if ($showAll) {
+                // For show_all, get count of all Draft and Ready orders (no date restriction)
+                $orderQuery = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
+                $orderQuery->andWhere('o.status IN (:statuses)')
+                           ->setParameter('statuses', ['Draft', 'Ready']);
+                $orderQuery->orderBy('o.createdDate', 'DESC');
+                $allNewOrders = $orderQuery->getQuery()->getResult();
+                $data['newOrders'] = $allNewOrders;
+                
+                // Get quotes (keep original behavior)
+                $quoteQuery = $this->em()->getRepository(\App\Entity\QuoteEntity::class)->createQueryBuilder('q');
+                $todayStart = (new \DateTime())->setTime(0, 0, 0);
+                $todayEnd = (new \DateTime())->setTime(23, 59, 59);
+                $quoteQuery->andWhere('q.createdDate BETWEEN :todayStart AND :todayEnd')
+                           ->setParameter('todayStart', $todayStart->format('Y-m-d H:i:s'))
+                           ->setParameter('todayEnd', $todayEnd->format('Y-m-d H:i:s'));
+                $quoteQuery->orderBy('q.createdDate', 'DESC');
+                $data['newQuotes'] = $quoteQuery->getQuery()->getResult();
+            } else {
+                // Default behavior - get orders from last 30 days
+                $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
+            }
+            
             return $this->render('controller/order/new-order.html.twig', [
                 'newOrders' => $data['newOrders'],
                 'newQuotes' => $data['newQuotes'],
                 'orderStatus' => $orderStatus,
+                'showAll' => $showAll,
             ]);
         }
      
@@ -191,20 +217,13 @@ class OrderController extends AdminController
         $filterStatus = $request->get('filter_status', '');
         $filterStartDate = $request->get('filter_start_date', '');
         $filterEndDate = $request->get('filter_end_date', '');
+        $showAll = $request->get('show_all', false);
 
         $qb = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
         $qb->leftJoin('o.selectedCompany', 'c');
         $qb->leftJoin('o.sourceCountry', 'm');
 
-        $search = $request->get('search');
-        $searchString = null;
-        if (null != $search && isset($search['value']) && !empty($search['value'])) {
-            $searchString = $search['value'];
-        }
-        if (!empty($searchString)) {
-            $qb->andWhere(' ( o.orderId LIKE :query1 OR  o.status LIKE :query1 OR  o.paymentStatus LIKE :query1 OR  o.type LIKE :query1 OR  o.createdDate LIKE :query1 OR  c.name LIKE :query1 OR  m.code LIKE :query1) ');
-            $qb->setParameter('query1', '%'.$searchString.'%');
-        }
+        // First, apply status filtering (Draft and Ready for new orders page)
         if (!empty($filterStatus)) {
             $qb->andWhere('o.status = :status');
             $qb->setParameter('status', $filterStatus);
@@ -212,8 +231,19 @@ class OrderController extends AdminController
             $qb->andWhere(" ( o.status IN ('Draft', 'Ready') ) ");
         }
         
-        // Apply date filtering - use default last 30 days if no dates provided
-        if (!empty($filterStartDate) && !empty($filterEndDate)) {
+        // Then apply search filtering (don't include status in search to avoid conflicts)
+        $search = $request->get('search');
+        $searchString = null;
+        if (null != $search && isset($search['value']) && !empty($search['value'])) {
+            $searchString = $search['value'];
+        }
+        if (!empty($searchString)) {
+            $qb->andWhere(' ( o.orderId LIKE :query1 OR  o.paymentStatus LIKE :query1 OR  o.type LIKE :query1 OR  o.createdDate LIKE :query1 OR  c.name LIKE :query1 OR  m.code LIKE :query1) ');
+            $qb->setParameter('query1', '%'.$searchString.'%');
+        }
+        
+        // Apply date filtering - use default last 30 days if no dates provided and show_all is not set
+        if (!empty(trim($filterStartDate)) && !empty(trim($filterEndDate))) {
             if ($filterStartDate != $filterEndDate) {
                 $qb->andWhere($qb->expr()->between('o.createdDate', ':startDate', ':endDate'));
                 $qb->setParameter('startDate', $filterStartDate.' 00:00:00');
@@ -222,10 +252,13 @@ class OrderController extends AdminController
                 $qb->andWhere(' ( o.createdDate LIKE :onlyDate ) ');
                 $qb->setParameter('onlyDate', '%'.$filterStartDate.'%');
             }
-        } else {
-            // No date filter provided - show all orders (all time)
-            // No additional date restrictions applied
+        } elseif (!$showAll) {
+            // Default to last 30 days if no date filter is provided and show_all is not requested
+            $thirtyDaysAgo = (new \DateTime())->modify('-29 days')->setTime(0, 0, 0);
+            $qb->andWhere('o.createdDate >= :thirtyDaysAgo');
+            $qb->setParameter('thirtyDaysAgo', $thirtyDaysAgo);
         }
+        // If show_all is true, no date restriction is applied (show all time)
 
         $qb->setFirstResult($start);
         $qb->setMaxResults($length);
