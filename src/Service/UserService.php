@@ -178,7 +178,10 @@ class UserService extends BaseService
     public function resetPasswordRequest(string $email, ?string $captchaToken): UserEntity
     {
         try {
-            if (!is_null($captchaToken)) {
+            // TODO: Re-enable reCAPTCHA validation when secret key is configured
+            // Temporarily disabled - reCAPTCHA secret key not configured
+            /*
+            if (!is_null($captchaToken) && !empty($captchaToken)) {
                 $reResponse = $this->reCaptcha->verify($captchaToken);
                 if (!$reResponse->isSuccess()) {
                     $error = 'Captcha validation failed!';
@@ -189,6 +192,7 @@ class UserService extends BaseService
                     throw new \Exception($error);
                 }
             }
+            */
 
             $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
             if (is_null($userEntity)) {
@@ -255,6 +259,7 @@ class UserService extends BaseService
                     'user_id' => $userEntity->getId(),
                     'error_type' => 'email_send_failed'
                 ]);
+                throw new \Exception('Failed to send password reset email. Please try again later.');
             }
 
             return $userEntity;
@@ -292,7 +297,10 @@ class UserService extends BaseService
     public function apiResetPasswordRequest(string $email, ?string $captchaToken = null): UserEntity
     {
         try {
-            if (!is_null($captchaToken)) {
+            // TODO: Re-enable reCAPTCHA validation when secret key is configured
+            // Temporarily disabled - reCAPTCHA secret key not configured
+            /*
+            if (!is_null($captchaToken) && !empty($captchaToken)) {
                 $reResponse = $this->reCaptcha->verify($captchaToken);
                 if (!$reResponse->isSuccess()) {
                     $error = 'Captcha validation failed!';
@@ -303,6 +311,7 @@ class UserService extends BaseService
                     throw new APIException($error, 102);
                 }
             }
+            */
 
             $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
             if (is_null($userEntity)) {

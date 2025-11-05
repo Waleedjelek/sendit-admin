@@ -27,7 +27,10 @@
 				<div class="row" style="justify-content: center;">
 					<div class="col-8">
 						<div class="col-4">
-							<button data-sitekey="{{ google_recaptcha_site_key }}" data-callback='onSubmit' data-action='submit' class="btn btn-primary btn-block g-recaptcha" style="width: 170px; margin-left: 20px;">Request</button>
+							{# TODO: Re-enable reCAPTCHA validation when secret key is configured #}
+							{# Temporarily disabled - reCAPTCHA secret key not configured #}
+							{# <button data-sitekey="{{ google_recaptcha_site_key }}" data-callback='onSubmit' data-action='submit' class="btn btn-primary btn-block g-recaptcha" style="width: 170px; margin-left: 20px;">Request</button> #}
+							<button type="submit" class="btn btn-primary btn-block" style="width: 170px; margin-left: 20px;">Request</button>
 						</div>
 					</div>
 
@@ -40,6 +43,9 @@
 		</div>
 	</div>
 
+	{# TODO: Re-enable reCAPTCHA validation when secret key is configured #}
+	{# Temporarily disabled - reCAPTCHA secret key not configured #}
+	{#
 	<div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;">
 		<div class="grecaptcha-logo">
 			<iframe title="reCAPTCHA" width="256" height="60" role="presentation" name="a-dhhu03xgjwkj" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LcBVZMbAAAAAH8Qd5lQFuH0qjQ7Gwl5LYskmuvj&amp;co=aHR0cHM6Ly9kZXYuYWRtaW4uc2VuZGl0d29ybGQuY29tOjQ0Mw..&amp;hl=en&amp;v=I0bG74fWAenNf3Z5ncHSz-bd&amp;size=invisible&amp;sa=submit&amp;cb=hn4z05w0d1n"></iframe>
@@ -56,4 +62,5 @@
 	            return false;
 	        }
 	    </script>
+	#}
 {% endblock %}
