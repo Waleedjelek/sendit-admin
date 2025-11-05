@@ -38,6 +38,7 @@ class UserService extends BaseService
     private MessageBusInterface $messageBus;
     private RouterInterface $router;
     private AuthorizationCheckerInterface $authorizationChecker;
+    private ?SlackService $slackService;
 
     public function __construct(
         Kernel $kernel,
@@ -51,7 +52,8 @@ class UserService extends BaseService
         UserPasswordHasherInterface $passwordEncoder,
         MessageBusInterface $messageBus,
         RouterInterface $router,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        ?SlackService $slackService = null
     ) {
         $this->entityManager = $entityManager;
         $this->userEntityRepository = $userEntityRepository;
@@ -59,6 +61,7 @@ class UserService extends BaseService
         $this->emailService = $emailService;
         $this->passwordEncoder = $passwordEncoder;
         $this->kernel = $kernel;
+        $this->slackService = $slackService;
         $this->filesystem = $filesystem;
         $this->userAddressEntityRepository = $userAddressEntityRepository;
         $this->countryEntityRepository = $countryEntityRepository;
@@ -174,54 +177,113 @@ class UserService extends BaseService
      */
     public function resetPasswordRequest(string $email, ?string $captchaToken): UserEntity
     {
-        if (!is_null($captchaToken)) {
-            $reResponse = $this->reCaptcha->verify($captchaToken);
-            if (!$reResponse->isSuccess()) {
-                throw new \Exception('Captcha validation failed!');
+        try {
+            if (!is_null($captchaToken)) {
+                $reResponse = $this->reCaptcha->verify($captchaToken);
+                if (!$reResponse->isSuccess()) {
+                    $error = 'Captcha validation failed!';
+                    $this->sendSlackError('Password Reset Request - ' . $error, [
+                        'email' => $email,
+                        'error_type' => 'captcha_validation_failed'
+                    ]);
+                    throw new \Exception($error);
+                }
             }
-        }
 
-        $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
-        if (is_null($userEntity)) {
-            throw new \Exception('User does not exists!');
-        }
-
-        if (!$userEntity->isActive()) {
-            throw new \Exception('Account is disabled!');
-        }
-
-        $passwordResetDate = $userEntity->getPasswordResetTokenDate();
-        if ($passwordResetDate instanceof \DateTime) {
-            $currentDate = new \DateTime();
-            $interval = $currentDate->getTimestamp() - $passwordResetDate->getTimestamp();
-            if ($interval < 3600) {
-                throw new \Exception('Password reset was recently requested!');
+            $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
+            if (is_null($userEntity)) {
+                $error = 'User does not exists!';
+                $this->sendSlackError('Password Reset Request - ' . $error, [
+                    'email' => $email,
+                    'error_type' => 'user_not_found'
+                ]);
+                throw new \Exception($error);
             }
+
+            if (!$userEntity->isActive()) {
+                $error = 'Account is disabled!';
+                $this->sendSlackError('Password Reset Request - ' . $error, [
+                    'email' => $email,
+                    'user_id' => $userEntity->getId(),
+                    'error_type' => 'account_disabled'
+                ]);
+                throw new \Exception($error);
+            }
+
+            $passwordResetDate = $userEntity->getPasswordResetTokenDate();
+            if ($passwordResetDate instanceof \DateTime) {
+                $currentDate = new \DateTime();
+                $interval = $currentDate->getTimestamp() - $passwordResetDate->getTimestamp();
+                if ($interval < 3600) {
+                    $error = 'Password reset was recently requested!';
+                    $this->sendSlackError('Password Reset Request - ' . $error, [
+                        'email' => $email,
+                        'user_id' => $userEntity->getId(),
+                        'last_reset_date' => $passwordResetDate->format('Y-m-d H:i:s'),
+                        'error_type' => 'rate_limit_exceeded'
+                    ]);
+                    throw new \Exception($error);
+                }
+            }
+
+            $random = random_bytes(10);
+            $resetToken = hash('sha1', $random);
+
+            $userEntity->setPasswordResetToken($resetToken);
+            $userEntity->setPasswordResetTokenDate(new \DateTime());
+            $this->entityManager->flush();
+
+            $emailMessage = new TemplatedEmail();
+            $emailMessage->addTo($userEntity->getEmail());
+            $emailMessage->subject('Send it - Password Reset Request!');
+            $emailMessage->htmlTemplate('emails/reset-validate.html.twig');
+            $emailMessage->context([
+                'user' => $userEntity,
+                'email_sent_to' => $userEntity->getEmail(),
+                'resetURL' => $this->generateUrl('app_reset_validate', [
+                    'id' => $userEntity->getId(),
+                    'code' => $userEntity->getPasswordResetToken(),
+                ],
+                    UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+            
+            $emailSent = $this->emailService->send($emailMessage);
+            
+            if (!$emailSent) {
+                $this->sendSlackError('Password Reset Email Failed to Send', [
+                    'email' => $userEntity->getEmail(),
+                    'user_id' => $userEntity->getId(),
+                    'error_type' => 'email_send_failed'
+                ]);
+            }
+
+            return $userEntity;
+        } catch (\Exception $e) {
+            // If it's already been handled with Slack notification, rethrow
+            if (strpos($e->getMessage(), 'Password Reset Request') !== false || 
+                strpos($e->getMessage(), 'Captcha') !== false ||
+                strpos($e->getMessage(), 'User does not') !== false ||
+                strpos($e->getMessage(), 'Account is disabled') !== false ||
+                strpos($e->getMessage(), 'recently requested') !== false) {
+                throw $e;
+            }
+            
+            // Catch any unexpected errors
+            $this->sendSlackError('Password Reset Request - Unexpected Error', [
+                'email' => $email,
+                'error_message' => $e->getMessage(),
+                'error_type' => 'unexpected_error',
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
+    }
 
-        $random = random_bytes(10);
-        $resetToken = hash('sha1', $random);
-
-        $userEntity->setPasswordResetToken($resetToken);
-        $userEntity->setPasswordResetTokenDate(new \DateTime());
-        $this->entityManager->flush();
-
-        $email = new TemplatedEmail();
-        $email->addTo($userEntity->getEmail());
-        $email->subject('Send it - Password Reset Request!');
-        $email->htmlTemplate('emails/reset-validate.html.twig');
-        $email->context([
-            'user' => $userEntity,
-            'email_sent_to' => $userEntity->getEmail(),
-            'resetURL' => $this->generateUrl('app_reset_validate', [
-                'id' => $userEntity->getId(),
-                'code' => $userEntity->getPasswordResetToken(),
-            ],
-                UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-        $this->emailService->send($email);
-
-        return $userEntity;
+    private function sendSlackError(string $message, array $context = []): void
+    {
+        if ($this->slackService !== null) {
+            $this->slackService->sendErrorNotification($message, $context);
+        }
     }
 
     /**
@@ -229,54 +291,100 @@ class UserService extends BaseService
      */
     public function apiResetPasswordRequest(string $email, ?string $captchaToken = null): UserEntity
     {
-        if (!is_null($captchaToken)) {
-            $reResponse = $this->reCaptcha->verify($captchaToken);
-            if (!$reResponse->isSuccess()) {
-                throw new APIException('Captcha validation failed!', 102);
+        try {
+            if (!is_null($captchaToken)) {
+                $reResponse = $this->reCaptcha->verify($captchaToken);
+                if (!$reResponse->isSuccess()) {
+                    $error = 'Captcha validation failed!';
+                    $this->sendSlackError('API Password Reset Request - ' . $error, [
+                        'email' => $email,
+                        'error_type' => 'captcha_validation_failed'
+                    ]);
+                    throw new APIException($error, 102);
+                }
             }
-        }
 
-        $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
-        if (is_null($userEntity)) {
-            throw new APIException('User does not exists!', 103);
-        }
-
-        if (!$userEntity->isActive()) {
-            throw new APIException('Account is disabled!', 104);
-        }
-
-        $passwordResetDate = $userEntity->getPasswordResetTokenDate();
-        if ($passwordResetDate instanceof \DateTime) {
-            $currentDate = new \DateTime();
-            $interval = $currentDate->getTimestamp() - $passwordResetDate->getTimestamp();
-            if ($interval < 3600) {
-                throw new APIException('Password reset was recently requested!', 105);
+            $userEntity = $this->userEntityRepository->findOneBy(['email' => $email]);
+            if (is_null($userEntity)) {
+                $error = 'User does not exists!';
+                $this->sendSlackError('API Password Reset Request - ' . $error, [
+                    'email' => $email,
+                    'error_type' => 'user_not_found'
+                ]);
+                throw new APIException($error, 103);
             }
+
+            if (!$userEntity->isActive()) {
+                $error = 'Account is disabled!';
+                $this->sendSlackError('API Password Reset Request - ' . $error, [
+                    'email' => $email,
+                    'user_id' => $userEntity->getId(),
+                    'error_type' => 'account_disabled'
+                ]);
+                throw new APIException($error, 104);
+            }
+
+            $passwordResetDate = $userEntity->getPasswordResetTokenDate();
+            if ($passwordResetDate instanceof \DateTime) {
+                $currentDate = new \DateTime();
+                $interval = $currentDate->getTimestamp() - $passwordResetDate->getTimestamp();
+                if ($interval < 3600) {
+                    $error = 'Password reset was recently requested!';
+                    $this->sendSlackError('API Password Reset Request - ' . $error, [
+                        'email' => $email,
+                        'user_id' => $userEntity->getId(),
+                        'last_reset_date' => $passwordResetDate->format('Y-m-d H:i:s'),
+                        'error_type' => 'rate_limit_exceeded'
+                    ]);
+                    throw new APIException($error, 105);
+                }
+            }
+
+            $random = random_bytes(10);
+            $resetToken = hash('sha1', $random);
+
+            $userEntity->setPasswordResetToken($resetToken);
+            $userEntity->setPasswordResetTokenDate(new \DateTime());
+            $this->entityManager->flush();
+
+            $emailMessage = new TemplatedEmail();
+            $emailMessage->addTo($userEntity->getEmail());
+            $emailMessage->subject('Send it - Password Reset Request!');
+            $emailMessage->htmlTemplate('emails/reset-validate.html.twig');
+            $emailMessage->context([
+                'user' => $userEntity,
+                'email_sent_to' => $userEntity->getEmail(),
+                'resetURL' => $this->generateUrl('app_api_reset_validate', [
+                    'id' => $userEntity->getId(),
+                    'code' => $userEntity->getPasswordResetToken(),
+                ],
+                    UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+            
+            $emailSent = $this->emailService->send($emailMessage);
+            
+            if (!$emailSent) {
+                $this->sendSlackError('API Password Reset Email Failed to Send', [
+                    'email' => $userEntity->getEmail(),
+                    'user_id' => $userEntity->getId(),
+                    'error_type' => 'email_send_failed'
+                ]);
+            }
+
+            return $userEntity;
+        } catch (APIException $e) {
+            // If it's already been handled with Slack notification, rethrow
+            throw $e;
+        } catch (\Exception $e) {
+            // Catch any unexpected errors
+            $this->sendSlackError('API Password Reset Request - Unexpected Error', [
+                'email' => $email,
+                'error_message' => $e->getMessage(),
+                'error_type' => 'unexpected_error',
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
-
-        $random = random_bytes(10);
-        $resetToken = hash('sha1', $random);
-
-        $userEntity->setPasswordResetToken($resetToken);
-        $userEntity->setPasswordResetTokenDate(new \DateTime());
-        $this->entityManager->flush();
-
-        $email = new TemplatedEmail();
-        $email->addTo($userEntity->getEmail());
-        $email->subject('Send it - Password Reset Request!');
-        $email->htmlTemplate('emails/reset-validate.html.twig');
-        $email->context([
-            'user' => $userEntity,
-            'email_sent_to' => $userEntity->getEmail(),
-            'resetURL' => $this->generateUrl('app_api_reset_validate', [
-                'id' => $userEntity->getId(),
-                'code' => $userEntity->getPasswordResetToken(),
-            ],
-                UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-        $this->emailService->send($email);
-
-        return $userEntity;
     }
 
     public function apiEmailActivateRequest(UserEntity $userEntity, bool $newUser = true): UserEntity

@@ -22,6 +22,8 @@ parameters:
     app_sendit_order_notification_emails: '%env(SENDIT_ORDER_NOTIFICATION_EMAILS)%'
     app_sendit_quote_notification_emails: '%env(SENDIT_QUOTE_NOTIFICATION_EMAILS)%'
     app_17_track_api_key: '%env(TRACK17_API_KEY)%'
+    app_slack_enabled: '%env(bool:APP_SLACK_ENABLED)%'
+    app_slack_webhook_url: '%env(SLACK_WEBHOOK_URL)%'
 
 services:
     App\Service\OrderQuoteService: ~
