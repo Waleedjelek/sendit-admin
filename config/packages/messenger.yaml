@@ -13,4 +13,5 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
-            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
+            # Temporarily disable async email sending to send emails immediately
+            # 'Symfony\Component\Mailer\Messenger\SendEmailMessage': async

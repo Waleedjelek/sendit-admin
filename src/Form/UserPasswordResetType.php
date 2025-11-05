@@ -22,13 +22,10 @@ class UserPasswordResetType extends AbstractType
             ],
         ]);
 
-        // TODO: Re-enable reCAPTCHA validation when secret key is configured
-        // Temporarily disabled - reCAPTCHA secret key not configured
         $builder->add('grc_token', HiddenType::class, [
-            'required' => false,
-            // 'constraints' => [
-            //     new NotBlank(),
-            // ],
+            'constraints' => [
+                new NotBlank(),
+            ],
         ]);
     }
 

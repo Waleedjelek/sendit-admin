@@ -44,19 +44,32 @@ class EmailService extends BaseService
     public function send(TemplatedEmail $message, Envelope $envelope = null): bool
     {
         if (!$this->enabled) {
+            error_log('EmailService: Email sending is DISABLED (app_email_enabled is false or not set)');
             return false;
         }
 
-        $senderAddress = new Address($this->senderEmail, $this->senderName);
-        $message->sender($senderAddress);
-        $message->replyTo($senderAddress);
-        $message->returnPath($this->returnEmail);
-        $message->from($senderAddress);
-
         try {
+            $recipients = $message->getTo();
+            $recipientEmail = !empty($recipients) ? $recipients[0]->getAddress() : 'Unknown';
+            
+            error_log('EmailService: Attempting to send email to: ' . $recipientEmail);
+            error_log('EmailService: Subject: ' . $message->getSubject());
+            error_log('EmailService: From: ' . $this->senderEmail . ' (' . $this->senderName . ')');
+
+            $senderAddress = new Address($this->senderEmail, $this->senderName);
+            $message->sender($senderAddress);
+            $message->replyTo($senderAddress);
+            $message->returnPath($this->returnEmail);
+            $message->from($senderAddress);
+
             $this->mailer->send($message, $envelope);
+            
+            error_log('EmailService: Email sent successfully to: ' . $recipientEmail);
             return true;
         } catch (TransportExceptionInterface $e) {
+            error_log('EmailService: TransportException - ' . $e->getMessage());
+            error_log('EmailService: Error Code: ' . $e->getCode());
+            
             // Send Slack notification on email failure
             if ($this->slackService !== null) {
                 $recipients = $message->getTo();
@@ -72,6 +85,9 @@ class EmailService extends BaseService
             }
             return false;
         } catch (\Exception $e) {
+            error_log('EmailService: Exception - ' . $e->getMessage());
+            error_log('EmailService: Exception Trace: ' . $e->getTraceAsString());
+            
             // Send Slack notification on any other email error
             if ($this->slackService !== null) {
                 $recipients = $message->getTo();
