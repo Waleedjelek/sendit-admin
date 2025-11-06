@@ -13,6 +13,10 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -228,183 +232,190 @@ class SecurityController extends AdminController
      */
     public function debugPasswordReset(
         Request $request,
-        UserEntityRepository $userRepository,
         ParameterBagInterface $parameterBag,
         EmailService $emailService,
-        UserService $userService
+        MailerInterface $mailer
     ): Response {
         $email = $request->query->get('email', '');
-        $debugData = [];
-
-        // A. Email Configuration Details
-        $debugData['email_config'] = [
-            'enabled' => $parameterBag->get('app_email_enabled'),
-            'sender_name' => $parameterBag->get('app_email_sender_name'),
-            'sender_email' => $parameterBag->get('app_email_sender_email'),
-            'return_email' => $parameterBag->get('app_email_return_email'),
-            'mailer_dsn' => $_ENV['MAILER_DSN'] ?? 'Not set',
+        $sendEmail = $request->query->has('send_email') && $request->query->get('send_email') !== '';
+        $emailResult = [
+            'success' => false,
+            'message' => '',
+            'error_details' => null,
+            'exception' => null,
         ];
 
-        // B. User Details (if email provided)
-        $userEntity = null;
-        if (!empty($email)) {
-            $userEntity = $userRepository->findOneBy(['email' => $email]);
-            
-            if ($userEntity) {
-                $debugData['user_details'] = [
-                    'id' => $userEntity->getId(),
-                    'email' => $userEntity->getEmail(),
-                    'first_name' => $userEntity->getFirstName(),
-                    'last_name' => $userEntity->getLastName(),
-                    'role' => $userEntity->getRole(),
-                    'active' => $userEntity->isActive(),
-                    'email_verified' => $userEntity->isEmailVerified(),
-                    'created_date' => $userEntity->getCreatedDate() ? $userEntity->getCreatedDate()->format('Y-m-d H:i:s') : null,
-                    'last_login_date' => $userEntity->getLastLoginDate() ? $userEntity->getLastLoginDate()->format('Y-m-d H:i:s') : null,
-                    'modified_date' => $userEntity->getModifiedDate() ? $userEntity->getModifiedDate()->format('Y-m-d H:i:s') : null,
-                ];
-
-                // C. Password Reset Token Details
-                $passwordResetToken = $userEntity->getPasswordResetToken();
-                $passwordResetTokenDate = $userEntity->getPasswordResetTokenDate();
-                
-                $debugData['password_reset_token'] = [
-                    'token' => $passwordResetToken,
-                    'token_date' => $passwordResetTokenDate ? $passwordResetTokenDate->format('Y-m-d H:i:s') : null,
-                    'token_age_seconds' => $passwordResetTokenDate ? (time() - $passwordResetTokenDate->getTimestamp()) : null,
-                    'token_age_hours' => $passwordResetTokenDate ? round((time() - $passwordResetTokenDate->getTimestamp()) / 3600, 2) : null,
-                    'is_expired' => $passwordResetTokenDate ? ((time() - $passwordResetTokenDate->getTimestamp()) > 3600) : null,
-                    'expires_in_seconds' => $passwordResetTokenDate ? max(0, 3600 - (time() - $passwordResetTokenDate->getTimestamp())) : null,
-                ];
-
-                // D. Email Template Details
-                if ($passwordResetToken) {
-                    $resetURL = $this->generateUrl('app_reset_validate', [
-                        'id' => $userEntity->getId(),
-                        'code' => $passwordResetToken,
-                    ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-                    $apiResetURL = $this->generateUrl('app_api_reset_validate', [
-                        'id' => $userEntity->getId(),
-                        'code' => $passwordResetToken,
-                    ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-                    $debugData['email_template'] = [
-                        'template_path' => 'emails/reset-validate.html.twig',
-                        'subject' => 'Send it - Password Reset Request!',
-                        'recipient' => $userEntity->getEmail(),
-                        'reset_url_admin' => $resetURL,
-                        'reset_url_api' => $apiResetURL,
-                        'context_variables' => [
-                            'user' => [
-                                'id' => $userEntity->getId(),
-                                'email' => $userEntity->getEmail(),
-                                'firstName' => $userEntity->getFirstName(),
-                                'lastName' => $userEntity->getLastName(),
-                            ],
-                            'email_sent_to' => $userEntity->getEmail(),
-                            'resetURL' => $resetURL,
-                        ],
-                    ];
-
-                    // E. Email Message Details (simulated)
-                    $emailMessage = new TemplatedEmail();
-                    $emailMessage->addTo($userEntity->getEmail());
-                    $emailMessage->subject('Send it - Password Reset Request!');
-                    $emailMessage->htmlTemplate('emails/reset-validate.html.twig');
-                    $emailMessage->context([
-                        'user' => $userEntity,
-                        'email_sent_to' => $userEntity->getEmail(),
-                        'resetURL' => $resetURL,
-                    ]);
-
-                    $debugData['email_message'] = [
-                        'to' => array_map(function($addr) { return $addr->getAddress(); }, $emailMessage->getTo()),
-                        'subject' => $emailMessage->getSubject(),
-                        'html_template' => $emailMessage->getHtmlTemplate(),
-                        'context' => $emailMessage->getContext(),
-                    ];
-                }
-
-                // F. Password Reset Flow Details
-                $debugData['password_reset_flow'] = [
-                    'request_methods' => [
-                        'admin' => [
-                            'route' => 'app_reset_password',
-                            'url' => $this->generateUrl('app_reset_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                            'service_method' => 'UserService::resetPasswordRequest()',
-                        ],
-                        'api' => [
-                            'route' => 'app_api_reset_password',
-                            'url' => '/api/v1/auth/reset-password',
-                            'service_method' => 'UserService::apiResetPasswordRequest()',
-                        ],
-                    ],
-                    'validation_routes' => [
-                        'admin' => [
-                            'route' => 'app_reset_validate',
-                            'pattern' => '/reset-validate/{id}/{code}/',
-                            'expiry_seconds' => 3600,
-                        ],
-                        'api' => [
-                            'route' => 'app_api_reset_validate',
-                            'pattern' => '/reset-pass-val/{id}/{code}/',
-                            'expiry_seconds' => 3600,
-                        ],
-                    ],
-                    'rate_limit' => [
-                        'enabled' => true,
-                        'interval_seconds' => 3600,
-                        'interval_hours' => 1,
-                    ],
-                ];
-
-                // G. Password Generation Details (for reset password)
-                $debugData['password_generation'] = [
-                    'generator_class' => 'Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator',
-                    'settings' => [
-                        'uppercase' => true,
-                        'lowercase' => true,
-                        'numbers' => true,
-                        'symbols' => false,
-                        'length' => 15,
-                    ],
-                    'password_email_template' => 'emails/user-password.html.twig',
-                    'password_email_subject' => 'Send it - Login Credentials',
+        // If send_email is requested, actually send the test email
+        if ($sendEmail) {
+            if (empty($email)) {
+                $emailResult['success'] = false;
+                $emailResult['message'] = 'Email address is required';
+                $emailResult['error_details'] = [
+                    'message' => 'Please provide an email address to send test email',
+                    'code' => 0,
+                    'file' => __FILE__,
+                    'line' => __LINE__,
                 ];
             } else {
-                $debugData['user_details'] = [
-                    'error' => 'User not found with email: ' . $email,
-                ];
+                // Check email configuration first
+                $emailEnabled = $parameterBag->get('app_email_enabled');
+                $senderEmail = $parameterBag->get('app_email_sender_email');
+                $senderName = $parameterBag->get('app_email_sender_name');
+                $mailerDsn = $_ENV['MAILER_DSN'] ?? 'Not set';
+                
+                if (!$emailEnabled) {
+                    $emailResult['success'] = false;
+                    $emailResult['message'] = 'Email sending is disabled';
+                    $emailResult['error_details'] = [
+                        'message' => 'Email sending is disabled. Set APP_EMAIL_ENABLED=true in your environment variables.',
+                        'code' => 0,
+                        'file' => __FILE__,
+                        'line' => __LINE__,
+                        'configuration' => [
+                            'app_email_enabled' => $emailEnabled ? 'true' : 'false',
+                            'app_email_sender_email' => $senderEmail,
+                            'app_email_sender_name' => $senderName,
+                            'MAILER_DSN' => $mailerDsn,
+                        ],
+                    ];
+                } else {
+                    try {
+                        // Create a simple test email
+                        $testEmail = new TemplatedEmail();
+                        $testEmail->addTo($email);
+                        $testEmail->subject('Test Email - Send it');
+                        $testEmail->htmlTemplate('emails/test-email.html.twig');
+                        $testEmail->context([
+                            'email_sent_to' => $email,
+                            'timestamp' => (new \DateTime())->format('Y-m-d H:i:s'),
+                        ]);
+                        
+                        // Set sender information (same as EmailService does)
+                        $senderAddress = new Address($senderEmail, $senderName);
+                        $testEmail->sender($senderAddress);
+                        $testEmail->replyTo($senderAddress);
+                        $testEmail->returnPath($parameterBag->get('app_email_return_email'));
+                        $testEmail->from($senderAddress);
+                        
+                        // Try to send directly to catch detailed exceptions
+                        try {
+                            $mailer->send($testEmail);
+                            
+                            $emailResult['success'] = true;
+                            $emailResult['message'] = 'Test email sent successfully to: ' . $email;
+                            $emailResult['error_details'] = null;
+                        } catch (HandlerFailedException $e) {
+                            // Unwrap HandlerFailedException to get the actual transport exception
+                            $nestedExceptions = $e->getNestedExceptions();
+                            $actualException = !empty($nestedExceptions) ? $nestedExceptions[0] : ($e->getPrevious() ?: $e);
+                            
+                            $this->handleEmailException($actualException, $emailResult, $emailEnabled, $senderEmail, $senderName, $mailerDsn);
+                        } catch (TransportExceptionInterface $e) {
+                            // Catch transport exceptions for detailed error info
+                            $this->handleEmailException($e, $emailResult, $emailEnabled, $senderEmail, $senderName, $mailerDsn);
+                        }
+                    } catch (\Exception $e) {
+                        $emailResult['success'] = false;
+                        $emailResult['message'] = 'Failed to send test email';
+                        $emailResult['error_details'] = [
+                            'message' => $e->getMessage(),
+                            'code' => $e->getCode(),
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                            'trace' => $e->getTraceAsString(),
+                            'configuration' => [
+                                'app_email_enabled' => $emailEnabled ? 'true' : 'false',
+                                'app_email_sender_email' => $senderEmail,
+                                'app_email_sender_name' => $senderName,
+                                'MAILER_DSN' => $mailerDsn,
+                            ],
+                        ];
+                        $emailResult['exception'] = get_class($e);
+                    }
+                }
             }
         }
 
-        // H. Environment Variables Related to Email
-        $debugData['environment'] = [
-            'APP_EMAIL_ENABLED' => $_ENV['APP_EMAIL_ENABLED'] ?? 'Not set',
-            'APP_EMAIL_SENDER_NAME' => $_ENV['APP_EMAIL_SENDER_NAME'] ?? 'Not set',
-            'APP_EMAIL_SENDER_EMAIL' => $_ENV['APP_EMAIL_SENDER_EMAIL'] ?? 'Not set',
-            'APP_EMAIL_RETURN_EMAIL' => $_ENV['APP_EMAIL_RETURN_EMAIL'] ?? 'Not set',
-            'MAILER_DSN' => $_ENV['MAILER_DSN'] ?? 'Not set',
-        ];
-
-        // I. Messenger Configuration
-        $debugData['messenger_config'] = [
-            'async_transport' => $_ENV['MESSENGER_TRANSPORT_DSN'] ?? 'Not set',
-            'email_async_disabled' => true, // Based on messenger.yaml comment
-        ];
-
-        // J. Website URLs
-        $debugData['website_urls'] = [
-            'admin_website_url' => $parameterBag->get('app_sendit_admin_website_url'),
-            'user_website_url' => $parameterBag->get('app_sendit_user_website_url'),
-            'marketing_website_url' => $parameterBag->get('app_sendit_marketing_website_url'),
-        ];
-
         return $this->render('controller/security/debug-password-reset.html.twig', [
-            'debugData' => $debugData,
             'email' => $email,
-            'userEntity' => $userEntity,
+            'emailResult' => $emailResult,
         ]);
+    }
+    
+    private function handleEmailException(\Throwable $e, array &$emailResult, bool $emailEnabled, string $senderEmail, string $senderName, string $mailerDsn): void
+    {
+        $errorMessage = $e->getMessage();
+        $isSignatureError = stripos($errorMessage, 'signature') !== false || stripos($errorMessage, 'InvalidSignatureException') !== false;
+        $isCredentialError = stripos($errorMessage, 'credential') !== false || stripos($errorMessage, 'AccessDenied') !== false;
+        
+        $troubleshooting = [];
+        
+        if ($isSignatureError) {
+            $emailResult['message'] = 'Failed to send test email - AWS Signature Error';
+            $troubleshooting = [
+                'Invalid Secret Key' => 'The AWS Secret Access Key in MAILER_DSN is incorrect or contains special characters that need URL encoding',
+                'URL Encode Secret Key' => 'If your secret key contains special characters (/, +, =, etc.), you must URL-encode them in the MAILER_DSN',
+                'Check Secret Key' => 'Verify the AWS Secret Access Key is correct in your .env file',
+                'Regenerate Credentials' => 'Consider regenerating AWS credentials if the key might have been corrupted',
+                'Example URL Encoding' => 'Special chars: / becomes %2F, + becomes %2B, = becomes %3D',
+            ];
+        } elseif ($isCredentialError) {
+            $emailResult['message'] = 'Failed to send test email - AWS Credentials Error';
+            $troubleshooting = [
+                'Check Access Key' => 'Verify AWS Access Key ID is correct',
+                'Check Secret Key' => 'Verify AWS Secret Access Key is correct',
+                'Check IAM Permissions' => 'Ensure IAM user has ses:SendEmail permission',
+                'Verify Region' => 'Ensure region matches your SES configuration',
+            ];
+        } else {
+            $emailResult['message'] = 'Failed to send test email - Transport Error';
+            $troubleshooting = [
+                'Check AWS credentials' => 'Verify AWS access key and secret key are correct',
+                'Verify AWS region' => 'Ensure region (eu-west-1) matches your SES configuration',
+                'Check SES permissions' => 'Ensure IAM user has ses:SendEmail permission',
+                'Verify sender email' => 'Sender email must be verified in AWS SES',
+                'Check error logs' => 'Look in var/log/ directory for additional details',
+            ];
+        }
+        
+        $emailResult['success'] = false;
+        $emailResult['error_details'] = [
+            'message' => $errorMessage,
+            'code' => $e->getCode(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString(),
+            'exception' => get_class($e),
+            'configuration' => [
+                'app_email_enabled' => $emailEnabled ? 'true' : 'false',
+                'app_email_sender_email' => $senderEmail,
+                'app_email_sender_name' => $senderName,
+                'MAILER_DSN' => $mailerDsn,
+                'MAILER_DSN (masked)' => $this->maskMailerDsn($mailerDsn),
+            ],
+            'troubleshooting' => $troubleshooting,
+        ];
+        $emailResult['exception'] = get_class($e);
+    }
+    
+    private function maskMailerDsn(string $dsn): string
+    {
+        // Mask AWS credentials in DSN for security
+        // Format: ses+api://ACCESS_KEY:SECRET_KEY@default?region=REGION
+        if (preg_match('/^(ses\+api:\/\/)([^:]+):([^@]+)@(.+)$/', $dsn, $matches)) {
+            $accessKey = $matches[2];
+            $secretKey = $matches[3];
+            $rest = $matches[4];
+            
+            // Mask access key (show first 4 chars)
+            $maskedAccessKey = substr($accessKey, 0, 4) . str_repeat('*', max(0, strlen($accessKey) - 4));
+            
+            // Mask secret key completely
+            $maskedSecretKey = str_repeat('*', strlen($secretKey));
+            
+            return $matches[1] . $maskedAccessKey . ':' . $maskedSecretKey . '@' . $rest;
+        }
+        
+        return $dsn;
     }
 }
