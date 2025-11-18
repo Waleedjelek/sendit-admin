@@ -158,28 +158,18 @@ class OrderController extends AdminController
      * @Route("/new-order", name="app_new_order_index",  methods={"GET","POST"})
      */
     public function newOrder(
-        Request $request,
-        CountryEntityRepository $countryEntityRepository
+        Request $request
     ): Response {
-        $orderStatus = [
-            'Draft',
-            'Ready',
-            'Processing',
-            'Collected',
-            'Shipped',
-            'Cancelled',
-        ];
-
        // Handle GET request to render the page
         if ($request->isMethod('GET')) {
             // Check if show_all parameter is set
             $showAll = $request->get('show_all', false);
             
             if ($showAll) {
-                // For show_all, get count of all Draft and Ready orders (no date restriction)
+                // For show_all, get count of all Ready orders only (no date restriction, excluding Draft and Failed)
                 $orderQuery = $this->em()->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
-                $orderQuery->andWhere('o.status IN (:statuses)')
-                           ->setParameter('statuses', ['Draft', 'Ready']);
+                $orderQuery->andWhere('o.status = :status')
+                           ->setParameter('status', 'Ready');
                 $orderQuery->orderBy('o.createdDate', 'DESC');
                 $allNewOrders = $orderQuery->getQuery()->getResult();
                 $data['newOrders'] = $allNewOrders;
@@ -194,14 +184,13 @@ class OrderController extends AdminController
                 $quoteQuery->orderBy('q.createdDate', 'DESC');
                 $data['newQuotes'] = $quoteQuery->getQuery()->getResult();
             } else {
-                // Default behavior - get orders from last 30 days
+                // Default behavior - get all Ready orders (no date restriction)
                 $data = $this->orderQuoteService->getTodayOrdersAndQuotes();
             }
             
             return $this->render('controller/order/new-order.html.twig', [
                 'newOrders' => $data['newOrders'],
                 'newQuotes' => $data['newQuotes'],
-                'orderStatus' => $orderStatus,
                 'showAll' => $showAll,
             ]);
         }
@@ -223,12 +212,18 @@ class OrderController extends AdminController
         $qb->leftJoin('o.selectedCompany', 'c');
         $qb->leftJoin('o.sourceCountry', 'm');
 
-        // First, apply status filtering (Draft and Ready for new orders page)
+        // First, apply status filtering (Ready only for new orders page, excluding Draft and Failed)
         if (!empty($filterStatus)) {
-            $qb->andWhere('o.status = :status');
-            $qb->setParameter('status', $filterStatus);
+            // If user explicitly selects Draft or Failed, exclude them (show nothing)
+            if ($filterStatus === 'Draft' || $filterStatus === 'Failed') {
+                $qb->andWhere('1 = 0'); // Always false condition to show no results
+            } else {
+                $qb->andWhere('o.status = :status');
+                $qb->setParameter('status', $filterStatus);
+            }
         } else {
-            $qb->andWhere(" ( o.status IN ('Draft', 'Ready') ) ");
+            // Default: show only Ready orders (ready-to-book, not processed yet)
+            $qb->andWhere("o.status = 'Ready'");
         }
         
         // Then apply search filtering (don't include status in search to avoid conflicts)
@@ -242,23 +237,8 @@ class OrderController extends AdminController
             $qb->setParameter('query1', '%'.$searchString.'%');
         }
         
-        // Apply date filtering - use default last 30 days if no dates provided and show_all is not set
-        if (!empty(trim($filterStartDate)) && !empty(trim($filterEndDate))) {
-            if ($filterStartDate != $filterEndDate) {
-                $qb->andWhere($qb->expr()->between('o.createdDate', ':startDate', ':endDate'));
-                $qb->setParameter('startDate', $filterStartDate.' 00:00:00');
-                $qb->setParameter('endDate', $filterEndDate.' 23:59:59');
-            } else {
-                $qb->andWhere(' ( o.createdDate LIKE :onlyDate ) ');
-                $qb->setParameter('onlyDate', '%'.$filterStartDate.'%');
-            }
-        } elseif (!$showAll) {
-            // Default to last 30 days if no date filter is provided and show_all is not requested
-            $thirtyDaysAgo = (new \DateTime())->modify('-29 days')->setTime(0, 0, 0);
-            $qb->andWhere('o.createdDate >= :thirtyDaysAgo');
-            $qb->setParameter('thirtyDaysAgo', $thirtyDaysAgo);
-        }
-        // If show_all is true, no date restriction is applied (show all time)
+        // No date filtering for new orders page - show all Ready orders regardless of date
+        // Date filtering has been removed from the UI
 
         $qb->setFirstResult($start);
         $qb->setMaxResults($length);
