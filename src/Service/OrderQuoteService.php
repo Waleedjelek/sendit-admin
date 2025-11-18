@@ -21,10 +21,10 @@ class OrderQuoteService
         $todayStart = (new \DateTime())->setTime(0, 0, 0);
         $todayEnd = (new \DateTime())->setTime(23, 59, 59);
 
-        // Fetch orders with status 'Draft' or 'Ready' (unprocessed orders) - all time
+        // Fetch orders with status 'Ready' only (ready-to-book orders, excluding Draft and Failed)
         $orderQuery = $this->entityManager->getRepository(UserOrderEntity::class)->createQueryBuilder('o');
-        $orderQuery->andWhere('o.status IN (:statuses)')
-                   ->setParameter('statuses', ['Draft', 'Ready']);
+        $orderQuery->andWhere('o.status = :status')
+                   ->setParameter('status', 'Ready');
         $orderQuery->orderBy('o.createdDate', 'DESC');
         $newOrders = $orderQuery->getQuery()->getResult();
 
